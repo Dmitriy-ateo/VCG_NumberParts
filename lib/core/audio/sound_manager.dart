@@ -38,7 +38,7 @@ class SoundManager {
   }
 
   Future<void> playMenuClickSound() async {
-    await _playSfx('media/menu_click.wav');
+    await _playSfx('media/menu_click.mp3');
   }
 
   Future<void> playMatchSound() async {
