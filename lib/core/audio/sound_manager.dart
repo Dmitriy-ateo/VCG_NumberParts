@@ -18,9 +18,6 @@ class SoundManager {
   }
 
   Future<void> init() async {
-    if (kIsWeb) {
-      AudioCache.instance.prefix = 'assets/assets/';
-    }
 
     try {
       if (_sfxPool.isEmpty) {
