@@ -37,16 +37,16 @@ class BoardView extends StatelessWidget {
         final boardUnitsWidth = max(maxX - minX, 1.0);
         final boardUnitsHeight = max(maxY - minY, 1.0);
 
-        // Calculate available canvas size with safe margin
-        final availableW = constraints.maxWidth - 32;
-        final availableH = constraints.maxHeight - 32;
+        // Calculate available canvas size with safe margin for stack shadow offsets
+        final availableW = constraints.maxWidth - 40;
+        final availableH = constraints.maxHeight - 40;
 
-        final scaleX = availableW / (boardUnitsWidth * 80.0);
-        final scaleY = availableH / (boardUnitsHeight * 95.0);
-        final scale = min(scaleX, scaleY).clamp(0.6, 1.4);
+        final scaleX = availableW / (boardUnitsWidth * 82.0);
+        final scaleY = availableH / (boardUnitsHeight * 98.0);
+        final scale = min(scaleX, scaleY).clamp(0.65, 1.35);
 
-        final unitW = 80.0 * scale;
-        final unitH = 95.0 * scale;
+        final unitW = 82.0 * scale;
+        final unitH = 98.0 * scale;
 
         final renderedW = boardUnitsWidth * unitW;
         final renderedH = boardUnitsHeight * unitH;
@@ -66,6 +66,14 @@ class BoardView extends StatelessWidget {
             final cardLeft = offsetX + (card.x * unitW);
             final cardTop = offsetY + (card.y * unitH);
 
+            // Compute how many active cards are stacked beneath this card
+            final cardsBelowCount = cards.where((c) {
+              return !c.isMatched &&
+                  c.x == card.x &&
+                  c.y == card.y &&
+                  c.layer < card.layer;
+            }).length;
+
             return Positioned(
               left: cardLeft,
               top: cardTop,
@@ -74,6 +82,7 @@ class BoardView extends StatelessWidget {
               child: WoodenCardWidget(
                 card: card,
                 showDots: showDots,
+                cardsBelowCount: cardsBelowCount,
                 onTap: () => onCardTapped(card.id),
               ),
             );

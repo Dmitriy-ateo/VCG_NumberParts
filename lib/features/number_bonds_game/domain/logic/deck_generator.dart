@@ -4,7 +4,8 @@ import '../models/level_data.dart';
 import 'overlap_engine.dart';
 
 class DeckGenerator {
-  /// Generates a list of [CardNode]s for a given level with guaranteed solvability.
+  /// Generates a list of [CardNode]s for a given level, ensuring that ALL possible
+  /// number pair combinations for the target sum are represented.
   static List<CardNode> generateDeck(LevelData level, {int? seed}) {
     final rand = Random(seed ?? level.levelNumber * 100);
 
@@ -12,14 +13,29 @@ class DeckGenerator {
     assert(slotCount % 2 == 0, 'Level slots count must be an even number');
     final pairCount = slotCount ~/ 2;
 
-    // 1. Generate valid pairs for targetSum
-    final validPairs = _generatePairsForTarget(level.targetSum);
+    // 1. Get all unique combinations that sum to targetSum
+    final allUniquePairs = _generatePairsForTarget(level.targetSum);
 
-    // Try up to 50 iterations to find a guaranteed solvable arrangement
-    for (int attempt = 0; attempt < 50; attempt++) {
+    // Try up to 60 iterations to find a guaranteed solvable arrangement
+    for (int attempt = 0; attempt < 60; attempt++) {
+      final selectedPairs = <(int, int)>[];
+
+      // First guarantee ALL unique combinations are added
+      for (final p in allUniquePairs) {
+        if (selectedPairs.length < pairCount) {
+          selectedPairs.add(p);
+        }
+      }
+
+      // If more pairs are needed to fill the level slots, add additional pairs
+      while (selectedPairs.length < pairCount) {
+        final extraPair = allUniquePairs[rand.nextInt(allUniquePairs.length)];
+        selectedPairs.add(extraPair);
+      }
+
+      // Convert pairs to individual card values
       final values = <int>[];
-      for (int i = 0; i < pairCount; i++) {
-        final pair = validPairs[rand.nextInt(validPairs.length)];
+      for (final pair in selectedPairs) {
         values.add(pair.$1);
         values.add(pair.$2);
       }
@@ -53,11 +69,21 @@ class DeckGenerator {
       }
     }
 
-    // Fallback: return initialDeck if maximum attempts reached
+    // Fallback: construct deck with all combinations distributed
+    final fallbackPairs = <(int, int)>[];
+    for (final p in allUniquePairs) {
+      if (fallbackPairs.length < pairCount) {
+        fallbackPairs.add(p);
+      }
+    }
+    while (fallbackPairs.length < pairCount) {
+      fallbackPairs.add(allUniquePairs[fallbackPairs.length % allUniquePairs.length]);
+    }
+
     final fallbackCards = <CardNode>[];
     for (int i = 0; i < slotCount; i++) {
       final slot = level.slots[i];
-      final pair = validPairs[i % validPairs.length];
+      final pair = fallbackPairs[(i ~/ 2) % fallbackPairs.length];
       final val = (i % 2 == 0) ? pair.$1 : pair.$2;
       fallbackCards.add(
         CardNode(
