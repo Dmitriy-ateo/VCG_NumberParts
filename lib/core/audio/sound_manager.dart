@@ -18,18 +18,7 @@ class SoundManager {
   }
 
   Future<void> init() async {
-
-    try {
-      if (_sfxPool.isEmpty) {
-        for (int i = 0; i < _sfxPoolSize; i++) {
-          _sfxPool.add(AudioPlayer());
-        }
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('SoundManager init error: $e');
-      }
-    }
+    // Initialized lazily on first user interaction to ensure web plugins and AudioContext are active
   }
 
   Future<void> playMenuClickSound() async {
