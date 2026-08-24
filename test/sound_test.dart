@@ -16,5 +16,8 @@ void main() {
 
     final successData = await rootBundle.load('assets/media/success_alert.wav');
     expect(successData.lengthInBytes, greaterThan(0));
+
+    final loseData = await rootBundle.load('assets/media/lose_alert.wav');
+    expect(loseData.lengthInBytes, greaterThan(0));
   });
 }

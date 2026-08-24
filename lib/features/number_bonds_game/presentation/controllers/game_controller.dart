@@ -136,8 +136,16 @@ class GameController extends ChangeNotifier {
       }
     } else {
       // ❌ MISMATCH (Lose 1 Life)
-      // 1. Play wrong pick sound
-      SoundManager.instance.playWrongPickSound();
+      final newLives = _state.lives - 1;
+      final newMistakes = _state.mistakesCount + 1;
+      final isGameOver = newLives <= 0;
+
+      // 1. Play audio
+      if (isGameOver) {
+        SoundManager.instance.playLoseSound();
+      } else {
+        SoundManager.instance.playWrongPickSound();
+      }
 
       // 2. Mark mismatched cards for shake & red highlight
       final mismatchedCards = _state.cards.map((c) {
@@ -150,10 +158,6 @@ class GameController extends ChangeNotifier {
         }
         return c.copyWith(isHinted: false);
       }).toList();
-
-      final newLives = _state.lives - 1;
-      final newMistakes = _state.mistakesCount + 1;
-      final isGameOver = newLives <= 0;
 
       _state = _state.copyWith(
         cards: mismatchedCards,
