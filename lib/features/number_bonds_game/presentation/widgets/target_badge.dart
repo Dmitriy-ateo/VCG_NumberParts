@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/l10n/app_localizations.dart';
@@ -16,19 +17,27 @@ class TargetBadge extends StatelessWidget {
     final l10n = AppLocalizations.of(context).strings;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.fromLTRB(14, 6, 12, 6),
       decoration: BoxDecoration(
-        color: AppColors.pastelYellow.withAlpha(150),
-        borderRadius: BorderRadius.circular(22),
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFFFFF7E6),
+            Color(0xFFFFE8B3),
+            Color(0xFFFFD480),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: AppColors.pastelYellowDark,
-          width: 2.5,
+          color: const Color(0xFFD49B5A),
+          width: 2.0,
         ),
         boxShadow: const [
           BoxShadow(
             color: AppColors.shadowWarm,
-            offset: Offset(0, 4),
-            blurRadius: 8,
+            offset: Offset(0, 3),
+            blurRadius: 6,
           ),
         ],
       ),
@@ -38,23 +47,46 @@ class TargetBadge extends StatelessWidget {
           Text(
             '${l10n.targetSumDisplay}:',
             style: AppTextStyles.titleSmall.copyWith(
-              color: AppColors.textSecondary,
-              fontSize: 16,
+              color: const Color(0xFF6B3A16),
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(width: 8),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
             decoration: BoxDecoration(
-              color: AppColors.textPrimary,
+              gradient: const LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF6B3A16),
+                  Color(0xFF4A250B),
+                ],
+              ),
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: const Color(0xFFD49B5A), width: 1.2),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  offset: Offset(0, 1.5),
+                  blurRadius: 2,
+                ),
+              ],
             ),
             child: Text(
               '$targetSum',
-              style: AppTextStyles.titleMedium.copyWith(
-                color: AppColors.pastelYellow,
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
+              style: GoogleFonts.fredoka(
+                color: const Color(0xFFFFD166),
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                shadows: const [
+                  Shadow(
+                    color: Color(0xFFB88517),
+                    offset: Offset(0.8, 1.2),
+                    blurRadius: 0.5,
+                  ),
+                ],
               ),
             ),
           ),

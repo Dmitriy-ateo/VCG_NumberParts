@@ -150,25 +150,46 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     decoration: BoxDecoration(
                       color: AppColors.backgroundCard,
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.woodBorder.withAlpha(100)),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.woodBorder.withAlpha(120), width: 1.2),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: AppColors.shadowWarm,
+                          offset: Offset(0, 2),
+                          blurRadius: 4,
+                        ),
+                      ],
                     ),
                     child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           '${l10n.levelNumberLabel} ${state.level.levelNumber}',
-                          style: AppTextStyles.badge.copyWith(color: AppColors.textPrimary),
+                          style: AppTextStyles.badge.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                         const SizedBox(width: 12),
-                        Container(width: 4, height: 4, decoration: const BoxDecoration(shape: BoxShape.circle, color: AppColors.textMuted)),
+                        Container(
+                          width: 4,
+                          height: 4,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.woodHoney,
+                          ),
+                        ),
                         const SizedBox(width: 12),
                         Text(
                           '${l10n.remainingCards}: ${state.remainingCardsCount}',
-                          style: AppTextStyles.badge.copyWith(color: AppColors.textSecondary),
+                          style: AppTextStyles.badge.copyWith(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ],
                     ),

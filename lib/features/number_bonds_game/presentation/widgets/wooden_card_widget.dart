@@ -87,7 +87,6 @@ class WoodenCardWidget extends StatelessWidget {
     if (_clayPalettes.containsKey(value)) {
       return _clayPalettes[value]!;
     }
-    // Fallback for numbers > 10
     final mod = ((value - 1) % 10) + 1;
     return _clayPalettes[mod] ??
         const ClayPalette(
@@ -115,7 +114,7 @@ class WoodenCardWidget extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // 1. Stacked Under-Layers (Stepped Chunky Wooden Blocks)
+          // 1. Stacked Under-Layers (Chunky Wooden Slab Steps)
           if (cardsBelowCount > 0 && !isBlocked)
             ...List.generate(cardsBelowCount.clamp(1, 3), (i) {
               final step = (i + 1) * 3.5;
@@ -130,11 +129,11 @@ class WoodenCardWidget extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color.lerp(const Color(0xFFBA804A), const Color(0xFF6B3A16), (i + 1) * 0.3)!,
-                        Color.lerp(const Color(0xFF8B5120), const Color(0xFF4A250B), (i + 1) * 0.3)!,
+                        Color.lerp(const Color(0xFFC4864B), const Color(0xFF7A431A), (i + 1) * 0.28)!,
+                        Color.lerp(const Color(0xFF935824), const Color(0xFF4A250B), (i + 1) * 0.28)!,
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(
                       color: const Color(0xFF4A250B),
                       width: 2.0,
@@ -151,7 +150,7 @@ class WoodenCardWidget extends StatelessWidget {
               );
             }),
 
-          // 2. Main Top Wooden Block with Realistic Bevels & Inlaid Clay Styling
+          // 2. Main Top Wooden Block
           TweenAnimationBuilder<double>(
             key: ValueKey('shake_${card.id}_$isMismatched'),
             tween: Tween<double>(begin: 0.0, end: isMismatched ? 1.0 : 0.0),
@@ -190,27 +189,27 @@ class WoodenCardWidget extends StatelessWidget {
                   curve: Curves.easeOutCubic,
                   child: Stack(
                     children: [
-                      // 3D Bottom Wood Block Edge (Thickness / Extrusion)
+                      // 3D Bottom Wood Extrusion Thickness
                       Positioned(
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        top: 5,
+                        top: 6,
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
+                            borderRadius: BorderRadius.circular(20),
                             gradient: const LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
                                 Color(0xFF6B3A16),
                                 Color(0xFF4A250B),
-                                Color(0xFF331705),
+                                Color(0xFF2E1505),
                               ],
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withAlpha(isBlocked ? 45 : 120),
+                                color: Colors.black.withAlpha(isBlocked ? 40 : 110),
                                 offset: Offset(0, isSelected ? 8.0 : 5.0),
                                 blurRadius: isSelected ? 12.0 : 7.0,
                               ),
@@ -222,11 +221,11 @@ class WoodenCardWidget extends StatelessWidget {
                       // Main Top Face of the Solid Wooden Block
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 180),
-                        margin: const EdgeInsets.only(bottom: 4.5),
+                        margin: const EdgeInsets.only(bottom: 5.5),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
-                            begin: const Alignment(-0.8, -0.9),
+                            begin: const Alignment(-0.85, -0.9),
                             end: const Alignment(0.9, 1.0),
                             colors: isClearing
                                 ? const [
@@ -248,19 +247,19 @@ class WoodenCardWidget extends StatelessWidget {
                                           ]
                                         : isSelected
                                             ? const [
-                                                Color(0xFFFBE4C8),
-                                                Color(0xFFE5B584),
-                                                Color(0xFFCF9860),
+                                                Color(0xFFFBE6CA),
+                                                Color(0xFFE8BA87),
+                                                Color(0xFFD29E65),
                                               ]
                                             : const [
-                                                Color(0xFFD49F6A), // Highlight top-left
-                                                Color(0xFFC08750), // Main warm teak
-                                                Color(0xFFA66E38), // Golden walnut
-                                                Color(0xFF8A5322), // Deep shadow edge
+                                                Color(0xFFDC9F64), // Warm light honey oak
+                                                Color(0xFFC4864B), // Rich teak
+                                                Color(0xFFA66932), // Golden walnut
+                                                Color(0xFF8F511F), // Bottom shadow bevel
                                               ],
                             stops: isBlocked || isSelected || isClearing || isMismatched
                                 ? null
-                                : const [0.0, 0.35, 0.72, 1.0],
+                                : const [0.0, 0.32, 0.68, 1.0],
                           ),
                           border: Border.all(
                             color: isClearing
@@ -274,7 +273,7 @@ class WoodenCardWidget extends StatelessWidget {
                                             : isBlocked
                                                 ? const Color(0xFF6B513C)
                                                 : const Color(0xFF5A2E0E),
-                            width: isClearing || isSelected || isHinted || isMismatched ? 3.0 : 2.2,
+                            width: isClearing || isSelected || isHinted || isMismatched ? 3.0 : 2.4,
                           ),
                           boxShadow: [
                             if (isSelected || isClearing || isMismatched)
@@ -293,7 +292,7 @@ class WoodenCardWidget extends StatelessWidget {
                         ),
                         child: Stack(
                           children: [
-                            // 1. Top-left rim specular bevel highlight
+                            // 1. Top-left rim specular highlight
                             Positioned(
                               top: 2,
                               left: 6,
@@ -303,8 +302,8 @@ class WoodenCardWidget extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      Colors.white.withAlpha(isBlocked ? 20 : 120),
-                                      Colors.white.withAlpha(isBlocked ? 5 : 40),
+                                      Colors.white.withAlpha(isBlocked ? 20 : 130),
+                                      Colors.white.withAlpha(isBlocked ? 5 : 45),
                                     ],
                                   ),
                                   borderRadius: BorderRadius.circular(6),
@@ -312,17 +311,17 @@ class WoodenCardWidget extends StatelessWidget {
                               ),
                             ),
 
-                            // 2. Subtle wood grain horizontal lines
+                            // 2. Subtle organic wood texture
                             Positioned.fill(
                               child: Opacity(
-                                opacity: isBlocked ? 0.04 : 0.09,
+                                opacity: isBlocked ? 0.03 : 0.07,
                                 child: CustomPaint(
-                                  painter: _WoodGrainPainter(),
+                                  painter: _NaturalWoodGrainPainter(),
                                 ),
                               ),
                             ),
 
-                            // 3. Tile Core Content: 3D Inlaid Clay Number & Surrounding Clay Beads
+                            // 3. Tile Core Content: Huge 3D Raised Clay Digit + Tactile Clay Beads
                             Positioned.fill(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
@@ -330,13 +329,13 @@ class WoodenCardWidget extends StatelessWidget {
                               ),
                             ),
 
-                            // 4. Stack Pile Indicator Badge (e.g. "🥞 2")
+                            // 4. Stack Pile Indicator Badge (Tactile Mini Wood Tab)
                             if (cardsBelowCount > 0 && !isBlocked)
                               Positioned(
                                 top: 4,
                                 right: 4,
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1.5),
+                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
                                       colors: [
@@ -344,11 +343,11 @@ class WoodenCardWidget extends StatelessWidget {
                                         Color(0xFF3D1D07),
                                       ],
                                     ),
-                                    borderRadius: BorderRadius.circular(6),
-                                    border: Border.all(color: const Color(0xFFD49F6A), width: 1),
+                                    borderRadius: BorderRadius.circular(7),
+                                    border: Border.all(color: const Color(0xFFDC9F64), width: 1),
                                     boxShadow: const [
                                       BoxShadow(
-                                        color: Colors.black38,
+                                        color: Colors.black45,
                                         offset: Offset(0, 1),
                                         blurRadius: 2,
                                       ),
@@ -357,15 +356,16 @@ class WoodenCardWidget extends StatelessWidget {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      const Text(
-                                        '🥞',
-                                        style: TextStyle(fontSize: 8),
+                                      const Icon(
+                                        Icons.layers_rounded,
+                                        size: 9,
+                                        color: Color(0xFFFFD166),
                                       ),
-                                      const SizedBox(width: 2),
+                                      const SizedBox(width: 2.5),
                                       Text(
                                         '${cardsBelowCount + 1}',
                                         style: const TextStyle(
-                                          fontSize: 9,
+                                          fontSize: 9.5,
                                           fontWeight: FontWeight.w900,
                                           color: Colors.white,
                                         ),
@@ -381,9 +381,9 @@ class WoodenCardWidget extends StatelessWidget {
                                 bottom: 4,
                                 right: 4,
                                 child: Container(
-                                  padding: const EdgeInsets.all(2.5),
+                                  padding: const EdgeInsets.all(3),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withAlpha(50),
+                                    color: Colors.black.withAlpha(55),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
@@ -416,7 +416,6 @@ class WoodenCardWidget extends StatelessWidget {
   ) {
     final value = card.value;
 
-    // Number text style with 3D polymer-clay raised inlay effect
     final digitColor = isBlocked
         ? const Color(0xFF6E5642)
         : (isMismatched ? AppColors.accentCoral : palette.primary);
@@ -429,11 +428,13 @@ class WoodenCardWidget extends StatelessWidget {
         ? const Color(0xFF9E836C)
         : (isMismatched ? const Color(0xFFFFB4A2) : palette.highlight);
 
+    // Large, commanding 3D polymer clay font styling
     final textStyle = GoogleFonts.fredoka(
-      fontSize: value >= 10 ? 30 : 36,
+      fontSize: value >= 10 ? 38 : 46,
       fontWeight: FontWeight.w700,
       color: digitColor,
       height: 1.0,
+      letterSpacing: -1.0,
       shadows: isBlocked
           ? [
               const Shadow(
@@ -446,19 +447,19 @@ class WoodenCardWidget extends StatelessWidget {
               // Bottom dark extrusion / bevel
               Shadow(
                 color: darkShadow,
-                offset: const Offset(1.2, 2.2),
+                offset: const Offset(1.5, 2.8),
                 blurRadius: 0.8,
               ),
               // Ambient wood crevice shadow
               Shadow(
-                color: Colors.black.withAlpha(120),
-                offset: const Offset(0.0, 2.0),
-                blurRadius: 3.5,
+                color: Colors.black.withAlpha(130),
+                offset: const Offset(0.0, 2.5),
+                blurRadius: 4.0,
               ),
               // Top-left specular clay highlight
               Shadow(
-                color: highlight.withAlpha(220),
-                offset: const Offset(-0.8, -0.8),
+                color: highlight.withAlpha(230),
+                offset: const Offset(-1.0, -1.0),
                 blurRadius: 0.5,
               ),
             ],
@@ -473,30 +474,27 @@ class WoodenCardWidget extends StatelessWidget {
       );
     }
 
-    // Arrangement modeled after index page tiles:
-    // 10: 2 rows of 5 beads along the bottom
-    // 7: 3 beads on left, 4 on right
-    // 3: 1 bead on left, 2 on right
-    // 6, 8, 9: side columns
-    // 1, 2: bottom row or sides
+    // Exact replica of index banner patterns:
+    // 10: Two rows of 5 beads along the bottom
+    // 7: 3 beads on left, 4 on right (2x2 grid)
+    // 3: 1 bead on left, 2 on right (top-right & bottom-right)
     if (value == 10) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 2),
+          const SizedBox(height: 1),
           Text(
             '$value',
-            style: textStyle,
+            style: textStyle.copyWith(fontSize: 36),
           ),
-          const SizedBox(height: 4),
-          // Two rows of 5 beads along the bottom (exact match to index tile 10)
+          const SizedBox(height: 3),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
               5,
               (i) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.5),
-                child: _buildClayBead(palette, isBlocked, isMismatched, size: 6.8),
+                child: _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
               ),
             ),
           ),
@@ -507,91 +505,192 @@ class WoodenCardWidget extends StatelessWidget {
               5,
               (i) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 1.5),
-                child: _buildClayBead(palette, isBlocked, isMismatched, size: 6.8),
+                child: _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
               ),
             ),
           ),
         ],
       );
-    } else if (value >= 3 && value <= 9) {
-      // Side dots arrangement (e.g. 7 = 3 left, 4 right; 3 = 1 left, 2 right)
-      final leftCount = value ~/ 2;
-      final rightCount = value - leftCount;
-
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    } else if (value == 3) {
+      // Tile 3 exact replica: 1 bead on left, 2 beads on right (top-right & bottom-right)
+      return Stack(
         children: [
-          // Left Beads Column
-          if (leftCount > 0)
-            SizedBox(
-              width: 14,
+          Center(
+            child: Text(
+              '$value',
+              style: textStyle,
+            ),
+          ),
+          // Left bead (centered vertically)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 6),
+              child: _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+            ),
+          ),
+          // Top-right bead
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, right: 6),
+              child: _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+            ),
+          ),
+          // Bottom-right bead
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8, right: 6),
+              child: _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+            ),
+          ),
+        ],
+      );
+    } else if (value == 7) {
+      // Tile 7 exact replica: 3 beads on left column, 4 beads on right (2x2 grid)
+      return Stack(
+        children: [
+          Center(
+            child: Text(
+              '$value',
+              style: textStyle,
+            ),
+          ),
+          // Left column: 3 beads
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
-                  leftCount,
-                  (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                  3,
+                  (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.0),
                 ),
               ),
             ),
-
-          // Central Raised Clay Digit
-          Expanded(
-            child: Center(
-              child: Text(
-                '$value',
-                style: textStyle,
+          ),
+          // Right column: 4 beads in 2x2 cluster
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                      const SizedBox(width: 2.5),
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                    ],
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                      const SizedBox(width: 2.5),
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),
+        ],
+      );
+    } else if (value == 1) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '$value',
+            style: textStyle,
+          ),
+          const SizedBox(height: 2),
+          _buildClayBead(palette, isBlocked, isMismatched, size: 9.0),
+        ],
+      );
+    } else if (value == 2) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '$value',
+            style: textStyle,
+          ),
+          const SizedBox(height: 2),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+              const SizedBox(width: 6),
+              _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+            ],
+          ),
+        ],
+      );
+    } else if (value >= 4 && value <= 9) {
+      final leftCount = value ~/ 2;
+      final rightCount = value - leftCount;
 
-          // Right Beads Column
+      return Stack(
+        children: [
+          Center(
+            child: Text(
+              '$value',
+              style: textStyle,
+            ),
+          ),
+          if (leftCount > 0)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 6),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(
+                    leftCount,
+                    (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.0),
+                  ),
+                ),
+              ),
+            ),
           if (rightCount > 0)
-            SizedBox(
-              width: 14,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(
-                  rightCount,
-                  (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 6),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(
+                    rightCount,
+                    (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.0),
+                  ),
                 ),
               ),
             ),
         ],
       );
     } else {
-      // Small values (1, 2) or values > 10
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            '$value',
-            style: textStyle,
-          ),
-          if (value <= 2) ...[
-            const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                value,
-                (i) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2.5),
-                  child: _buildClayBead(palette, isBlocked, isMismatched, size: 7.5),
-                ),
-              ),
-            ),
-          ],
-        ],
+      // Numbers > 10
+      return Center(
+        child: Text(
+          '$value',
+          style: textStyle.copyWith(fontSize: 34),
+        ),
       );
     }
   }
 
-  /// Builds a single 3D glossy molded clay bead sphere
+  /// Builds a single 3D glossy molded polymer clay bead sphere
   Widget _buildClayBead(
     ClayPalette palette,
     bool isBlocked,
     bool isMismatched, {
-    double size = 7.5,
+    double size = 8.5,
   }) {
     final primary = isBlocked
         ? const Color(0xFF6E5642)
@@ -623,8 +722,8 @@ class WoodenCardWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(isBlocked ? 40 : 100),
-            offset: const Offset(0.5, 1.2),
-            blurRadius: 1.2,
+            offset: const Offset(0.5, 1.5),
+            blurRadius: 1.5,
           ),
           BoxShadow(
             color: Colors.black.withAlpha(isBlocked ? 20 : 60),
@@ -637,25 +736,24 @@ class WoodenCardWidget extends StatelessWidget {
   }
 }
 
-/// Custom painter for subtle organic wood grain striations
-class _WoodGrainPainter extends CustomPainter {
+/// Custom painter for subtle organic natural wood grain
+class _NaturalWoodGrainPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black
-      ..strokeWidth = 1.0
+      ..color = const Color(0xFF4A2508)
+      ..strokeWidth = 1.2
       ..style = PaintingStyle.stroke;
 
     final path = Path();
-    // Soft subtle wood curved rings
-    path.moveTo(0, size.height * 0.25);
-    path.quadraticBezierTo(size.width * 0.5, size.height * 0.22, size.width, size.height * 0.28);
+    path.moveTo(0, size.height * 0.28);
+    path.quadraticBezierTo(size.width * 0.45, size.height * 0.24, size.width, size.height * 0.30);
 
-    path.moveTo(0, size.height * 0.55);
-    path.quadraticBezierTo(size.width * 0.45, size.height * 0.58, size.width, size.height * 0.52);
+    path.moveTo(0, size.height * 0.58);
+    path.quadraticBezierTo(size.width * 0.55, size.height * 0.62, size.width, size.height * 0.55);
 
-    path.moveTo(0, size.height * 0.82);
-    path.quadraticBezierTo(size.width * 0.55, size.height * 0.79, size.width, size.height * 0.85);
+    path.moveTo(0, size.height * 0.84);
+    path.quadraticBezierTo(size.width * 0.48, size.height * 0.81, size.width, size.height * 0.86);
 
     canvas.drawPath(path, paint);
   }
