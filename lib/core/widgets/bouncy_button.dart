@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
+import '../audio/sound_manager.dart';
 
 class BouncyButton extends StatefulWidget {
   final Widget child;
@@ -10,6 +11,7 @@ class BouncyButton extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final BorderRadius? borderRadius;
   final double bevelHeight;
+  final bool enableClickSound;
 
   const BouncyButton({
     super.key,
@@ -21,6 +23,7 @@ class BouncyButton extends StatefulWidget {
     this.padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
     this.borderRadius,
     this.bevelHeight = 5.0,
+    this.enableClickSound = true,
   });
 
   @override
@@ -38,10 +41,19 @@ class _BouncyButtonState extends State<BouncyButton>
     final radius = widget.borderRadius ?? BorderRadius.circular(20);
 
     return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapDown: (_) {
+        if (widget.onPressed != null) {
+          setState(() => _isPressed = true);
+          if (widget.enableClickSound) {
+            SoundManager.instance.playMenuClickSound();
+          }
+        }
+      },
       onTapUp: (_) {
-        setState(() => _isPressed = false);
-        widget.onPressed?.call();
+        if (widget.onPressed != null) {
+          setState(() => _isPressed = false);
+          widget.onPressed?.call();
+        }
       },
       onTapCancel: () => setState(() => _isPressed = false),
       child: AnimatedContainer(
