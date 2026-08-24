@@ -41,12 +41,12 @@ class BoardView extends StatelessWidget {
         final availableW = constraints.maxWidth - 40;
         final availableH = constraints.maxHeight - 40;
 
-        final scaleX = availableW / (boardUnitsWidth * 82.0);
-        final scaleY = availableH / (boardUnitsHeight * 98.0);
+        final scaleX = availableW / (boardUnitsWidth * 85.0);
+        final scaleY = availableH / (boardUnitsHeight * 88.0);
         final scale = min(scaleX, scaleY).clamp(0.65, 1.35);
 
-        final unitW = 82.0 * scale;
-        final unitH = 98.0 * scale;
+        final unitW = 85.0 * scale;
+        final unitH = 88.0 * scale;
 
         final renderedW = boardUnitsWidth * unitW;
         final renderedH = boardUnitsHeight * unitH;
