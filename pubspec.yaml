@@ -37,6 +37,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_animate: ^4.5.2
   shared_preferences: ^2.5.2
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/media/
 
   # assets:
   #   - images/a_dot_burr.jpeg
