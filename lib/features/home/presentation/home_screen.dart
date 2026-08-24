@@ -3,6 +3,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/l10n/locale_controller.dart';
 import '../../../../core/widgets/pastel_app_bar.dart';
+import '../../number_bonds_game/presentation/levels_screen.dart';
 import '../domain/game_info.dart';
 import 'widgets/game_tile_card.dart';
 import 'widgets/welcome_banner.dart';
@@ -47,26 +48,9 @@ class HomeScreen extends StatelessWidget {
               GameTileCard(
                 game: game,
                 onPlay: () {
-                  // Scaffold notification for next step (game board implementation)
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Row(
-                        children: [
-                          const Text('🪵', style: TextStyle(fontSize: 20)),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              '${AppLocalizations.of(context).strings.gameNumberBondsTitle} — Starting Game!',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
-                      ),
-                      backgroundColor: AppColors.textPrimary,
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LevelsScreen(),
                     ),
                   );
                 },
