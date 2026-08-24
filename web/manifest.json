@@ -1,13 +1,18 @@
 {
-    "name": "Heroma",
+    "name": "Heroma — Number Bonds Math Games",
     "short_name": "Heroma",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FDF8F2",
-    "theme_color": "#FF9E7D",
-    "description": "Heroma — Fun Math Games for Elementary School (Math Hero)",
+    "theme_color": "#FDF8F2",
+    "description": "Fun, educational Number Bonds and math puzzle games for elementary school kids.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "categories": [
+        "education",
+        "games",
+        "kids"
+    ],
     "icons": [
         {
             "src": "icons/Icon-192.png",
