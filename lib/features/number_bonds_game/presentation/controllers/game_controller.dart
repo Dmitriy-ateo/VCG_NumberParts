@@ -44,7 +44,7 @@ class GameController extends ChangeNotifier {
 
   void nextLevel() {
     final nextNum = _state.level.levelNumber + 1;
-    final nextLvl = LevelsData.getLevel(nextNum);
+    final nextLvl = LevelsData.getLevel(nextNum, _state.level.category);
     startLevel(nextLvl);
   }
 
@@ -130,9 +130,15 @@ class GameController extends ChangeNotifier {
 
       if (isWon) {
         SoundManager.instance.playSuccessSound();
-        final stars = _state.calculatedStars;
-        await _progressRepository.saveStarsForLevel(_state.level.levelNumber, stars);
-        await _progressRepository.unlockLevel(_state.level.levelNumber + 1);
+        await _progressRepository.saveStarsForLevel(
+          _state.level.levelNumber,
+          _state.calculatedStars,
+          _state.level.category,
+        );
+        await _progressRepository.unlockLevel(
+          _state.level.levelNumber + 1,
+          _state.level.category,
+        );
       }
     } else {
       // ❌ MISMATCH (Lose 1 Life)

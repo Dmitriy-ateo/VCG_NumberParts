@@ -16,6 +16,8 @@ class AppStrings {
 
   // Levels Screen
   final String selectLevelTitle;
+  final String tabClassic;
+  final String tabAdvanced;
   final String levelNumberLabel;
   final String targetLabel;
   final String lockedLevel;
@@ -61,6 +63,8 @@ class AppStrings {
     required this.badgeWood,
     required this.playButton,
     required this.selectLevelTitle,
+    required this.tabClassic,
+    required this.tabAdvanced,
     required this.levelNumberLabel,
     required this.targetLabel,
     required this.lockedLevel,
@@ -104,6 +108,8 @@ class AppLocalizations {
       badgeWood: 'Дерев\'яні картки',
       playButton: 'Грати!',
       selectLevelTitle: 'Обери Рівень 🗺️',
+      tabClassic: '🌿 Склад (4–10)',
+      tabAdvanced: '⚡ Вирази (15 - 7)',
       levelNumberLabel: 'Рівень',
       targetLabel: 'Ціль',
       lockedLevel: 'Пройди попередній рівень!',
@@ -139,6 +145,8 @@ class AppLocalizations {
       badgeWood: 'Tactile Wood',
       playButton: 'Play Now!',
       selectLevelTitle: 'Select Level 🗺️',
+      tabClassic: '🌿 Bonds (4–10)',
+      tabAdvanced: '⚡ Equations (15 - 7)',
       levelNumberLabel: 'Level',
       targetLabel: 'Target',
       lockedLevel: 'Complete previous level first!',
@@ -174,6 +182,8 @@ class AppLocalizations {
       badgeWood: 'Lesene kartice',
       playButton: 'Igraj zdaj!',
       selectLevelTitle: 'Izberi Stopnjo 🗺️',
+      tabClassic: '🌿 Sestava (4–10)',
+      tabAdvanced: '⚡ Računi (15 - 7)',
       levelNumberLabel: 'Stopnja',
       targetLabel: 'Cilj',
       lockedLevel: 'Najprej zaključi prejšnjo stopnjo!',

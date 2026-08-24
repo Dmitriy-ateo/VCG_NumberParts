@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_text_styles.dart';
+import '../../../core/audio/sound_manager.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../core/storage/progress_repository.dart';
 import '../../../core/widgets/bouncy_button.dart';
@@ -17,8 +19,11 @@ class LevelsScreen extends StatefulWidget {
 
 class _LevelsScreenState extends State<LevelsScreen> {
   final ProgressRepository _repository = ProgressRepository();
-  int _unlockedLevel = 1;
-  Map<int, int> _starsMap = {};
+  LevelCategory _selectedCategory = LevelCategory.classic;
+  int _unlockedClassic = 1;
+  int _unlockedAdvanced = 1;
+  Map<int, int> _classicStars = {};
+  Map<int, int> _advancedStars = {};
 
   @override
   void initState() {
@@ -27,16 +32,25 @@ class _LevelsScreenState extends State<LevelsScreen> {
   }
 
   Future<void> _loadProgress() async {
-    final unlocked = await _repository.getUnlockedLevel();
-    final stars = <int, int>{};
-    for (int i = 1; i <= LevelsData.allLevels.length; i++) {
-      stars[i] = await _repository.getStarsForLevel(i);
+    final unlockedClassic = await _repository.getUnlockedLevel(LevelCategory.classic);
+    final unlockedAdvanced = await _repository.getUnlockedLevel(LevelCategory.advanced);
+
+    final classicStars = <int, int>{};
+    for (int i = 1; i <= LevelsData.classicLevels.length; i++) {
+      classicStars[i] = await _repository.getStarsForLevel(i, LevelCategory.classic);
+    }
+
+    final advancedStars = <int, int>{};
+    for (int i = 1; i <= LevelsData.advancedLevels.length; i++) {
+      advancedStars[i] = await _repository.getStarsForLevel(i, LevelCategory.advanced);
     }
 
     if (mounted) {
       setState(() {
-        _unlockedLevel = unlocked;
-        _starsMap = stars;
+        _unlockedClassic = unlockedClassic;
+        _unlockedAdvanced = unlockedAdvanced;
+        _classicStars = classicStars;
+        _advancedStars = advancedStars;
       });
     }
   }
@@ -53,6 +67,15 @@ class _LevelsScreenState extends State<LevelsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context).strings;
+    final currentLevels = _selectedCategory == LevelCategory.classic
+        ? LevelsData.classicLevels
+        : LevelsData.advancedLevels;
+    final currentUnlocked = _selectedCategory == LevelCategory.classic
+        ? _unlockedClassic
+        : _unlockedAdvanced;
+    final currentStarsMap = _selectedCategory == LevelCategory.classic
+        ? _classicStars
+        : _advancedStars;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -89,10 +112,54 @@ class _LevelsScreenState extends State<LevelsScreen> {
               ),
             ),
 
-            // Grid of 12 Level Stepping Stones
+            // Mode Category Switcher (Classic 4-10 vs Advanced Equations)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+              child: Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceWarm,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: AppColors.woodBorder.withAlpha(120), width: 1.5),
+                ),
+                child: Row(
+                  children: [
+                    // Classic Tab
+                    Expanded(
+                      child: _buildCategoryTab(
+                        title: l10n.tabClassic,
+                        isSelected: _selectedCategory == LevelCategory.classic,
+                        activeColor: AppColors.pastelPeach,
+                        activeShadow: AppColors.pastelPeachDark,
+                        onTap: () {
+                          SoundManager.instance.playMenuClickSound();
+                          setState(() => _selectedCategory = LevelCategory.classic);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    // Advanced Equations Tab
+                    Expanded(
+                      child: _buildCategoryTab(
+                        title: l10n.tabAdvanced,
+                        isSelected: _selectedCategory == LevelCategory.advanced,
+                        activeColor: AppColors.pastelYellow,
+                        activeShadow: AppColors.pastelYellowDark,
+                        onTap: () {
+                          SoundManager.instance.playMenuClickSound();
+                          setState(() => _selectedCategory = LevelCategory.advanced);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Grid of Level Stepping Stones
             Expanded(
               child: GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 physics: const BouncingScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 180,
@@ -100,11 +167,11 @@ class _LevelsScreenState extends State<LevelsScreen> {
                   crossAxisSpacing: 16,
                   childAspectRatio: 0.88,
                 ),
-                itemCount: LevelsData.allLevels.length,
+                itemCount: currentLevels.length,
                 itemBuilder: (context, index) {
-                  final level = LevelsData.allLevels[index];
-                  final isUnlocked = level.levelNumber <= _unlockedLevel;
-                  final stars = _starsMap[level.levelNumber] ?? 0;
+                  final level = currentLevels[index];
+                  final isUnlocked = level.levelNumber <= currentUnlocked;
+                  final stars = currentStarsMap[level.levelNumber] ?? 0;
 
                   return _buildLevelCard(
                     context,
@@ -122,6 +189,48 @@ class _LevelsScreenState extends State<LevelsScreen> {
     );
   }
 
+  Widget _buildCategoryTab({
+    required String title,
+    required bool isSelected,
+    required Color activeColor,
+    required Color activeShadow,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          color: isSelected ? activeColor : Colors.transparent,
+          borderRadius: BorderRadius.circular(16),
+          border: isSelected
+              ? Border.all(color: activeShadow, width: 1.5)
+              : null,
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: activeShadow.withAlpha(90),
+                    offset: const Offset(0, 3),
+                    blurRadius: 4,
+                  ),
+                ]
+              : null,
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: GoogleFonts.nunito(
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+              color: isSelected ? AppColors.textPrimary : AppColors.textSecondary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildLevelCard(
     BuildContext context, {
     required LevelData level,
@@ -129,6 +238,8 @@ class _LevelsScreenState extends State<LevelsScreen> {
     required int stars,
     required AppStrings l10n,
   }) {
+    final hasEquation = level.targetEquation != null;
+
     return GestureDetector(
       onTap: isUnlocked ? () => _openLevel(level) : null,
       child: Container(
@@ -137,14 +248,14 @@ class _LevelsScreenState extends State<LevelsScreen> {
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: isUnlocked ? AppColors.woodBorder : AppColors.woodBorder.withAlpha(80),
-            width: 2.5,
+            width: 2.2,
           ),
           boxShadow: isUnlocked
               ? const [
                   BoxShadow(
                     color: AppColors.shadowWarm,
-                    offset: Offset(0, 6),
-                    blurRadius: 10,
+                    offset: Offset(0, 5),
+                    blurRadius: 8,
                   ),
                 ]
               : [],
@@ -155,46 +266,76 @@ class _LevelsScreenState extends State<LevelsScreen> {
           children: [
             // Level Number Circle
             Container(
-              width: 52,
-              height: 52,
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
-                color: isUnlocked ? AppColors.pastelPeach : const Color(0xFFC7B3A2),
+                color: isUnlocked
+                    ? (hasEquation ? AppColors.pastelYellow : AppColors.pastelPeach)
+                    : const Color(0xFFC7B3A2),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isUnlocked ? AppColors.pastelPeachDark : Colors.transparent,
+                  color: isUnlocked
+                      ? (hasEquation ? AppColors.pastelYellowDark : AppColors.pastelPeachDark)
+                      : Colors.transparent,
                   width: 2,
                 ),
+                boxShadow: isUnlocked
+                    ? [
+                        BoxShadow(
+                          color: (hasEquation ? AppColors.pastelYellowDark : AppColors.pastelPeachDark)
+                              .withAlpha(80),
+                          offset: const Offset(0, 2),
+                          blurRadius: 3,
+                        ),
+                      ]
+                    : [],
               ),
               child: Center(
                 child: isUnlocked
                     ? Text(
                         '${level.levelNumber}',
-                        style: AppTextStyles.titleMedium.copyWith(
-                          color: AppColors.textWhite,
+                        style: GoogleFonts.fredoka(
+                          color: AppColors.textPrimary,
                           fontSize: 22,
+                          fontWeight: FontWeight.w700,
                         ),
                       )
                     : const Icon(
                         Icons.lock_rounded,
                         color: Color(0xFF7A6556),
-                        size: 24,
+                        size: 22,
                       ),
               ),
             ),
             const SizedBox(height: 8),
 
-            // Target Sum Pill
+            // Target Pill (Equation or Direct Sum)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3.5),
               decoration: BoxDecoration(
-                color: isUnlocked ? AppColors.pastelYellow.withAlpha(150) : Colors.transparent,
+                color: isUnlocked
+                    ? (hasEquation
+                        ? const Color(0xFFFFF1C2)
+                        : AppColors.pastelYellow.withAlpha(140))
+                    : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
+                border: isUnlocked
+                    ? Border.all(
+                        color: hasEquation
+                            ? const Color(0xFFE5B540)
+                            : AppColors.pastelYellowDark.withAlpha(120),
+                        width: 1.0,
+                      )
+                    : null,
               ),
               child: Text(
-                '${l10n.targetLabel}: ${level.targetSum}',
-                style: AppTextStyles.badge.copyWith(
-                  color: isUnlocked ? AppColors.textPrimary : AppColors.textMuted,
-                  fontSize: 12,
+                hasEquation
+                    ? '${level.targetEquation}'
+                    : '${l10n.targetLabel}: ${level.targetSum}',
+                style: GoogleFonts.fredoka(
+                  color: isUnlocked ? const Color(0xFF6B3A16) : AppColors.textMuted,
+                  fontSize: hasEquation ? 14 : 13,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -208,7 +349,7 @@ class _LevelsScreenState extends State<LevelsScreen> {
                   return Text(
                     starIndex < stars ? '⭐' : '☆',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 13,
                       color: starIndex < stars ? AppColors.pastelYellowDark : AppColors.textMuted,
                     ),
                   );
@@ -217,7 +358,7 @@ class _LevelsScreenState extends State<LevelsScreen> {
             else
               Text(
                 '🔒',
-                style: TextStyle(fontSize: 14, color: AppColors.textMuted.withAlpha(120)),
+                style: TextStyle(fontSize: 13, color: AppColors.textMuted.withAlpha(120)),
               ),
           ],
         ),

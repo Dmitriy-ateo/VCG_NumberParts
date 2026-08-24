@@ -6,15 +6,18 @@ import '../../../../core/l10n/app_localizations.dart';
 
 class TargetBadge extends StatelessWidget {
   final int targetSum;
+  final String? targetEquation;
 
   const TargetBadge({
     super.key,
     required this.targetSum,
+    this.targetEquation,
   });
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context).strings;
+    final displayText = targetEquation ?? '$targetSum';
 
     return Container(
       padding: const EdgeInsets.fromLTRB(14, 6, 12, 6),
@@ -75,10 +78,10 @@ class TargetBadge extends StatelessWidget {
               ],
             ),
             child: Text(
-              '$targetSum',
+              displayText,
               style: GoogleFonts.fredoka(
                 color: const Color(0xFFFFD166),
-                fontSize: 20,
+                fontSize: targetEquation != null ? 18 : 20,
                 fontWeight: FontWeight.w700,
                 shadows: const [
                   Shadow(

@@ -120,7 +120,10 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
                       const SizedBox(width: 10),
 
                       // Target Badge
-                      TargetBadge(targetSum: state.level.targetSum),
+                      TargetBadge(
+                        targetSum: state.level.targetSum,
+                        targetEquation: state.level.targetEquation,
+                      ),
                       const Spacer(),
 
                       // Lives Display (3 Hearts)
