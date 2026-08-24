@@ -129,6 +129,7 @@ class GameController extends ChangeNotifier {
       notifyListeners();
 
       if (isWon) {
+        SoundManager.instance.playSuccessSound();
         final stars = _state.calculatedStars;
         await _progressRepository.saveStarsForLevel(_state.level.levelNumber, stars);
         await _progressRepository.unlockLevel(_state.level.levelNumber + 1);

@@ -13,5 +13,8 @@ void main() {
 
     final wrongData = await rootBundle.load('assets/media/wrong_pick.wav');
     expect(wrongData.lengthInBytes, greaterThan(0));
+
+    final successData = await rootBundle.load('assets/media/success_alert.wav');
+    expect(successData.lengthInBytes, greaterThan(0));
   });
 }
