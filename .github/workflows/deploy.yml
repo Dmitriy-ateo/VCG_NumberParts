@@ -35,7 +35,9 @@ jobs:
       - name: Build Web
         run: |
           flutter build web --base-href "/VCG_NumberParts/" --release
-          cp -R build/web/assets/assets/* build/web/assets/ 2>/dev/null || true
+          mkdir -p build/web/assets/assets/assets/media
+          cp -R build/web/assets/assets/media/* build/web/assets/assets/assets/media/ 2>/dev/null || true
+          cp -R build/web/assets/assets/media/* build/web/assets/media/ 2>/dev/null || true
           touch build/web/.nojekyll
 
       - name: Upload artifact
