@@ -55,7 +55,7 @@ class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   const Text('📐', style: TextStyle(fontSize: 22)),
                   const SizedBox(width: 8),
-                  Text('NumberParts', style: AppTextStyles.titleSmall),
+                  Text('Heroma', style: AppTextStyles.titleSmall),
                 ],
               ),
             ),

@@ -1,8 +1,8 @@
-# 📐 NumberParts — Math Games for Elementary School (Grades 1–2)
+# 📐 Heroma — Math Games for Elementary School (Grades 1–2)
 
 ## 1. Project Overview & Vision
 
-**NumberParts** is a collection of educational math mini-games designed specifically for 1st and 2nd grade pupils (ages 6–8). The app makes early mathematics intuitive, tangible, and fun through tactile visual representations and game mechanics inspired by classic puzzle games (e.g., Mahjong Solitaire / Card Piles).
+**Heroma** (short for *Math Hero*) is a collection of educational math mini-games designed specifically for 1st and 2nd grade pupils (ages 6–8). The app makes early mathematics intuitive, tangible, and fun through tactile visual representations and game mechanics inspired by classic puzzle games (e.g., Mahjong Solitaire / Card Piles).
 
 The application is structured as a **modular platform** capable of hosting multiple math mini-games, starting with its flagship game: **"Number Bonds" (Состав числа)**.
 

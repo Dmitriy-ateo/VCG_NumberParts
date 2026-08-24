@@ -1,11 +1,11 @@
 {
-    "name": "number_parts",
-    "short_name": "number_parts",
+    "name": "Heroma",
+    "short_name": "Heroma",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FDF8F2",
+    "theme_color": "#FF9E7D",
+    "description": "Heroma — Fun Math Games for Elementary School (Math Hero)",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

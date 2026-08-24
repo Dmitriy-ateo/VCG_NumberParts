@@ -19,5 +19,5 @@ void main() async {
 
   final localeController = LocaleController();
 
-  runApp(NumberPartsApp(localeController: localeController));
+  runApp(HeromaApp(localeController: localeController));
 }

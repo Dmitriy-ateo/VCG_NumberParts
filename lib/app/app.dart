@@ -5,10 +5,10 @@ import '../core/l10n/locale_controller.dart';
 import '../features/home/presentation/home_screen.dart';
 import 'theme/app_theme.dart';
 
-class NumberPartsApp extends StatelessWidget {
+class HeromaApp extends StatelessWidget {
   final LocaleController localeController;
 
-  const NumberPartsApp({
+  const HeromaApp({
     super.key,
     required this.localeController,
   });
@@ -19,7 +19,7 @@ class NumberPartsApp extends StatelessWidget {
       listenable: localeController,
       builder: (context, _) {
         return MaterialApp(
-          title: 'NumberParts',
+          title: 'Heroma',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           locale: localeController.locale,

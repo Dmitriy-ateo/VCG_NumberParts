@@ -94,7 +94,7 @@ class AppLocalizations {
 
   static const Map<String, AppStrings> _localizedValues = {
     'uk': AppStrings(
-      appTitle: 'NumberParts',
+      appTitle: 'Heroma',
       welcomeTitle: 'Привіт, маленький математику! 🦊',
       welcomeSubtitle: 'Вибирай гру та розвивай свої супернавички лічби разом з дерев\'яними картками!',
       gameNumberBondsTitle: 'Склад Числа',
@@ -129,7 +129,7 @@ class AppLocalizations {
       comingSoon: 'Незабаром',
     ),
     'en': AppStrings(
-      appTitle: 'NumberParts',
+      appTitle: 'Heroma',
       welcomeTitle: 'Hello, little math explorer! 🦊',
       welcomeSubtitle: 'Pick a game and build your super counting powers with tactile wooden cards!',
       gameNumberBondsTitle: 'Number Bonds',
@@ -164,7 +164,7 @@ class AppLocalizations {
       comingSoon: 'Coming Soon',
     ),
     'sl': AppStrings(
-      appTitle: 'NumberParts',
+      appTitle: 'Heroma',
       welcomeTitle: 'Živjo, mali matematik! 🦊',
       welcomeSubtitle: 'Izberi igro in okrepi svoje matematične spretnosti z lesenimi karticami!',
       gameNumberBondsTitle: 'Sestava Števil',
