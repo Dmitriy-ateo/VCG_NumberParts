@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'app/app.dart';
 import 'app/theme/app_colors.dart';
+import 'core/audio/sound_manager.dart';
 import 'core/l10n/locale_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Preload audio sound assets
+  await SoundManager.instance.init();
 
   // Set immersive status bar styling with warm pastel background
   SystemChrome.setSystemUIOverlayStyle(
