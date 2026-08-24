@@ -1,15 +1,11 @@
-import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 
 class SoundManager {
-  SoundManager._internal() {
-    _isTestEnv = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
-  }
+  SoundManager._internal();
 
   static final SoundManager instance = SoundManager._internal();
 
-  late final bool _isTestEnv;
   final List<AudioPlayer> _sfxPool = [];
   int _nextSfxIndex = 0;
   static const int _sfxPoolSize = 4;
@@ -22,8 +18,6 @@ class SoundManager {
   }
 
   Future<void> init() async {
-    if (_isTestEnv) return;
-
     if (kIsWeb) {
       AudioCache.instance.prefix = 'assets/assets/';
     }
@@ -63,12 +57,6 @@ class SoundManager {
 
   Future<void> _playSfx(String assetName) async {
     if (_isMuted) return;
-    if (_isTestEnv) {
-      if (kDebugMode) {
-        print('SoundManager [TEST SFX]: $assetName');
-      }
-      return;
-    }
 
     try {
       if (_sfxPool.isEmpty) {
