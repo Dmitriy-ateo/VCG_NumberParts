@@ -14,6 +14,7 @@ class CardNode {
   final bool isMatched;
   final bool isHinted;
   final bool isClearing;
+  final bool isMismatched;
 
   const CardNode({
     required this.id,
@@ -28,6 +29,7 @@ class CardNode {
     this.isMatched = false,
     this.isHinted = false,
     this.isClearing = false,
+    this.isMismatched = false,
   });
 
   CardNode copyWith({
@@ -43,6 +45,7 @@ class CardNode {
     bool? isMatched,
     bool? isHinted,
     bool? isClearing,
+    bool? isMismatched,
   }) {
     return CardNode(
       id: id ?? this.id,
@@ -57,6 +60,7 @@ class CardNode {
       isMatched: isMatched ?? this.isMatched,
       isHinted: isHinted ?? this.isHinted,
       isClearing: isClearing ?? this.isClearing,
+      isMismatched: isMismatched ?? this.isMismatched,
     );
   }
 }

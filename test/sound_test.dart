@@ -10,5 +10,8 @@ void main() {
 
     final matchData = await rootBundle.load('assets/media/remove_items.wav');
     expect(matchData.lengthInBytes, greaterThan(0));
+
+    final wrongData = await rootBundle.load('assets/media/wrong_pick.wav');
+    expect(wrongData.lengthInBytes, greaterThan(0));
   });
 }

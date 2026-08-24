@@ -37,6 +37,9 @@ abstract class AppColors {
   static const Color pastelRose = Color(0xFFFF9AA2);
   static const Color pastelRoseDark = Color(0xFFE57B85);
 
+  static const Color accentCoral = Color(0xFFE76F51);
+  static const Color accentCoralDark = Color(0xFFC85032);
+
   // Shadows
   static const Color shadowWarm = Color(0x1A4D3319);
   static const Color shadowWarmStrong = Color(0x334D3319);

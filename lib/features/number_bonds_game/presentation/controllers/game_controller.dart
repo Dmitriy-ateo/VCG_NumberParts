@@ -52,7 +52,7 @@ class GameController extends ChangeNotifier {
     if (_state.isWon || _state.isGameOver) return;
 
     final card = _state.cards.firstWhere((c) => c.id == cardId);
-    if (card.isMatched || card.isBlocked || card.isClearing) return;
+    if (card.isMatched || card.isBlocked || card.isClearing || card.isMismatched) return;
 
     final selected = List<String>.from(_state.selectedCardIds);
 
@@ -135,17 +135,46 @@ class GameController extends ChangeNotifier {
       }
     } else {
       // ❌ MISMATCH (Lose 1 Life)
+      // 1. Play wrong pick sound
+      SoundManager.instance.playWrongPickSound();
+
+      // 2. Mark mismatched cards for shake & red highlight
+      final mismatchedCards = _state.cards.map((c) {
+        if (c.id == firstCardId || c.id == cardId) {
+          return c.copyWith(
+            isMismatched: true,
+            isSelected: false,
+            isHinted: false,
+          );
+        }
+        return c.copyWith(isHinted: false);
+      }).toList();
+
       final newLives = _state.lives - 1;
       final newMistakes = _state.mistakesCount + 1;
       final isGameOver = newLives <= 0;
 
       _state = _state.copyWith(
+        cards: mismatchedCards,
         lives: newLives,
         mistakesCount: newMistakes,
         selectedCardIds: const [],
         isGameOver: isGameOver,
       );
-      _updateCardSelection(const []);
+      notifyListeners();
+
+      // 3. Wait for shake animation to complete, then reset mismatch state
+      await Future.delayed(const Duration(milliseconds: 400));
+
+      final clearedMismatchCards = _state.cards.map((c) {
+        if (c.id == firstCardId || c.id == cardId) {
+          return c.copyWith(isMismatched: false);
+        }
+        return c;
+      }).toList();
+
+      _state = _state.copyWith(cards: clearedMismatchCards);
+      notifyListeners();
     }
   }
 

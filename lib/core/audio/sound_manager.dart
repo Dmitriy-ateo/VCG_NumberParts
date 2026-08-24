@@ -45,6 +45,10 @@ class SoundManager {
     await _playSfx('media/remove_items.wav');
   }
 
+  Future<void> playWrongPickSound() async {
+    await _playSfx('media/wrong_pick.wav');
+  }
+
   Future<void> _playSfx(String assetName) async {
     if (_isMuted) return;
     if (_isTestEnv) {
