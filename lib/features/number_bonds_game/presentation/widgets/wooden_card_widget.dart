@@ -32,34 +32,34 @@ class WoodenCardWidget extends StatelessWidget {
 
   static const Map<int, ClayPalette> _clayPalettes = {
     1: ClayPalette(
-      primary: Color(0xFFEE6055),
-      dark: Color(0xFFB83228),
+      primary: Color(0xFFF25A4B),
+      dark: Color(0xFFBE2E22),
       highlight: Color(0xFFFF9B92),
     ),
     2: ClayPalette(
-      primary: Color(0xFFF4A261),
-      dark: Color(0xFFC77126),
-      highlight: Color(0xFFFFCA9B),
+      primary: Color(0xFFF59E42),
+      dark: Color(0xFFC76F1E),
+      highlight: Color(0xFFFFCC94),
     ),
     3: ClayPalette(
       primary: Color(0xFFF26419),
-      dark: Color(0xFFB54105),
-      highlight: Color(0xFFFF9259),
+      dark: Color(0xFFB84405),
+      highlight: Color(0xFFFF955C),
     ),
     4: ClayPalette(
-      primary: Color(0xFF9B5DE5),
+      primary: Color(0xFF9D5CE6),
       dark: Color(0xFF6B2FB8),
-      highlight: Color(0xFFC99DF6),
+      highlight: Color(0xFFCC9EFA),
     ),
     5: ClayPalette(
-      primary: Color(0xFFE63946),
+      primary: Color(0xFFE83A4A),
       dark: Color(0xFFA81824),
-      highlight: Color(0xFFFF7A86),
+      highlight: Color(0xFFFF7C88),
     ),
     6: ClayPalette(
-      primary: Color(0xFF2A9D8F),
-      dark: Color(0xFF16685E),
-      highlight: Color(0xFF62CEC0),
+      primary: Color(0xFF26A69A),
+      dark: Color(0xFF146860),
+      highlight: Color(0xFF64D2C5),
     ),
     7: ClayPalette(
       primary: Color(0xFF00A896),
@@ -67,7 +67,7 @@ class WoodenCardWidget extends StatelessWidget {
       highlight: Color(0xFF42DEC9),
     ),
     8: ClayPalette(
-      primary: Color(0xFF2575FC),
+      primary: Color(0xFF2979FF),
       dark: Color(0xFF0D47A1),
       highlight: Color(0xFF75A6FF),
     ),
@@ -77,9 +77,9 @@ class WoodenCardWidget extends StatelessWidget {
       highlight: Color(0xFFB37FFF),
     ),
     10: ClayPalette(
-      primary: Color(0xFFE9B949),
-      dark: Color(0xFFB88517),
-      highlight: Color(0xFFFFDB82),
+      primary: Color(0xFFF3B431),
+      dark: Color(0xFFB88012),
+      highlight: Color(0xFFFFDB7A),
     ),
   };
 
@@ -90,9 +90,9 @@ class WoodenCardWidget extends StatelessWidget {
     final mod = ((value - 1) % 10) + 1;
     return _clayPalettes[mod] ??
         const ClayPalette(
-          primary: Color(0xFFE9B949),
-          dark: Color(0xFFB88517),
-          highlight: Color(0xFFFFDB82),
+          primary: Color(0xFFF3B431),
+          dark: Color(0xFFB88012),
+          highlight: Color(0xFFFFDB7A),
         );
   }
 
@@ -114,7 +114,7 @@ class WoodenCardWidget extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // 1. Stacked Under-Layers (Chunky Wooden Slab Steps)
+          // 1. Stacked Under-Layers (Light Honey Wood Steps)
           if (cardsBelowCount > 0 && !isBlocked)
             ...List.generate(cardsBelowCount.clamp(1, 3), (i) {
               final step = (i + 1) * 3.5;
@@ -129,20 +129,20 @@ class WoodenCardWidget extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color.lerp(const Color(0xFFC4864B), const Color(0xFF7A431A), (i + 1) * 0.28)!,
-                        Color.lerp(const Color(0xFF935824), const Color(0xFF4A250B), (i + 1) * 0.28)!,
+                        Color.lerp(const Color(0xFFE4BF94), const Color(0xFFBA8A5A), (i + 1) * 0.28)!,
+                        Color.lerp(const Color(0xFFCBA074), const Color(0xFF9E6D40), (i + 1) * 0.28)!,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: const Color(0xFF4A250B),
-                      width: 2.0,
+                      color: const Color(0xFF9E6D40),
+                      width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withAlpha(90),
-                        offset: Offset(0, 3.0 + i * 2.0),
-                        blurRadius: 4.0 + i * 2.0,
+                        color: const Color(0x184D3319),
+                        offset: Offset(0, 2.0 + i * 1.5),
+                        blurRadius: 4.0 + i * 1.5,
                       ),
                     ],
                   ),
@@ -189,12 +189,12 @@ class WoodenCardWidget extends StatelessWidget {
                   curve: Curves.easeOutCubic,
                   child: Stack(
                     children: [
-                      // 3D Bottom Wood Extrusion Thickness
+                      // 3D Bottom Wood Extrusion Thickness (Light warm honey-caramel bevel)
                       Positioned(
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        top: 6,
+                        top: 5.5,
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
@@ -202,26 +202,26 @@ class WoodenCardWidget extends StatelessWidget {
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                Color(0xFF6B3A16),
-                                Color(0xFF4A250B),
-                                Color(0xFF2E1505),
+                                Color(0xFFAD7845),
+                                Color(0xFF8F5828),
+                                Color(0xFF75431A),
                               ],
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withAlpha(isBlocked ? 40 : 110),
-                                offset: Offset(0, isSelected ? 8.0 : 5.0),
-                                blurRadius: isSelected ? 12.0 : 7.0,
+                                color: const Color(0x224D3319),
+                                offset: Offset(0, isSelected ? 6.0 : 4.0),
+                                blurRadius: isSelected ? 10.0 : 6.0,
                               ),
                             ],
                           ),
                         ),
                       ),
 
-                      // Main Top Face of the Solid Wooden Block
+                      // Main Top Face of the Solid Wooden Block (Bright, Light Golden Warm Oak)
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 180),
-                        margin: const EdgeInsets.only(bottom: 5.5),
+                        margin: const EdgeInsets.only(bottom: 4.8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
@@ -229,37 +229,37 @@ class WoodenCardWidget extends StatelessWidget {
                             end: const Alignment(0.9, 1.0),
                             colors: isClearing
                                 ? const [
-                                    Color(0xFFFFF9E6),
-                                    Color(0xFFFFE599),
-                                    Color(0xFFFFD166),
+                                    Color(0xFFFFFDF5),
+                                    Color(0xFFFFEEB8),
+                                    Color(0xFFFFD97D),
                                   ]
                                 : isMismatched
                                     ? const [
-                                        Color(0xFFFFE0D6),
-                                        Color(0xFFF79D84),
-                                        Color(0xFFE76F51),
+                                        Color(0xFFFFEFEA),
+                                        Color(0xFFFFBCAC),
+                                        Color(0xFFF28169),
                                       ]
                                     : isBlocked
                                         ? const [
-                                            Color(0xFFB59374),
-                                            Color(0xFF9E7E62),
-                                            Color(0xFF82644B),
+                                            Color(0xFFD6C0A9),
+                                            Color(0xFFC4AB91),
+                                            Color(0xFFB0957A),
                                           ]
                                         : isSelected
                                             ? const [
-                                                Color(0xFFFBE6CA),
-                                                Color(0xFFE8BA87),
-                                                Color(0xFFD29E65),
+                                                Color(0xFFFFF5E6),
+                                                Color(0xFFFFE2BD),
+                                                Color(0xFFFFCE94),
                                               ]
                                             : const [
-                                                Color(0xFFDC9F64), // Warm light honey oak
-                                                Color(0xFFC4864B), // Rich teak
-                                                Color(0xFFA66932), // Golden walnut
-                                                Color(0xFF8F511F), // Bottom shadow bevel
+                                                Color(0xFFFBE6C8), // Light radiant golden highlight
+                                                Color(0xFFF0CB9E), // Smooth warm honey maple
+                                                Color(0xFFE2B784), // Golden teak midtone
+                                                Color(0xFFD09F69), // Soft warm edge bevel
                                               ],
                             stops: isBlocked || isSelected || isClearing || isMismatched
                                 ? null
-                                : const [0.0, 0.32, 0.68, 1.0],
+                                : const [0.0, 0.30, 0.70, 1.0],
                           ),
                           border: Border.all(
                             color: isClearing
@@ -271,9 +271,9 @@ class WoodenCardWidget extends StatelessWidget {
                                         : isHinted
                                             ? const Color(0xFFFFD166)
                                             : isBlocked
-                                                ? const Color(0xFF6B513C)
-                                                : const Color(0xFF5A2E0E),
-                            width: isClearing || isSelected || isHinted || isMismatched ? 3.0 : 2.4,
+                                                ? const Color(0xFF9E846E)
+                                                : const Color(0xFF8C5828),
+                            width: isClearing || isSelected || isHinted || isMismatched ? 2.8 : 2.0,
                           ),
                           boxShadow: [
                             if (isSelected || isClearing || isMismatched)
@@ -283,10 +283,10 @@ class WoodenCardWidget extends StatelessWidget {
                                         : (isMismatched
                                             ? AppColors.accentCoral
                                             : AppColors.pastelPeach))
-                                    .withAlpha(160),
+                                    .withAlpha(140),
                                 offset: Offset.zero,
-                                blurRadius: isClearing || isMismatched ? 16 : 12,
-                                spreadRadius: isClearing ? 4.0 : 2.5,
+                                blurRadius: isClearing || isMismatched ? 14 : 10,
+                                spreadRadius: isClearing ? 3.5 : 2.0,
                               ),
                           ],
                         ),
@@ -302,8 +302,8 @@ class WoodenCardWidget extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      Colors.white.withAlpha(isBlocked ? 20 : 130),
-                                      Colors.white.withAlpha(isBlocked ? 5 : 45),
+                                      Colors.white.withAlpha(isBlocked ? 25 : 150),
+                                      Colors.white.withAlpha(isBlocked ? 5 : 50),
                                     ],
                                   ),
                                   borderRadius: BorderRadius.circular(6),
@@ -311,43 +311,43 @@ class WoodenCardWidget extends StatelessWidget {
                               ),
                             ),
 
-                            // 2. Subtle organic wood texture
+                            // 2. Subtle soft diffuse wood texture
                             Positioned.fill(
                               child: Opacity(
-                                opacity: isBlocked ? 0.03 : 0.07,
+                                opacity: isBlocked ? 0.02 : 0.04,
                                 child: CustomPaint(
-                                  painter: _NaturalWoodGrainPainter(),
+                                  painter: _SoftWoodGrainPainter(),
                                 ),
                               ),
                             ),
 
-                            // 3. Tile Core Content: Huge 3D Raised Clay Digit + Tactile Clay Beads
+                            // 3. Tile Core Content: Huge Bold 3D Inlaid Clay Digit + Tactile Beads
                             Positioned.fill(
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                                 child: _buildTileContent(palette, isBlocked, isMismatched, isSelected),
                               ),
                             ),
 
-                            // 4. Stack Pile Indicator Badge (Tactile Mini Wood Tab)
+                            // 4. Stack Pile Indicator Badge (Light Caramel Wood Tab)
                             if (cardsBelowCount > 0 && !isBlocked)
                               Positioned(
                                 top: 4,
                                 right: 4,
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
                                   decoration: BoxDecoration(
                                     gradient: const LinearGradient(
                                       colors: [
-                                        Color(0xFF5A2E0E),
-                                        Color(0xFF3D1D07),
+                                        Color(0xFF8F5828),
+                                        Color(0xFF75431A),
                                       ],
                                     ),
-                                    borderRadius: BorderRadius.circular(7),
-                                    border: Border.all(color: const Color(0xFFDC9F64), width: 1),
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: const Color(0xFFFBE6C8), width: 1),
                                     boxShadow: const [
                                       BoxShadow(
-                                        color: Colors.black45,
+                                        color: Color(0x20000000),
                                         offset: Offset(0, 1),
                                         blurRadius: 2,
                                       ),
@@ -383,13 +383,13 @@ class WoodenCardWidget extends StatelessWidget {
                                 child: Container(
                                   padding: const EdgeInsets.all(3),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withAlpha(55),
+                                    color: Colors.black.withAlpha(35),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(
                                     Icons.lock_rounded,
                                     size: 11,
-                                    color: Color(0xFF6B513C),
+                                    color: Color(0xFF8A6C54),
                                   ),
                                 ),
                               ),
@@ -417,49 +417,49 @@ class WoodenCardWidget extends StatelessWidget {
     final value = card.value;
 
     final digitColor = isBlocked
-        ? const Color(0xFF6E5642)
+        ? const Color(0xFF8C7561)
         : (isMismatched ? AppColors.accentCoral : palette.primary);
 
     final darkShadow = isBlocked
-        ? const Color(0xFF4A3728)
+        ? const Color(0xFF6B5442)
         : (isMismatched ? AppColors.accentCoralDark : palette.dark);
 
     final highlight = isBlocked
-        ? const Color(0xFF9E836C)
+        ? const Color(0xFFBDB0A2)
         : (isMismatched ? const Color(0xFFFFB4A2) : palette.highlight);
 
-    // Large, commanding 3D polymer clay font styling
+    // Large, prominent 3D polymer clay font styling
     final textStyle = GoogleFonts.fredoka(
-      fontSize: value >= 10 ? 38 : 46,
+      fontSize: value >= 10 ? 44 : 54,
       fontWeight: FontWeight.w700,
       color: digitColor,
       height: 1.0,
-      letterSpacing: -1.0,
+      letterSpacing: -1.5,
       shadows: isBlocked
           ? [
               const Shadow(
-                color: Color(0x903D2A1C),
-                offset: Offset(1.0, 1.5),
+                color: Color(0x403D2A1C),
+                offset: Offset(0.8, 1.2),
                 blurRadius: 0.5,
               ),
             ]
           : [
-              // Bottom dark extrusion / bevel
+              // Bottom dark extrusion bevel
               Shadow(
                 color: darkShadow,
-                offset: const Offset(1.5, 2.8),
-                blurRadius: 0.8,
+                offset: const Offset(1.2, 2.2),
+                blurRadius: 0.5,
               ),
-              // Ambient wood crevice shadow
-              Shadow(
-                color: Colors.black.withAlpha(130),
-                offset: const Offset(0.0, 2.5),
-                blurRadius: 4.0,
+              // Soft warm ambient crevice shadow
+              const Shadow(
+                color: Color(0x35402005),
+                offset: Offset(0.0, 1.8),
+                blurRadius: 2.5,
               ),
               // Top-left specular clay highlight
               Shadow(
-                color: highlight.withAlpha(230),
-                offset: const Offset(-1.0, -1.0),
+                color: highlight.withAlpha(220),
+                offset: const Offset(-0.8, -0.8),
                 blurRadius: 0.5,
               ),
             ],
@@ -485,9 +485,9 @@ class WoodenCardWidget extends StatelessWidget {
           const SizedBox(height: 1),
           Text(
             '$value',
-            style: textStyle.copyWith(fontSize: 36),
+            style: textStyle.copyWith(fontSize: 40),
           ),
-          const SizedBox(height: 3),
+          const SizedBox(height: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(
@@ -512,7 +512,7 @@ class WoodenCardWidget extends StatelessWidget {
         ],
       );
     } else if (value == 3) {
-      // Tile 3 exact replica: 1 bead on left, 2 beads on right (top-right & bottom-right)
+      // Tile 3: 1 bead on left, 2 beads on right (top-right & bottom-right)
       return Stack(
         children: [
           Center(
@@ -521,34 +521,31 @@ class WoodenCardWidget extends StatelessWidget {
               style: textStyle,
             ),
           ),
-          // Left bead (centered vertically)
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
               padding: const EdgeInsets.only(left: 6),
-              child: _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+              child: _buildClayBead(palette, isBlocked, isMismatched, size: 9.0),
             ),
           ),
-          // Top-right bead
           Align(
             alignment: Alignment.topRight,
             child: Padding(
               padding: const EdgeInsets.only(top: 8, right: 6),
-              child: _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+              child: _buildClayBead(palette, isBlocked, isMismatched, size: 9.0),
             ),
           ),
-          // Bottom-right bead
           Align(
             alignment: Alignment.bottomRight,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 8, right: 6),
-              child: _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+              child: _buildClayBead(palette, isBlocked, isMismatched, size: 9.0),
             ),
           ),
         ],
       );
     } else if (value == 7) {
-      // Tile 7 exact replica: 3 beads on left column, 4 beads on right (2x2 grid)
+      // Tile 7: 3 beads on left column, 4 beads on right (2x2 grid)
       return Stack(
         children: [
           Center(
@@ -557,7 +554,6 @@ class WoodenCardWidget extends StatelessWidget {
               style: textStyle,
             ),
           ),
-          // Left column: 3 beads
           Align(
             alignment: Alignment.centerLeft,
             child: Padding(
@@ -566,12 +562,11 @@ class WoodenCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
                   3,
-                  (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.0),
+                  (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
                 ),
               ),
             ),
           ),
-          // Right column: 4 beads in 2x2 cluster
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
@@ -582,17 +577,17 @@ class WoodenCardWidget extends StatelessWidget {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.6),
                       const SizedBox(width: 2.5),
-                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.6),
                     ],
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.6),
                       const SizedBox(width: 2.5),
-                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.2),
+                      _buildClayBead(palette, isBlocked, isMismatched, size: 7.6),
                     ],
                   ),
                 ],
@@ -609,8 +604,8 @@ class WoodenCardWidget extends StatelessWidget {
             '$value',
             style: textStyle,
           ),
-          const SizedBox(height: 2),
-          _buildClayBead(palette, isBlocked, isMismatched, size: 9.0),
+          const SizedBox(height: 1),
+          _buildClayBead(palette, isBlocked, isMismatched, size: 9.5),
         ],
       );
     } else if (value == 2) {
@@ -621,13 +616,13 @@ class WoodenCardWidget extends StatelessWidget {
             '$value',
             style: textStyle,
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 1),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
-              const SizedBox(width: 6),
-              _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
+              _buildClayBead(palette, isBlocked, isMismatched, size: 9.0),
+              const SizedBox(width: 7),
+              _buildClayBead(palette, isBlocked, isMismatched, size: 9.0),
             ],
           ),
         ],
@@ -653,7 +648,7 @@ class WoodenCardWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
                     leftCount,
-                    (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.0),
+                    (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
                   ),
                 ),
               ),
@@ -667,7 +662,7 @@ class WoodenCardWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
                     rightCount,
-                    (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.0),
+                    (i) => _buildClayBead(palette, isBlocked, isMismatched, size: 8.5),
                   ),
                 ),
               ),
@@ -679,7 +674,7 @@ class WoodenCardWidget extends StatelessWidget {
       return Center(
         child: Text(
           '$value',
-          style: textStyle.copyWith(fontSize: 34),
+          style: textStyle.copyWith(fontSize: 38),
         ),
       );
     }
@@ -693,15 +688,15 @@ class WoodenCardWidget extends StatelessWidget {
     double size = 8.5,
   }) {
     final primary = isBlocked
-        ? const Color(0xFF6E5642)
+        ? const Color(0xFF8C7561)
         : (isMismatched ? AppColors.accentCoral : palette.primary);
 
     final dark = isBlocked
-        ? const Color(0xFF4A3728)
+        ? const Color(0xFF6B5442)
         : (isMismatched ? AppColors.accentCoralDark : palette.dark);
 
     final highlight = isBlocked
-        ? const Color(0xFF9E836C)
+        ? const Color(0xFFBDB0A2)
         : (isMismatched ? const Color(0xFFFFB4A2) : palette.highlight);
 
     return Container(
@@ -719,16 +714,11 @@ class WoodenCardWidget extends StatelessWidget {
           ],
           stops: const [0.0, 0.55, 1.0],
         ),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withAlpha(isBlocked ? 40 : 100),
-            offset: const Offset(0.5, 1.5),
-            blurRadius: 1.5,
-          ),
-          BoxShadow(
-            color: Colors.black.withAlpha(isBlocked ? 20 : 60),
-            offset: const Offset(0, 0.5),
-            blurRadius: 0.5,
+            color: Color(0x22000000),
+            offset: Offset(0.5, 1.2),
+            blurRadius: 1.2,
           ),
         ],
       ),
@@ -736,13 +726,13 @@ class WoodenCardWidget extends StatelessWidget {
   }
 }
 
-/// Custom painter for subtle organic natural wood grain
-class _NaturalWoodGrainPainter extends CustomPainter {
+/// Custom painter for subtle, gentle organic wood texture
+class _SoftWoodGrainPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFF4A2508)
-      ..strokeWidth = 1.2
+      ..color = const Color(0xFF8F5828)
+      ..strokeWidth = 1.0
       ..style = PaintingStyle.stroke;
 
     final path = Path();
