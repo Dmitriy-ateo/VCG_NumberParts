@@ -1,14 +1,20 @@
+import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 
 class SoundManager {
+  SoundManager._internal() {
+    _isTestEnv = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
+  }
+
   static final SoundManager instance = SoundManager._internal();
-  SoundManager._internal();
 
-  AudioPlayer? _clickPlayer;
-  AudioPlayer? _matchPlayer;
+  late final bool _isTestEnv;
+  final List<AudioPlayer> _sfxPool = [];
+  int _nextSfxIndex = 0;
+  static const int _sfxPoolSize = 4;
+
   bool _isMuted = false;
-
   bool get isMuted => _isMuted;
 
   void toggleMute() {
@@ -16,11 +22,14 @@ class SoundManager {
   }
 
   Future<void> init() async {
+    if (_isTestEnv) return;
+
     try {
-      _clickPlayer = AudioPlayer()..setReleaseMode(ReleaseMode.stop);
-      _matchPlayer = AudioPlayer()..setReleaseMode(ReleaseMode.stop);
-      await _clickPlayer!.setSource(AssetSource('media/menu_click.wav'));
-      await _matchPlayer!.setSource(AssetSource('media/remove_items.wav'));
+      if (_sfxPool.isEmpty) {
+        for (int i = 0; i < _sfxPoolSize; i++) {
+          _sfxPool.add(AudioPlayer());
+        }
+      }
     } catch (e) {
       if (kDebugMode) {
         print('SoundManager init error: $e');
@@ -29,43 +38,45 @@ class SoundManager {
   }
 
   Future<void> playMenuClickSound() async {
-    if (_isMuted) return;
-    try {
-      if (_clickPlayer != null) {
-        await _clickPlayer!.stop();
-        await _clickPlayer!.play(AssetSource('media/menu_click.wav'));
-      } else {
-        final player = AudioPlayer();
-        await player.play(AssetSource('media/menu_click.wav'));
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print('SoundManager playMenuClickSound error: $e');
-      }
-    }
+    await _playSfx('media/menu_click.wav');
   }
 
   Future<void> playMatchSound() async {
+    await _playSfx('media/remove_items.wav');
+  }
+
+  Future<void> _playSfx(String assetName) async {
     if (_isMuted) return;
-    try {
-      if (_matchPlayer != null) {
-        await _matchPlayer!.stop();
-        await _matchPlayer!.play(AssetSource('media/remove_items.wav'));
-      } else {
-        final player = AudioPlayer();
-        await player.play(AssetSource('media/remove_items.wav'));
+    if (_isTestEnv) {
+      if (kDebugMode) {
+        print('SoundManager [TEST SFX]: $assetName');
       }
+      return;
+    }
+
+    try {
+      if (_sfxPool.isEmpty) {
+        for (int i = 0; i < _sfxPoolSize; i++) {
+          _sfxPool.add(AudioPlayer());
+        }
+      }
+
+      final player = _sfxPool[_nextSfxIndex];
+      _nextSfxIndex = (_nextSfxIndex + 1) % _sfxPoolSize;
+
+      await player.stop();
+      await player.play(AssetSource(assetName));
     } catch (e) {
       if (kDebugMode) {
-        print('SoundManager playMatchSound error: $e');
+        print('SoundManager _playSfx error ($assetName): $e');
       }
     }
   }
 
   void dispose() {
-    _clickPlayer?.dispose();
-    _matchPlayer?.dispose();
-    _clickPlayer = null;
-    _matchPlayer = null;
+    for (final player in _sfxPool) {
+      player.dispose();
+    }
+    _sfxPool.clear();
   }
 }
