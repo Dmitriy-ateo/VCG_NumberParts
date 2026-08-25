@@ -122,7 +122,8 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
                       // Level + Cards Left Status Pill in Header
                       Expanded(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          height: 44,
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                           decoration: BoxDecoration(
                             color: AppColors.backgroundCard,
                             borderRadius: BorderRadius.circular(16),
@@ -135,9 +136,8 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
                               ),
                             ],
                           ),
-                          child: Row(
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
                                 '${l10n.levelNumberLabel} ${state.level.levelNumber}',
@@ -145,28 +145,19 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w800,
                                   fontSize: 13,
+                                  height: 1.15,
                                 ),
                               ),
-                              const SizedBox(width: 8),
-                              Container(
-                                width: 4,
-                                height: 4,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.woodHoney,
+                              Text(
+                                '${l10n.remainingCards}: ${state.remainingCardsCount}',
+                                style: AppTextStyles.badge.copyWith(
+                                  color: AppColors.textSecondary,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11,
+                                  height: 1.15,
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              Flexible(
-                                child: Text(
-                                  '${l10n.remainingCards}: ${state.remainingCardsCount}',
-                                  style: AppTextStyles.badge.copyWith(
-                                    color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 13,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
