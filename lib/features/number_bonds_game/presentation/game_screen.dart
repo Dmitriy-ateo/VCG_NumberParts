@@ -104,98 +104,105 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
                     children: [
                       // Back Button
                       BouncyButton(
-                        height: 48,
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        backgroundColor: AppColors.surfaceWarm,
-                        shadowColor: AppColors.woodBorder,
-                        borderRadius: BorderRadius.circular(16),
-                        bevelHeight: 3.5,
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: AppColors.textPrimary,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-
-                      // Target Badge
-                      TargetBadge(
-                        targetSum: state.level.targetSum,
-                        targetEquation: state.level.targetEquation,
-                      ),
-                      const Spacer(),
-
-                      // Lives Display (3 Hearts)
-                      LivesDisplay(lives: state.lives, maxLives: state.maxLives),
-                      const SizedBox(width: 10),
-
-                      // Restart Button
-                      BouncyButton(
-                        height: 48,
+                        height: 44,
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         backgroundColor: AppColors.surfaceWarm,
                         shadowColor: AppColors.woodBorder,
                         borderRadius: BorderRadius.circular(16),
-                        bevelHeight: 3.5,
+                        bevelHeight: 3.0,
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                          color: AppColors.textPrimary,
+                          size: 18,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+
+                      // Level + Cards Left Status Pill in Header
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: AppColors.backgroundCard,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: AppColors.woodBorder.withAlpha(120), width: 1.2),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: AppColors.shadowWarm,
+                                offset: Offset(0, 2),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '${l10n.levelNumberLabel} ${state.level.levelNumber}',
+                                style: AppTextStyles.badge.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                width: 4,
+                                height: 4,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.woodHoney,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: Text(
+                                  '${l10n.remainingCards}: ${state.remainingCardsCount}',
+                                  style: AppTextStyles.badge.copyWith(
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 13,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+
+                      // Lives Display (3 Hearts)
+                      LivesDisplay(lives: state.lives, maxLives: state.maxLives),
+                      const SizedBox(width: 8),
+
+                      // Restart Button
+                      BouncyButton(
+                        height: 44,
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        backgroundColor: AppColors.surfaceWarm,
+                        shadowColor: AppColors.woodBorder,
+                        borderRadius: BorderRadius.circular(16),
+                        bevelHeight: 3.0,
                         onPressed: () => _controller.restart(),
                         child: const Icon(
                           Icons.refresh_rounded,
                           color: AppColors.textPrimary,
-                          size: 22,
+                          size: 20,
                         ),
                       ),
                     ],
                   ),
                 ),
 
-                // Card Selection Helper / Subtitle Banner
+                // Hero Target Badge in Body (Prominent & Focused)
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundCard,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.woodBorder.withAlpha(120), width: 1.2),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: AppColors.shadowWarm,
-                          offset: Offset(0, 2),
-                          blurRadius: 4,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${l10n.levelNumberLabel} ${state.level.levelNumber}',
-                          style: AppTextStyles.badge.copyWith(
-                            color: AppColors.textPrimary,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Container(
-                          width: 4,
-                          height: 4,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.woodHoney,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Text(
-                          '${l10n.remainingCards}: ${state.remainingCardsCount}',
-                          style: AppTextStyles.badge.copyWith(
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
+                  padding: const EdgeInsets.fromLTRB(16, 6, 16, 2),
+                  child: TargetBadge(
+                    targetSum: state.level.targetSum,
+                    targetEquation: state.level.targetEquation,
                   ),
                 ),
 

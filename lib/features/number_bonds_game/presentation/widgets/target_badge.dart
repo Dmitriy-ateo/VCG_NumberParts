@@ -18,82 +18,97 @@ class TargetBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context).strings;
     final displayText = targetEquation ?? '$targetSum';
+    final isEquation = targetEquation != null;
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 6, 12, 6),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFFFF7E6),
-            Color(0xFFFFE8B3),
-            Color(0xFFFFD480),
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFFFF9EE),
+              Color(0xFFFFE8B3),
+              Color(0xFFFFD480),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: const Color(0xFFD49B5A),
+            width: 2.5,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x356B3A16),
+              offset: Offset(0, 5),
+              blurRadius: 10,
+            ),
           ],
         ),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: const Color(0xFFD49B5A),
-          width: 2.0,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.shadowWarm,
-            offset: Offset(0, 3),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            '${l10n.targetSumDisplay}:',
-            style: AppTextStyles.titleSmall.copyWith(
-              color: const Color(0xFF6B3A16),
-              fontSize: 15,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF6B3A16),
-                  Color(0xFF4A250B),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFD49B5A), width: 1.2),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  offset: Offset(0, 1.5),
-                  blurRadius: 2,
-                ),
-              ],
-            ),
-            child: Text(
-              displayText,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Target Label
+            Text(
+              '${l10n.targetSumDisplay.toUpperCase()}:',
               style: GoogleFonts.fredoka(
-                color: const Color(0xFFFFD166),
-                fontSize: targetEquation != null ? 18 : 20,
+                color: const Color(0xFF7A3E12),
+                fontSize: 16,
                 fontWeight: FontWeight.w700,
-                shadows: const [
-                  Shadow(
-                    color: Color(0xFFB88517),
-                    offset: Offset(0.8, 1.2),
-                    blurRadius: 0.5,
+                letterSpacing: 0.8,
+              ),
+            ),
+            const SizedBox(width: 12),
+
+            // Inset Dark Wood & Clay Target Plate
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: isEquation ? 16 : 14,
+                vertical: 4,
+              ),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF5E3211),
+                    Color(0xFF3F1D06),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: const Color(0xFFD49B5A),
+                  width: 1.5,
+                ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black38,
+                    offset: Offset(0, 2),
+                    blurRadius: 3,
                   ),
                 ],
               ),
+              child: Text(
+                displayText,
+                style: GoogleFonts.fredoka(
+                  color: const Color(0xFFFFD166),
+                  fontSize: isEquation ? 26 : 30,
+                  fontWeight: FontWeight.w700,
+                  shadows: const [
+                    Shadow(
+                      color: Color(0xFFB88517),
+                      offset: Offset(1.0, 1.5),
+                      blurRadius: 1.0,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
