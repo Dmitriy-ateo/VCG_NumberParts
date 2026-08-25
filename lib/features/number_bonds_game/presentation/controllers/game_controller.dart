@@ -43,6 +43,7 @@ class GameController extends ChangeNotifier {
   }
 
   void nextLevel() {
+    SoundManager.instance.playSwitchScreensSound();
     final nextNum = _state.level.levelNumber + 1;
     final nextLvl = LevelsData.getLevel(nextNum, _state.level.category);
     startLevel(nextLvl);

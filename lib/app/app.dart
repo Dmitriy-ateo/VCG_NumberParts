@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import '../core/audio/app_navigator_observer.dart';
 import '../core/l10n/app_localizations.dart';
 import '../core/l10n/locale_controller.dart';
 import '../features/home/presentation/home_screen.dart';
@@ -33,6 +34,9 @@ class HeromaApp extends StatelessWidget {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
+          ],
+          navigatorObservers: [
+            AppNavigatorObserver(),
           ],
           home: HomeScreen(localeController: localeController),
         );

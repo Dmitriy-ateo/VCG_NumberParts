@@ -25,6 +25,10 @@ class SoundManager {
     await _playSfx('media/menu_click.wav');
   }
 
+  Future<void> playSwitchScreensSound() async {
+    await _playSfx('media/switch_screens.wav');
+  }
+
   Future<void> playMatchSound() async {
     await _playSfx('media/remove_items.wav');
   }

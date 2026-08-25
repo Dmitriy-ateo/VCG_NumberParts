@@ -19,5 +19,8 @@ void main() {
 
     final loseData = await rootBundle.load('assets/media/lose_alert.wav');
     expect(loseData.lengthInBytes, greaterThan(0));
+
+    final switchScreensData = await rootBundle.load('assets/media/switch_screens.wav');
+    expect(switchScreensData.lengthInBytes, greaterThan(0));
   });
 }
