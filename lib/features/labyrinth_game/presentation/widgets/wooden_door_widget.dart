@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_text_styles.dart';
 
@@ -30,10 +31,10 @@ class _WoodenDoorWidgetState extends State<WoodenDoorWidget>
     super.initState();
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: const Duration(milliseconds: 650),
     );
 
-    _openAnimation = Tween<double>(begin: 0.0, end: -0.7).animate(
+    _openAnimation = Tween<double>(begin: 0.0, end: -0.85).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeInOutCubic),
     );
 
@@ -64,184 +65,241 @@ class _WoodenDoorWidgetState extends State<WoodenDoorWidget>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animController,
-      builder: (context, child) {
-        double rotationY = 0.0;
-        double rotationZ = 0.0;
-
-        if (widget.isCorrect) {
-          rotationY = _openAnimation.value;
-        } else if (widget.isWrong) {
-          rotationZ = _wobbleAnimation.value;
-        }
-
-        return Transform(
-          alignment: Alignment.centerLeft,
-          transform: Matrix4.identity()
-            ..setEntry(3, 2, 0.002)
-            ..rotateY(rotationY)
-            ..rotateZ(rotationZ),
-          child: child,
-        );
-      },
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Container(
-          width: 96,
-          height: 148,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(48),
-              topRight: Radius.circular(48),
-              bottomLeft: Radius.circular(16),
-              bottomRight: Radius.circular(16),
-            ),
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFFE2B77A),
-                Color(0xFFBA8448),
-                Color(0xFF8E5A23),
-              ],
-            ),
-            border: Border.all(
-              color: const Color(0xFF633A11),
-              width: 3.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.28),
-                offset: const Offset(0, 8),
-                blurRadius: 12,
-              ),
-              const BoxShadow(
-                color: Color(0xFFFFE0A3),
-                offset: Offset(0, -2),
-                blurRadius: 0,
-                spreadRadius: 1,
-              ),
-            ],
+    return Container(
+      width: 96,
+      height: 152,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(48),
+          topRight: Radius.circular(48),
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+        // Stone Doorframe & Magical Portal Inner
+        color: const Color(0xFF2B1D0E),
+        border: Border.all(
+          color: const Color(0xFF5A3E24),
+          width: 3.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            offset: const Offset(0, 8),
+            blurRadius: 12,
           ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Vertical Wooden Planks lines
-              Positioned.fill(
-                child: Row(
+        ],
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // ── MAGICAL PORTAL INTERIOR (Revealed when door opens) ───
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(44),
+                  topRight: Radius.circular(44),
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+                gradient: RadialGradient(
+                  colors: [
+                    Color(0xFFFFF3C4),
+                    Color(0xFFFFD43B),
+                    Color(0xFFFF922B),
+                    Color(0xFF8A5A2B),
+                  ],
+                  radius: 0.85,
+                ),
+              ),
+              child: const Center(
+                child: Text('✨', style: TextStyle(fontSize: 28)),
+              ),
+            ),
+          ),
+
+          // ── SWINGING 3D WOODEN DOOR ──────────────────────────────
+          AnimatedBuilder(
+            animation: _animController,
+            builder: (context, child) {
+              double rotationY = 0.0;
+              double rotationZ = 0.0;
+
+              if (widget.isCorrect) {
+                rotationY = _openAnimation.value;
+              } else if (widget.isWrong) {
+                rotationZ = _wobbleAnimation.value;
+              }
+
+              return Transform(
+                alignment: Alignment.centerLeft,
+                transform: Matrix4.identity()
+                  ..setEntry(3, 2, 0.002)
+                  ..rotateY(rotationY)
+                  ..rotateZ(rotationZ),
+                child: child,
+              );
+            },
+            child: GestureDetector(
+              onTap: widget.onTap,
+              child: Container(
+                width: 96,
+                height: 152,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(48),
+                    topRight: Radius.circular(48),
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFFE2B77A),
+                      Color(0xFFBA8448),
+                      Color(0xFF8E5A23),
+                    ],
+                  ),
+                  border: Border.all(
+                    color: const Color(0xFF633A11),
+                    width: 3.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.28),
+                      offset: const Offset(0, 6),
+                      blurRadius: 10,
+                    ),
+                    const BoxShadow(
+                      color: Color(0xFFFFE0A3),
+                      offset: Offset(0, -2),
+                      blurRadius: 0,
+                      spreadRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
                   children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                              color: const Color(0xFF633A11).withOpacity(0.35),
-                              width: 1.5,
+                    // Vertical Wooden Planks lines
+                    Positioned.fill(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                    color: const Color(0xFF633A11).withOpacity(0.35),
+                                    width: 1.5,
+                                  ),
+                                ),
+                              ),
                             ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(
+                                    color: const Color(0xFF633A11).withOpacity(0.35),
+                                    width: 1.5,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Expanded(child: SizedBox()),
+                        ],
+                      ),
+                    ),
+
+                    // Iron Door Arch Trim
+                    Positioned(
+                      top: 8,
+                      child: Container(
+                        width: 64,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(32),
+                            topRight: Radius.circular(32),
+                          ),
+                          border: Border.all(
+                            color: const Color(0xFF4A3420),
+                            width: 2,
                           ),
                         ),
                       ),
                     ),
-                    Expanded(
+
+                    // Number Plaque with 3D Depth
+                    Positioned(
+                      top: 42,
                       child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                         decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                              color: const Color(0xFF633A11).withOpacity(0.35),
-                              width: 1.5,
+                          color: const Color(0xFFFFF6E5),
+                          borderRadius: BorderRadius.circular(14),
+                          border: Border.all(
+                            color: const Color(0xFF8A5A2B),
+                            width: 2.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF5A3511).withOpacity(0.5),
+                              offset: const Offset(0, 4),
+                              blurRadius: 4,
                             ),
+                          ],
+                        ),
+                        child: Text(
+                          '${widget.doorValue}',
+                          style: AppTextStyles.numberTile.copyWith(
+                            fontSize: 30,
+                            color: const Color(0xFFE8590C),
+                            shadows: [
+                              const Shadow(
+                                color: Color(0xFF8E3B06),
+                                offset: Offset(0, 2),
+                                blurRadius: 1,
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    const Expanded(child: SizedBox()),
+
+                    // Golden Ring Door Knocker
+                    Positioned(
+                      bottom: 16,
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFFFFD43B),
+                          border: Border.all(
+                            color: const Color(0xFF8A5A2B),
+                            width: 2.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              offset: const Offset(0, 2),
+                              blurRadius: 3,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-
-              // Iron Door Arch Trim
-              Positioned(
-                top: 8,
-                child: Container(
-                  width: 64,
-                  height: 28,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(32),
-                    ),
-                    border: Border.all(
-                      color: const Color(0xFF4A3420),
-                      width: 2,
-                    ),
-                  ),
-                ),
-              ),
-
-              // Number Plaque with 3D Depth
-              Positioned(
-                top: 42,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFF6E5),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: const Color(0xFF8A5A2B),
-                      width: 2.5,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF5A3511).withOpacity(0.5),
-                        offset: const Offset(0, 4),
-                        blurRadius: 4,
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    '${widget.doorValue}',
-                    style: AppTextStyles.numberTile.copyWith(
-                      fontSize: 30,
-                      color: const Color(0xFFE8590C),
-                      shadows: [
-                        const Shadow(
-                          color: Color(0xFF8E3B06),
-                          offset: Offset(0, 2),
-                          blurRadius: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-
-              // Golden Ring Door Knocker
-              Positioned(
-                bottom: 16,
-                child: Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: const Color(0xFFFFD43B),
-                    border: Border.all(
-                      color: const Color(0xFF8A5A2B),
-                      width: 2.5,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.3),
-                        offset: const Offset(0, 2),
-                        blurRadius: 3,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
