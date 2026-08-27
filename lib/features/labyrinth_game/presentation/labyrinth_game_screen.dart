@@ -4,13 +4,13 @@ import 'package:number_parts/app/theme/app_text_styles.dart';
 import 'package:number_parts/core/l10n/app_localizations.dart';
 import 'package:number_parts/core/storage/progress_repository.dart';
 import 'package:number_parts/core/widgets/bouncy_button.dart';
+import 'package:number_parts/features/labyrinth_game/domain/models/labyrinth_chamber.dart';
 import 'package:number_parts/features/labyrinth_game/domain/models/labyrinth_level.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/controllers/labyrinth_controller.dart';
+import 'package:number_parts/features/labyrinth_game/presentation/widgets/chamber_content_view.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/widgets/chamber_stepper_bar.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/widgets/labyrinth_game_over_dialog.dart';
-import 'package:number_parts/features/labyrinth_game/presentation/widgets/torch_glow_widget.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/widgets/treasure_reward_dialog.dart';
-import 'package:number_parts/features/labyrinth_game/presentation/widgets/wooden_door_widget.dart';
 
 class LabyrinthGameScreen extends StatefulWidget {
   final LabyrinthLevel level;
@@ -29,8 +29,10 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
   late LabyrinthController _controller;
   final ProgressRepository _progressRepository = ProgressRepository();
 
-  late AnimationController _povAnimController;
+  late AnimationController _walkAnimController;
   Alignment _focalAlignment = Alignment.center;
+  LabyrinthChamber? _transitionOldChamber;
+  LabyrinthChamber? _transitionNextChamber;
 
   @override
   void initState() {
@@ -40,10 +42,15 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
       progressRepository: _progressRepository,
     )..addListener(_onControllerUpdate);
 
-    _povAnimController = AnimationController(
+    _walkAnimController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
+      duration: const Duration(milliseconds: 1400),
+    )..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.completeTransition();
+          _walkAnimController.reset();
+        }
+      });
   }
 
   void _onControllerUpdate() {
@@ -65,19 +72,22 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
     }
 
     if (doorValue == _controller.currentChamber.correctAnswer) {
-      // Calculate focal point for POV zoom toward the chosen door
-      final doorIdx =
-          _controller.currentChamber.doorOptions.indexOf(doorValue);
+      // 1. Calculate focal point for POV zoom toward the chosen door
+      final current = _controller.currentChamber;
+      final doorIdx = current.doorOptions.indexOf(doorValue);
       final alignX = doorIdx == 0 ? -0.65 : (doorIdx == 2 ? 0.65 : 0.0);
 
       setState(() {
-        _focalAlignment = Alignment(alignX, 0.20);
+        _focalAlignment = Alignment(alignX, 0.18);
+        _transitionOldChamber = current;
+        _transitionNextChamber = _controller.nextChamber;
       });
 
-      _povAnimController.forward(from: 0.0);
+      _controller.onCorrectDoorPicked(doorValue);
+      _walkAnimController.forward(from: 0.0);
+    } else {
+      _controller.onWrongDoorPicked(doorValue);
     }
-
-    _controller.selectDoor(doorValue);
   }
 
   void _showVictoryDialog() {
@@ -103,7 +113,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
         },
         onReplay: () {
           Navigator.of(ctx).pop();
-          _povAnimController.reset();
+          _walkAnimController.reset();
           _controller.restart();
         },
         onHome: () {
@@ -121,7 +131,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
       builder: (ctx) => LabyrinthGameOverDialog(
         onRetry: () {
           Navigator.of(ctx).pop();
-          _povAnimController.reset();
+          _walkAnimController.reset();
           _controller.restart();
         },
         onHome: () {
@@ -134,7 +144,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
 
   @override
   void dispose() {
-    _povAnimController.dispose();
+    _walkAnimController.dispose();
     _controller.removeListener(_onControllerUpdate);
     _controller.dispose();
     super.dispose();
@@ -234,7 +244,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
                   // Restart Button
                   BouncyButton(
                     onPressed: () {
-                      _povAnimController.reset();
+                      _walkAnimController.reset();
                       _controller.restart();
                     },
                     backgroundColor: const Color(0xFFFFF3DB),
@@ -258,201 +268,139 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
               totalChambers: _controller.totalChambers,
             ),
 
-            // ── FIRST-PERSON (POV) CHAMBER & DOORS VIEW ───────────────
+            // ── FIRST-PERSON (POV) CHAMBER WALKTHROUGH ────────────────
             Expanded(
-              child: AnimatedBuilder(
-                animation: _povAnimController,
-                builder: (context, child) {
-                  final t = _povAnimController.value;
-                  double scale = 1.0;
-                  double bobY = 0.0;
-                  double portalGlowOpacity = 0.0;
-                  Alignment currentAlign = _focalAlignment;
+              child: ClipRect(
+                child: AnimatedBuilder(
+                  animation: _walkAnimController,
+                  builder: (context, child) {
+                    final t = _walkAnimController.value;
 
-                  if (t > 0.0 && t <= 0.52) {
-                    // PHASE 1: POV Forward Zoom INTO the Selected Open Door
-                    final progress = t / 0.52;
-                    final curvedProgress =
-                        Curves.easeInOutCubic.transform(progress);
-                    scale = 1.0 + (curvedProgress * 2.6); // 1.0 -> 3.6x zoom
-                    bobY = sin(progress * pi * 3) * 10; // Natural footstep bobbing
-
-                    if (progress > 0.65) {
-                      portalGlowOpacity =
-                          ((progress - 0.65) / 0.35).clamp(0.0, 1.0);
-                    }
-                  } else if (t > 0.52) {
-                    // PHASE 2: POV Emerge into the New Chamber & Settle to New Doors
-                    final progress = (t - 0.52) / 0.48;
-                    final curvedProgress =
-                        Curves.easeOutCubic.transform(progress);
-                    scale = 1.45 - (curvedProgress * 0.45); // 1.45 -> 1.0x settle
-                    currentAlign = Alignment.center;
-                    bobY = sin((1.0 - progress) * pi * 2) * 5;
-
-                    if (progress < 0.45) {
-                      portalGlowOpacity =
-                          (1.0 - (progress / 0.45)).clamp(0.0, 1.0);
-                    }
-                  }
-
-                  return Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Camera Transform
-                      Transform(
-                        alignment: currentAlign,
-                        transform: Matrix4.identity()
-                          ..translate(0.0, bobY)
-                          ..scale(scale),
-                        child: child,
-                      ),
-
-                      // Golden Portal Walkthrough Flash / Warm Light Wash
-                      if (portalGlowOpacity > 0.0)
-                        Positioned.fill(
-                          child: IgnorePointer(
-                            child: Container(
-                              color: const Color(0xFFFFE082)
-                                  .withOpacity(portalGlowOpacity * 0.92),
-                              child: Center(
-                                child: Text(
-                                  '✨',
-                                  style: TextStyle(
-                                    fontSize: 48,
-                                    color: Colors.white
-                                        .withOpacity(portalGlowOpacity),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                    if (!_controller.isTransitioning ||
+                        _transitionOldChamber == null) {
+                      // Normal static chamber view
+                      return Center(
+                        child: ChamberContentView(
+                          chamber: chamber,
+                          selectedCorrectDoor: _controller.selectedCorrectDoor,
+                          selectedWrongDoor: _controller.selectedWrongDoor,
+                          onDoorTapped: _onDoorTapped,
                         ),
-                    ],
-                  );
-                },
-                child: Column(
-                  children: [
-                    const Spacer(flex: 1),
+                      );
+                    }
 
-                    // ── HERO EQUATION PLAQUE ─────────────────────────
-                    Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 14),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [Color(0xFFFFEECC), Color(0xFFFFD899)],
+                    // ── DYNAMIC POV WALK TRANSITION ──────────────────
+                    // Phase 1: Old chamber zooms into open door (0.0 -> 0.65)
+                    // Phase 2: Next chamber emerges from small (0.28x) to actual size (1.0x) (0.45 -> 1.0)
+                    final oldChamber = _transitionOldChamber!;
+                    final nextChamber = _transitionNextChamber;
+
+                    // Footstep bobbing
+                    final bobY = sin(t * pi * 4) * 7.0;
+
+                    // Old Chamber Scale: 1.0 -> 4.8x focused on door
+                    final oldProgress = (t / 0.65).clamp(0.0, 1.0);
+                    final oldScale = 1.0 + (Curves.easeInOutCubic.transform(oldProgress) * 3.8);
+                    final oldOpacity = t <= 0.45
+                        ? 1.0
+                        : (1.0 - ((t - 0.45) / 0.20)).clamp(0.0, 1.0);
+
+                    // Next Chamber Scale: 0.26x -> 1.0x (actual size)
+                    final nextProgress = ((t - 0.45) / 0.55).clamp(0.0, 1.0);
+                    final nextScale = 0.26 + (Curves.easeOutCubic.transform(nextProgress) * 0.74);
+                    final nextOpacity = t <= 0.45
+                        ? 0.0
+                        : ((t - 0.45) / 0.20).clamp(0.0, 1.0);
+
+                    // Hallway preview (rendered inside the open wooden door of the old chamber)
+                    Widget buildHallwayPreview() {
+                      if (nextChamber == null) {
+                        return Container(
+                          color: const Color(0xFFFFF3C4),
+                          child: const Center(
+                            child: Text('🏆', style: TextStyle(fontSize: 32)),
+                          ),
+                        );
+                      }
+
+                      return Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xFF382312), Color(0xFF1E1308)],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                           ),
-                          borderRadius: BorderRadius.circular(22),
-                          border: Border.all(
-                            color: const Color(0xFFD49A55),
-                            width: 3.5,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF8A5A2B).withOpacity(0.2),
-                              offset: const Offset(0, 6),
-                              blurRadius: 10,
-                            ),
-                          ],
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF382312),
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: const Color(0xFF25160A),
-                                  width: 2,
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0xFFFFF4DF),
-                                    offset: Offset(0, 1),
-                                    blurRadius: 0,
+                        child: Center(
+                          child: Transform.scale(
+                            scale: 0.22,
+                            child: ChamberContentView(chamber: nextChamber),
+                          ),
+                        ),
+                      );
+                    }
+
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        // ── 1. OLD CHAMBER (Zooming in to chosen door) ───
+                        if (oldOpacity > 0.0)
+                          Transform(
+                            alignment: _focalAlignment,
+                            transform: Matrix4.identity()
+                              ..translate(0.0, bobY)
+                              ..scale(oldScale),
+                            child: Opacity(
+                              opacity: oldOpacity,
+                              child: ChamberContentView(
+                                chamber: oldChamber,
+                                selectedCorrectDoor:
+                                    _controller.selectedCorrectDoor,
+                                hallwayPreview: buildHallwayPreview(),
+                              ),
+                            ),
+                          ),
+
+                        // ── 2. NEW CHAMBER (Zooming from small to actual size) ───
+                        if (nextOpacity > 0.0 && nextChamber != null)
+                          Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.identity()
+                              ..translate(0.0, bobY * 0.5)
+                              ..scale(nextScale),
+                            child: Opacity(
+                              opacity: nextOpacity,
+                              child: ChamberContentView(
+                                chamber: nextChamber,
+                              ),
+                            ),
+                          ),
+
+                        // ── 3. TREASURE ROOM VICTORY PREVIEW (if last chamber) ───
+                        if (nextOpacity > 0.0 && nextChamber == null)
+                          Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.identity()..scale(nextScale),
+                            child: Opacity(
+                              opacity: nextOpacity,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text('👑',
+                                      style: TextStyle(fontSize: 72)),
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    '✨ Treasure Chamber Reached! ✨',
+                                    style: AppTextStyles.titleMedium
+                                        .copyWith(color: const Color(0xFF8A5A2B)),
                                   ),
                                 ],
                               ),
-                              child: Text(
-                                '${chamber.equation} = ?',
-                                style: AppTextStyles.numberTile.copyWith(
-                                  fontSize: 34,
-                                  letterSpacing: 2.0,
-                                  color: const Color(0xFFFFD43B),
-                                  shadows: [
-                                    const Shadow(
-                                      color: Color(0xFF9A5B00),
-                                      offset: Offset(0, 3),
-                                      blurRadius: 2,
-                                    ),
-                                  ],
-                                ),
-                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    const Spacer(flex: 2),
-
-                    // ── CHAMBER DOORS & TORCHES ──────────────────────
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        clipBehavior: Clip.none,
-                        children: [
-                          // Left Torch
-                          const Positioned(
-                            left: 0,
-                            top: 10,
-                            child: TorchGlowWidget(),
                           ),
-
-                          // Right Torch
-                          const Positioned(
-                            right: 0,
-                            top: 10,
-                            child: TorchGlowWidget(),
-                          ),
-
-                          // Doors Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: chamber.doorOptions.map((doorVal) {
-                              final isCorrect =
-                                  _controller.selectedCorrectDoor == doorVal;
-                              final isWrong =
-                                  _controller.selectedWrongDoor == doorVal;
-
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 6),
-                                child: WoodenDoorWidget(
-                                  doorValue: doorVal,
-                                  isCorrect: isCorrect,
-                                  isWrong: isWrong,
-                                  onTap: () => _onDoorTapped(doorVal),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const Spacer(flex: 2),
-                  ],
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -508,7 +456,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
                       ),
                       child: Text(
                         _controller.isTransitioning
-                            ? '✨ Stepping through the doorway... ✨'
+                            ? '✨ Walking into the next chamber... ✨'
                             : l10n.strings.doorsChooseHint,
                         style: AppTextStyles.bodyLarge.copyWith(
                           fontSize: 15,

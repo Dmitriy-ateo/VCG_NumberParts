@@ -31,6 +31,11 @@ class LabyrinthController extends ChangeNotifier {
   int get currentChamberIndex => _currentChamberIndex;
   int get totalChambers => _chambers.length;
   LabyrinthChamber get currentChamber => _chambers[_currentChamberIndex];
+  LabyrinthChamber? get nextChamber =>
+      (_currentChamberIndex + 1 < _chambers.length)
+          ? _chambers[_currentChamberIndex + 1]
+          : null;
+
   int get lives => _lives;
   int get mistakes => _mistakes;
   int? get selectedCorrectDoor => _selectedCorrectDoor;
@@ -68,68 +73,70 @@ class LabyrinthController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> selectDoor(int doorValue) async {
+  Future<void> onCorrectDoorPicked(int doorValue) async {
     if (_isTransitioning || _isCompleted || _isGameOver) return;
 
-    if (doorValue == currentChamber.correctAnswer) {
-      // Correct Door Picked!
-      _selectedCorrectDoor = doorValue;
-      _selectedWrongDoor = null;
-      _isTransitioning = true;
+    _selectedCorrectDoor = doorValue;
+    _selectedWrongDoor = null;
+    _isTransitioning = true;
+    notifyListeners();
+
+    // Trigger audio
+    SoundManager.instance.playDoorOpenSound();
+  }
+
+  Future<void> completeTransition() async {
+    if (_currentChamberIndex + 1 >= totalChambers) {
+      // Level complete!
+      _isCompleted = true;
+      _isTransitioning = false;
+      SoundManager.instance.playSuccessSound();
+
+      final diffKey = level.difficulty.name;
+      await progressRepository.saveLabyrinthStarsForLevel(
+        diffKey,
+        level.levelNumber,
+        starsEarned,
+      );
+      await progressRepository.unlockLabyrinthLevel(
+        diffKey,
+        level.levelNumber + 1,
+      );
       notifyListeners();
-
-      // Trigger audio hook
-      SoundManager.instance.playDoorOpenSound();
-
-      // POV Zoom walkthrough duration:
-      // Door swings open, explorer walks into portal (550ms)
-      await Future.delayed(const Duration(milliseconds: 550));
-
-      if (_currentChamberIndex + 1 >= totalChambers) {
-        // Level complete!
-        _isCompleted = true;
-        _isTransitioning = false;
-        SoundManager.instance.playSuccessSound();
-
-        final diffKey = level.difficulty.name;
-        await progressRepository.saveLabyrinthStarsForLevel(
-          diffKey,
-          level.levelNumber,
-          starsEarned,
-        );
-        await progressRepository.unlockLabyrinthLevel(
-          diffKey,
-          level.levelNumber + 1,
-        );
-        notifyListeners();
-      } else {
-        // Switch chamber while camera is inside the portal glow
-        _currentChamberIndex++;
-        _selectedCorrectDoor = null;
-        notifyListeners();
-
-        // Allow camera to emerge/zoom out into the new room (450ms)
-        await Future.delayed(const Duration(milliseconds: 450));
-        _isTransitioning = false;
-        notifyListeners();
-      }
     } else {
-      // Wrong Door Picked!
-      _selectedWrongDoor = doorValue;
-      _mistakes++;
-      _lives--;
-      SoundManager.instance.playDoorWrongSound();
+      // Advance to next chamber
+      _currentChamberIndex++;
+      _selectedCorrectDoor = null;
+      _isTransitioning = false;
       notifyListeners();
+    }
+  }
 
-      if (_lives <= 0) {
-        _isGameOver = true;
-        SoundManager.instance.playLoseSound();
-        notifyListeners();
-      } else {
-        await Future.delayed(const Duration(milliseconds: 600));
-        _selectedWrongDoor = null;
-        notifyListeners();
-      }
+  Future<void> onWrongDoorPicked(int doorValue) async {
+    if (_isTransitioning || _isCompleted || _isGameOver) return;
+
+    _selectedWrongDoor = doorValue;
+    _mistakes++;
+    _lives--;
+    SoundManager.instance.playDoorWrongSound();
+    notifyListeners();
+
+    if (_lives <= 0) {
+      _isGameOver = true;
+      SoundManager.instance.playLoseSound();
+      notifyListeners();
+    } else {
+      await Future.delayed(const Duration(milliseconds: 600));
+      _selectedWrongDoor = null;
+      notifyListeners();
+    }
+  }
+
+  Future<void> selectDoor(int doorValue) async {
+    if (doorValue == currentChamber.correctAnswer) {
+      await onCorrectDoorPicked(doorValue);
+    } else {
+      await onWrongDoorPicked(doorValue);
     }
   }
 }

@@ -7,6 +7,7 @@ class WoodenDoorWidget extends StatefulWidget {
   final bool isCorrect;
   final bool isWrong;
   final VoidCallback onTap;
+  final Widget? hallwayContent;
 
   const WoodenDoorWidget({
     super.key,
@@ -14,6 +15,7 @@ class WoodenDoorWidget extends StatefulWidget {
     this.isCorrect = false,
     this.isWrong = false,
     required this.onTap,
+    this.hallwayContent,
   });
 
   @override
@@ -31,10 +33,10 @@ class _WoodenDoorWidgetState extends State<WoodenDoorWidget>
     super.initState();
     _animController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 650),
+      duration: const Duration(milliseconds: 500),
     );
 
-    _openAnimation = Tween<double>(begin: 0.0, end: -0.85).animate(
+    _openAnimation = Tween<double>(begin: 0.0, end: -0.92).animate(
       CurvedAnimation(parent: _animController, curve: Curves.easeInOutCubic),
     );
 
@@ -54,6 +56,8 @@ class _WoodenDoorWidgetState extends State<WoodenDoorWidget>
       _animController.forward(from: 0.0);
     } else if (widget.isWrong && !oldWidget.isWrong) {
       _animController.forward(from: 0.0);
+    } else if (!widget.isCorrect && !widget.isWrong && (oldWidget.isCorrect || oldWidget.isWrong)) {
+      _animController.reset();
     }
   }
 
@@ -76,45 +80,48 @@ class _WoodenDoorWidgetState extends State<WoodenDoorWidget>
           bottomRight: Radius.circular(16),
         ),
         // Stone Doorframe & Magical Portal Inner
-        color: const Color(0xFF2B1D0E),
+        color: const Color(0xFF1E1308),
         border: Border.all(
           color: const Color(0xFF5A3E24),
           width: 3.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.35),
             offset: const Offset(0, 8),
             blurRadius: 12,
           ),
         ],
       ),
       child: Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: Clip.antiAlias,
         children: [
-          // ── MAGICAL PORTAL INTERIOR (Revealed when door opens) ───
+          // ── HALLWAY INTERIOR (Revealed when door opens) ──────────
           Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(44),
-                  topRight: Radius.circular(44),
-                  bottomLeft: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
-                ),
-                gradient: RadialGradient(
-                  colors: [
-                    Color(0xFFFFF3C4),
-                    Color(0xFFFFD43B),
-                    Color(0xFFFF922B),
-                    Color(0xFF8A5A2B),
-                  ],
-                  radius: 0.85,
-                ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(44),
+                topRight: Radius.circular(44),
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
               ),
-              child: const Center(
-                child: Text('✨', style: TextStyle(fontSize: 28)),
-              ),
+              child: widget.hallwayContent ??
+                  Container(
+                    decoration: const BoxDecoration(
+                      gradient: RadialGradient(
+                        colors: [
+                          Color(0xFFFFF3C4),
+                          Color(0xFFFFD43B),
+                          Color(0xFFFF922B),
+                          Color(0xFF5C3610),
+                        ],
+                        radius: 0.85,
+                      ),
+                    ),
+                    child: const Center(
+                      child: Text('✨', style: TextStyle(fontSize: 26)),
+                    ),
+                  ),
             ),
           ),
 
