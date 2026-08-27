@@ -242,15 +242,12 @@ class LevelsData {
       title: 'Challenge 4: 18 - 12',
       showDots: true,
       slots: [
-        // Top row
         CardSlot(x: 0.0, y: 0.0, layer: 0),
         CardSlot(x: 0.0, y: 0.0, layer: 1),
         CardSlot(x: 2.8, y: 0.0, layer: 0),
         CardSlot(x: 2.8, y: 0.0, layer: 1),
-        // Middle waist
         CardSlot(x: 1.4, y: 1.5, layer: 0),
         CardSlot(x: 1.4, y: 1.5, layer: 1),
-        // Bottom row
         CardSlot(x: 0.0, y: 3.0, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 1),
         CardSlot(x: 2.8, y: 3.0, layer: 0),
@@ -282,7 +279,7 @@ class LevelsData {
       ],
     ),
 
-    // Level 6: Target = 12 - 8 (= 4) (10 cards - Staircase Bridge)
+    // Level 6: Target = 12 - 8 (= 4) (10 cards - Stepped Pillars)
     LevelData(
       levelNumber: 6,
       targetSum: 4,
@@ -291,19 +288,21 @@ class LevelsData {
       title: 'Challenge 6: 12 - 8',
       showDots: true,
       slots: [
-        // Ground tier (layer 0) - 3 pillars
+        // Pillar 1 (Top Left)
         CardSlot(x: 0.0, y: 0.0, layer: 0),
-        CardSlot(x: 1.4, y: 1.5, layer: 0),
-        CardSlot(x: 2.8, y: 3.0, layer: 0),
-        // Mid tier (layer 1) - Pillars + Bridges sitting ON TOP of ground pillars
         CardSlot(x: 0.0, y: 0.0, layer: 1),
-        CardSlot(x: 0.7, y: 0.75, layer: 1),
+        // Pillar 2 (Mid Left)
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 0.0, y: 1.5, layer: 1),
+        // Pillar 3 (Center)
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
         CardSlot(x: 1.4, y: 1.5, layer: 1),
-        CardSlot(x: 2.1, y: 2.25, layer: 1),
+        // Pillar 4 (Mid Right)
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 2.8, y: 1.5, layer: 1),
+        // Pillar 5 (Bottom Right)
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
         CardSlot(x: 2.8, y: 3.0, layer: 1),
-        // Top tier (layer 2) - Apex caps
-        CardSlot(x: 1.4, y: 1.5, layer: 2),
-        CardSlot(x: 2.8, y: 3.0, layer: 2),
       ],
     ),
 
@@ -316,19 +315,16 @@ class LevelsData {
       title: 'Challenge 7: 20 - 10',
       showDots: true,
       slots: [
-        // Base
         CardSlot(x: 0.0, y: 3.0, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 1),
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
         CardSlot(x: 2.8, y: 3.0, layer: 0),
         CardSlot(x: 2.8, y: 3.0, layer: 1),
-        // Mid
         CardSlot(x: 0.7, y: 1.5, layer: 0),
         CardSlot(x: 0.7, y: 1.5, layer: 1),
         CardSlot(x: 2.1, y: 1.5, layer: 0),
         CardSlot(x: 2.1, y: 1.5, layer: 1),
-        // Peak
         CardSlot(x: 1.4, y: 0.0, layer: 0),
         CardSlot(x: 1.4, y: 0.0, layer: 1),
       ],
@@ -367,17 +363,14 @@ class LevelsData {
       title: 'Challenge 9: 2 × 3',
       showDots: true,
       slots: [
-        // Top Edge
         CardSlot(x: 0.7, y: 0.0, layer: 0),
         CardSlot(x: 0.7, y: 0.0, layer: 1),
         CardSlot(x: 2.1, y: 0.0, layer: 0),
         CardSlot(x: 2.1, y: 0.0, layer: 1),
-        // Side Left & Right
         CardSlot(x: 0.0, y: 1.5, layer: 0),
         CardSlot(x: 0.0, y: 1.5, layer: 1),
         CardSlot(x: 2.8, y: 1.5, layer: 0),
         CardSlot(x: 2.8, y: 1.5, layer: 1),
-        // Bottom Edge
         CardSlot(x: 0.7, y: 3.0, layer: 0),
         CardSlot(x: 0.7, y: 3.0, layer: 1),
         CardSlot(x: 2.1, y: 3.0, layer: 0),
@@ -394,7 +387,6 @@ class LevelsData {
       title: 'Challenge 10: 17 - 8',
       showDots: true,
       slots: [
-        // Left Column (Top 4, Bottom 2)
         CardSlot(x: 0.0, y: 0.0, layer: 0),
         CardSlot(x: 0.0, y: 0.0, layer: 1),
         CardSlot(x: 0.0, y: 0.0, layer: 2),
@@ -402,7 +394,6 @@ class LevelsData {
         CardSlot(x: 0.0, y: 1.5, layer: 1),
         CardSlot(x: 0.0, y: 3.0, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 1),
-        // Right Column (Top 4, Bottom 2)
         CardSlot(x: 2.8, y: 0.0, layer: 0),
         CardSlot(x: 2.8, y: 0.0, layer: 1),
         CardSlot(x: 2.8, y: 0.0, layer: 2),
@@ -422,26 +413,20 @@ class LevelsData {
       title: 'Challenge 11: 13 - 6',
       showDots: true,
       slots: [
-        // Center Pillar (3 layers)
         CardSlot(x: 1.4, y: 1.5, layer: 0),
         CardSlot(x: 1.4, y: 1.5, layer: 1),
         CardSlot(x: 1.4, y: 1.5, layer: 2),
-        // Top 2 stacks
+        CardSlot(x: 1.4, y: 1.5, layer: 3),
         CardSlot(x: 1.4, y: 0.0, layer: 0),
         CardSlot(x: 1.4, y: 0.0, layer: 1),
-        // Bottom 2 stacks
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
-        // Left Wing
         CardSlot(x: 0.0, y: 1.5, layer: 0),
         CardSlot(x: 0.0, y: 1.5, layer: 1),
-        // Right Wing
         CardSlot(x: 2.8, y: 1.5, layer: 0),
         CardSlot(x: 2.8, y: 1.5, layer: 1),
-        // Corners
         CardSlot(x: 0.0, y: 0.0, layer: 0),
         CardSlot(x: 2.8, y: 0.0, layer: 0),
-        CardSlot(x: 1.4, y: 1.5, layer: 3),
       ],
     ),
 
@@ -478,7 +463,6 @@ class LevelsData {
       title: 'Challenge 13: 18 - 8',
       showDots: false,
       slots: [
-        // Base (4 stacks = 8 cards)
         CardSlot(x: 0.0, y: 3.0, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 1),
         CardSlot(x: 1.3, y: 3.0, layer: 0),
@@ -487,14 +471,12 @@ class LevelsData {
         CardSlot(x: 2.6, y: 3.0, layer: 1),
         CardSlot(x: 3.9, y: 3.0, layer: 0),
         CardSlot(x: 3.9, y: 3.0, layer: 1),
-        // Mid (3 stacks = 6 cards)
         CardSlot(x: 0.65, y: 1.5, layer: 0),
         CardSlot(x: 0.65, y: 1.5, layer: 1),
         CardSlot(x: 1.95, y: 1.5, layer: 0),
         CardSlot(x: 1.95, y: 1.5, layer: 1),
         CardSlot(x: 3.25, y: 1.5, layer: 0),
         CardSlot(x: 3.25, y: 1.5, layer: 1),
-        // Peak (1 stack = 2 cards)
         CardSlot(x: 1.95, y: 0.0, layer: 0),
         CardSlot(x: 1.95, y: 0.0, layer: 1),
       ],
@@ -509,19 +491,16 @@ class LevelsData {
       title: 'Challenge 14: 2 × 4',
       showDots: true,
       slots: [
-        // Base 3 stacks
         CardSlot(x: 0.0, y: 3.0, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 1),
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
         CardSlot(x: 2.8, y: 3.0, layer: 0),
         CardSlot(x: 2.8, y: 3.0, layer: 1),
-        // Tier 2
         CardSlot(x: 0.7, y: 1.5, layer: 0),
         CardSlot(x: 0.7, y: 1.5, layer: 1),
         CardSlot(x: 2.1, y: 1.5, layer: 0),
         CardSlot(x: 2.1, y: 1.5, layer: 1),
-        // Top 2 stacks
         CardSlot(x: 1.4, y: 0.0, layer: 0),
         CardSlot(x: 1.4, y: 0.0, layer: 1),
         CardSlot(x: 1.4, y: 0.0, layer: 2),
@@ -553,7 +532,7 @@ class LevelsData {
       ],
     ),
 
-    // Level 16: Target = 14 - 5 (= 9) (14 cards - Diamond Lattice)
+    // Level 16: Target = 14 - 5 (= 9) (14 cards - Diamond Palace)
     LevelData(
       levelNumber: 16,
       targetSum: 9,
@@ -569,13 +548,13 @@ class LevelsData {
         CardSlot(x: 1.4, y: 1.5, layer: 0),
         CardSlot(x: 1.4, y: 1.5, layer: 1),
         CardSlot(x: 1.4, y: 1.5, layer: 2),
+        CardSlot(x: 1.4, y: 1.5, layer: 3),
         CardSlot(x: 2.8, y: 1.5, layer: 0),
         CardSlot(x: 2.8, y: 1.5, layer: 1),
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
-        CardSlot(x: 0.7, y: 2.25, layer: 1),
-        CardSlot(x: 2.1, y: 2.25, layer: 1),
-        CardSlot(x: 1.4, y: 1.5, layer: 3),
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 2.8, y: 0.0, layer: 0),
       ],
     ),
 
@@ -588,19 +567,16 @@ class LevelsData {
       title: 'Challenge 17: 16 - 9',
       showDots: true,
       slots: [
-        // Arch 1
         CardSlot(x: 0.0, y: 0.0, layer: 0),
         CardSlot(x: 0.0, y: 0.0, layer: 1),
         CardSlot(x: 0.0, y: 1.5, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 0),
-        // Arch 2 (Center)
         CardSlot(x: 1.4, y: 0.0, layer: 0),
         CardSlot(x: 1.4, y: 0.0, layer: 1),
         CardSlot(x: 1.4, y: 1.5, layer: 0),
         CardSlot(x: 1.4, y: 1.5, layer: 1),
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
-        // Arch 3
         CardSlot(x: 2.8, y: 0.0, layer: 0),
         CardSlot(x: 2.8, y: 0.0, layer: 1),
         CardSlot(x: 2.8, y: 1.5, layer: 0),
@@ -617,26 +593,22 @@ class LevelsData {
       title: 'Challenge 18: 25 - 15',
       showDots: false,
       slots: [
-        // Base
         CardSlot(x: 0.0, y: 3.0, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 1),
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
         CardSlot(x: 2.8, y: 3.0, layer: 0),
         CardSlot(x: 2.8, y: 3.0, layer: 1),
-        // Mid-Low
-        CardSlot(x: 0.7, y: 2.0, layer: 0),
-        CardSlot(x: 0.7, y: 2.0, layer: 1),
-        CardSlot(x: 2.1, y: 2.0, layer: 0),
-        CardSlot(x: 2.1, y: 2.0, layer: 1),
-        // Mid-High
-        CardSlot(x: 1.4, y: 1.0, layer: 0),
-        CardSlot(x: 1.4, y: 1.0, layer: 1),
-        // Apex (4 layers)
+        CardSlot(x: 0.7, y: 1.5, layer: 0),
+        CardSlot(x: 0.7, y: 1.5, layer: 1),
+        CardSlot(x: 2.1, y: 1.5, layer: 0),
+        CardSlot(x: 2.1, y: 1.5, layer: 1),
         CardSlot(x: 1.4, y: 0.0, layer: 0),
         CardSlot(x: 1.4, y: 0.0, layer: 1),
         CardSlot(x: 1.4, y: 0.0, layer: 2),
         CardSlot(x: 1.4, y: 0.0, layer: 3),
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 2.8, y: 0.0, layer: 0),
       ],
     ),
   ];
