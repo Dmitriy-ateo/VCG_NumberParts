@@ -169,15 +169,15 @@ class LevelsData {
     ),
   ];
 
-  // ── ADVANCED EQUATION CALCULATION (e.g. 15 - 7 = 8) ───────────
+  // ── ADVANCED EQUATION CALCULATION (Randomized Target Progression) ───────────
   static const List<LevelData> advancedLevels = [
-    // Level 1: Target = 10 - 6 (= 4)
+    // Level 1: Target = 15 - 8 (= 7) (8 cards)
     LevelData(
       levelNumber: 1,
-      targetSum: 4,
-      targetEquation: '10 - 6',
+      targetSum: 7,
+      targetEquation: '15 - 8',
       category: LevelCategory.advanced,
-      title: 'Equation: 10 - 6',
+      title: 'Challenge 1: 15 - 8',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
@@ -191,13 +191,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 2: Target = 14 - 9 (= 5)
+    // Level 2: Target = 14 - 9 (= 5) (8 cards - Diamond)
     LevelData(
       levelNumber: 2,
       targetSum: 5,
       targetEquation: '14 - 9',
       category: LevelCategory.advanced,
-      title: 'Equation: 14 - 9',
+      title: 'Challenge 2: 14 - 9',
       showDots: true,
       slots: [
         CardSlot(x: 1.4, y: 0.0, layer: 0),
@@ -211,13 +211,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 3: Target = 15 - 9 (= 6)
+    // Level 3: Target = 16 - 8 (= 8) (10 cards - Cross)
     LevelData(
       levelNumber: 3,
-      targetSum: 6,
-      targetEquation: '15 - 9',
+      targetSum: 8,
+      targetEquation: '16 - 8',
       category: LevelCategory.advanced,
-      title: 'Equation: 15 - 9',
+      title: 'Challenge 3: 16 - 8',
       showDots: true,
       slots: [
         CardSlot(x: 1.4, y: 1.5, layer: 0),
@@ -233,13 +233,38 @@ class LevelsData {
       ],
     ),
 
-    // Level 4: Target = 15 - 8 (= 7)
+    // Level 4: Target = 18 - 12 (= 6) (10 cards - Hourglass)
     LevelData(
       levelNumber: 4,
-      targetSum: 7,
-      targetEquation: '15 - 8',
+      targetSum: 6,
+      targetEquation: '18 - 12',
       category: LevelCategory.advanced,
-      title: 'Equation: 15 - 8',
+      title: 'Challenge 4: 18 - 12',
+      showDots: true,
+      slots: [
+        // Top row
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 0.0, y: 0.0, layer: 1),
+        CardSlot(x: 2.8, y: 0.0, layer: 0),
+        CardSlot(x: 2.8, y: 0.0, layer: 1),
+        // Middle waist
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+        // Bottom row
+        CardSlot(x: 0.0, y: 3.0, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 1),
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 1),
+      ],
+    ),
+
+    // Level 5: Target = 3 × 3 (= 9) (12 cards - Castle Fortress)
+    LevelData(
+      levelNumber: 5,
+      targetSum: 9,
+      targetEquation: '3 × 3',
+      category: LevelCategory.advanced,
+      title: 'Challenge 5: 3 × 3',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
@@ -257,63 +282,201 @@ class LevelsData {
       ],
     ),
 
-    // Level 5: Target = 15 - 7 (= 8)
+    // Level 6: Target = 12 - 8 (= 4) (10 cards - Staircase)
     LevelData(
-      levelNumber: 5,
-      targetSum: 8,
-      targetEquation: '15 - 7',
+      levelNumber: 6,
+      targetSum: 4,
+      targetEquation: '12 - 8',
       category: LevelCategory.advanced,
-      title: 'Equation: 15 - 7',
+      title: 'Challenge 6: 12 - 8',
       showDots: true,
       slots: [
+        // Left step
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 0.0, y: 0.0, layer: 1),
+        // Middle step
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 2),
+        // Right step
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 1),
+        CardSlot(x: 2.8, y: 3.0, layer: 2),
+        // Connectors
+        CardSlot(x: 0.7, y: 0.75, layer: 0),
+        CardSlot(x: 2.1, y: 2.25, layer: 0),
+      ],
+    ),
+
+    // Level 7: Target = 20 - 10 (= 10) (12 cards - Pyramid)
+    LevelData(
+      levelNumber: 7,
+      targetSum: 10,
+      targetEquation: '20 - 10',
+      category: LevelCategory.advanced,
+      title: 'Challenge 7: 20 - 10',
+      showDots: true,
+      slots: [
+        // Base
         CardSlot(x: 0.0, y: 3.0, layer: 0),
         CardSlot(x: 0.0, y: 3.0, layer: 1),
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
         CardSlot(x: 2.8, y: 3.0, layer: 0),
         CardSlot(x: 2.8, y: 3.0, layer: 1),
+        // Mid
         CardSlot(x: 0.7, y: 1.5, layer: 0),
         CardSlot(x: 0.7, y: 1.5, layer: 1),
         CardSlot(x: 2.1, y: 1.5, layer: 0),
         CardSlot(x: 2.1, y: 1.5, layer: 1),
+        // Peak
         CardSlot(x: 1.4, y: 0.0, layer: 0),
         CardSlot(x: 1.4, y: 0.0, layer: 1),
       ],
     ),
 
-    // Level 6: Target = 18 - 9 (= 9)
+    // Level 8: Target = 15 - 7 (= 8) (12 cards - Double Cross)
     LevelData(
-      levelNumber: 6,
-      targetSum: 9,
-      targetEquation: '18 - 9',
+      levelNumber: 8,
+      targetSum: 8,
+      targetEquation: '15 - 7',
       category: LevelCategory.advanced,
-      title: 'Equation: 18 - 9',
+      title: 'Challenge 8: 15 - 7',
+      showDots: true,
+      slots: [
+        CardSlot(x: 0.7, y: 0.0, layer: 0),
+        CardSlot(x: 0.7, y: 0.0, layer: 1),
+        CardSlot(x: 2.1, y: 0.0, layer: 0),
+        CardSlot(x: 2.1, y: 0.0, layer: 1),
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 0.7, y: 3.0, layer: 0),
+        CardSlot(x: 0.7, y: 3.0, layer: 1),
+        CardSlot(x: 2.1, y: 3.0, layer: 0),
+        CardSlot(x: 2.1, y: 3.0, layer: 1),
+      ],
+    ),
+
+    // Level 9: Target = 2 × 3 (= 6) (12 cards - Ring)
+    LevelData(
+      levelNumber: 9,
+      targetSum: 6,
+      targetEquation: '2 × 3',
+      category: LevelCategory.advanced,
+      title: 'Challenge 9: 2 × 3',
+      showDots: true,
+      slots: [
+        // Top Edge
+        CardSlot(x: 0.7, y: 0.0, layer: 0),
+        CardSlot(x: 0.7, y: 0.0, layer: 1),
+        CardSlot(x: 2.1, y: 0.0, layer: 0),
+        CardSlot(x: 2.1, y: 0.0, layer: 1),
+        // Side Left & Right
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 0.0, y: 1.5, layer: 1),
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 2.8, y: 1.5, layer: 1),
+        // Bottom Edge
+        CardSlot(x: 0.7, y: 3.0, layer: 0),
+        CardSlot(x: 0.7, y: 3.0, layer: 1),
+        CardSlot(x: 2.1, y: 3.0, layer: 0),
+        CardSlot(x: 2.1, y: 3.0, layer: 1),
+      ],
+    ),
+
+    // Level 10: Target = 17 - 8 (= 9) (14 cards - Twin Towers)
+    LevelData(
+      levelNumber: 10,
+      targetSum: 9,
+      targetEquation: '17 - 8',
+      category: LevelCategory.advanced,
+      title: 'Challenge 10: 17 - 8',
+      showDots: true,
+      slots: [
+        // Left Column (Top 4, Bottom 2)
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 0.0, y: 0.0, layer: 1),
+        CardSlot(x: 0.0, y: 0.0, layer: 2),
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 0.0, y: 1.5, layer: 1),
+        CardSlot(x: 0.0, y: 3.0, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 1),
+        // Right Column (Top 4, Bottom 2)
+        CardSlot(x: 2.8, y: 0.0, layer: 0),
+        CardSlot(x: 2.8, y: 0.0, layer: 1),
+        CardSlot(x: 2.8, y: 0.0, layer: 2),
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 2.8, y: 1.5, layer: 1),
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 1),
+      ],
+    ),
+
+    // Level 11: Target = 13 - 6 (= 7) (14 cards - Grand Cross)
+    LevelData(
+      levelNumber: 11,
+      targetSum: 7,
+      targetEquation: '13 - 6',
+      category: LevelCategory.advanced,
+      title: 'Challenge 11: 13 - 6',
+      showDots: true,
+      slots: [
+        // Center Pillar (3 layers)
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 2),
+        // Top 2 stacks
+        CardSlot(x: 1.4, y: 0.0, layer: 0),
+        CardSlot(x: 1.4, y: 0.0, layer: 1),
+        // Bottom 2 stacks
+        CardSlot(x: 1.4, y: 3.0, layer: 0),
+        CardSlot(x: 1.4, y: 3.0, layer: 1),
+        // Left Wing
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 0.0, y: 1.5, layer: 1),
+        // Right Wing
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 2.8, y: 1.5, layer: 1),
+        // Corners
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 2.8, y: 0.0, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 3),
+      ],
+    ),
+
+    // Level 12: Target = 11 - 6 (= 5) (12 cards - Checkerboard)
+    LevelData(
+      levelNumber: 12,
+      targetSum: 5,
+      targetEquation: '11 - 6',
+      category: LevelCategory.advanced,
+      title: 'Challenge 12: 11 - 6',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
         CardSlot(x: 0.0, y: 0.0, layer: 1),
-        CardSlot(x: 1.4, y: 0.0, layer: 0),
-        CardSlot(x: 1.4, y: 0.0, layer: 1),
         CardSlot(x: 2.8, y: 0.0, layer: 0),
         CardSlot(x: 2.8, y: 0.0, layer: 1),
-        CardSlot(x: 0.0, y: 1.5, layer: 0),
-        CardSlot(x: 0.0, y: 1.5, layer: 1),
         CardSlot(x: 1.4, y: 1.5, layer: 0),
         CardSlot(x: 1.4, y: 1.5, layer: 1),
-        CardSlot(x: 2.8, y: 1.5, layer: 0),
-        CardSlot(x: 2.8, y: 1.5, layer: 1),
-        CardSlot(x: 1.4, y: 3.0, layer: 0),
-        CardSlot(x: 1.4, y: 3.0, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 2),
+        CardSlot(x: 1.4, y: 1.5, layer: 3),
+        CardSlot(x: 0.0, y: 3.0, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 1),
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 1),
       ],
     ),
 
-    // Level 7: Target = 20 - 10 (= 10)
+    // Level 13: Target = 18 - 8 (= 10) (16 cards - Grand Temple)
     LevelData(
-      levelNumber: 7,
+      levelNumber: 13,
       targetSum: 10,
-      targetEquation: '20 - 10',
+      targetEquation: '18 - 8',
       category: LevelCategory.advanced,
-      title: 'Equation: 20 - 10',
+      title: 'Challenge 13: 18 - 8',
       showDots: false,
       slots: [
         // Base (4 stacks = 8 cards)
@@ -335,6 +498,146 @@ class LevelsData {
         // Peak (1 stack = 2 cards)
         CardSlot(x: 1.95, y: 0.0, layer: 0),
         CardSlot(x: 1.95, y: 0.0, layer: 1),
+      ],
+    ),
+
+    // Level 14: Target = 2 × 4 (= 8) (14 cards - Aztec Step Pyramid)
+    LevelData(
+      levelNumber: 14,
+      targetSum: 8,
+      targetEquation: '2 × 4',
+      category: LevelCategory.advanced,
+      title: 'Challenge 14: 2 × 4',
+      showDots: true,
+      slots: [
+        // Base 3 stacks
+        CardSlot(x: 0.0, y: 3.0, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 1),
+        CardSlot(x: 1.4, y: 3.0, layer: 0),
+        CardSlot(x: 1.4, y: 3.0, layer: 1),
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 1),
+        // Tier 2
+        CardSlot(x: 0.7, y: 1.5, layer: 0),
+        CardSlot(x: 0.7, y: 1.5, layer: 1),
+        CardSlot(x: 2.1, y: 1.5, layer: 0),
+        CardSlot(x: 2.1, y: 1.5, layer: 1),
+        // Top 2 stacks
+        CardSlot(x: 1.4, y: 0.0, layer: 0),
+        CardSlot(x: 1.4, y: 0.0, layer: 1),
+        CardSlot(x: 1.4, y: 0.0, layer: 2),
+        CardSlot(x: 1.4, y: 0.0, layer: 3),
+      ],
+    ),
+
+    // Level 15: Target = 10 - 6 (= 4) (12 cards - The Fortress)
+    LevelData(
+      levelNumber: 15,
+      targetSum: 4,
+      targetEquation: '10 - 6',
+      category: LevelCategory.advanced,
+      title: 'Challenge 15: 10 - 6',
+      showDots: true,
+      slots: [
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 0.0, y: 0.0, layer: 1),
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 1),
+        CardSlot(x: 2.8, y: 0.0, layer: 0),
+        CardSlot(x: 2.8, y: 0.0, layer: 1),
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+      ],
+    ),
+
+    // Level 16: Target = 14 - 5 (= 9) (14 cards - Diamond Lattice)
+    LevelData(
+      levelNumber: 16,
+      targetSum: 9,
+      targetEquation: '14 - 5',
+      category: LevelCategory.advanced,
+      title: 'Challenge 16: 14 - 5',
+      showDots: true,
+      slots: [
+        CardSlot(x: 1.4, y: 0.0, layer: 0),
+        CardSlot(x: 1.4, y: 0.0, layer: 1),
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 0.0, y: 1.5, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 2),
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 2.8, y: 1.5, layer: 1),
+        CardSlot(x: 1.4, y: 3.0, layer: 0),
+        CardSlot(x: 1.4, y: 3.0, layer: 1),
+        CardSlot(x: 0.7, y: 2.25, layer: 0),
+        CardSlot(x: 2.1, y: 2.25, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 3),
+      ],
+    ),
+
+    // Level 17: Target = 16 - 9 (= 7) (14 cards - Triple Arch)
+    LevelData(
+      levelNumber: 17,
+      targetSum: 7,
+      targetEquation: '16 - 9',
+      category: LevelCategory.advanced,
+      title: 'Challenge 17: 16 - 9',
+      showDots: true,
+      slots: [
+        // Arch 1
+        CardSlot(x: 0.0, y: 0.0, layer: 0),
+        CardSlot(x: 0.0, y: 0.0, layer: 1),
+        CardSlot(x: 0.0, y: 1.5, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 0),
+        // Arch 2 (Center)
+        CardSlot(x: 1.4, y: 0.0, layer: 0),
+        CardSlot(x: 1.4, y: 0.0, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 0),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+        CardSlot(x: 1.4, y: 3.0, layer: 0),
+        CardSlot(x: 1.4, y: 3.0, layer: 1),
+        // Arch 3
+        CardSlot(x: 2.8, y: 0.0, layer: 0),
+        CardSlot(x: 2.8, y: 0.0, layer: 1),
+        CardSlot(x: 2.8, y: 1.5, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+      ],
+    ),
+
+    // Level 18: Target = 25 - 15 (= 10) (16 cards - Grand Pyramidion)
+    LevelData(
+      levelNumber: 18,
+      targetSum: 10,
+      targetEquation: '25 - 15',
+      category: LevelCategory.advanced,
+      title: 'Challenge 18: 25 - 15',
+      showDots: false,
+      slots: [
+        // Base
+        CardSlot(x: 0.0, y: 3.0, layer: 0),
+        CardSlot(x: 0.0, y: 3.0, layer: 1),
+        CardSlot(x: 1.4, y: 3.0, layer: 0),
+        CardSlot(x: 1.4, y: 3.0, layer: 1),
+        CardSlot(x: 2.8, y: 3.0, layer: 0),
+        CardSlot(x: 2.8, y: 3.0, layer: 1),
+        // Mid-Low
+        CardSlot(x: 0.7, y: 2.0, layer: 0),
+        CardSlot(x: 0.7, y: 2.0, layer: 1),
+        CardSlot(x: 2.1, y: 2.0, layer: 0),
+        CardSlot(x: 2.1, y: 2.0, layer: 1),
+        // Mid-High
+        CardSlot(x: 1.4, y: 1.0, layer: 0),
+        CardSlot(x: 1.4, y: 1.0, layer: 1),
+        // Apex (4 layers)
+        CardSlot(x: 1.4, y: 0.0, layer: 0),
+        CardSlot(x: 1.4, y: 0.0, layer: 1),
+        CardSlot(x: 1.4, y: 0.0, layer: 2),
+        CardSlot(x: 1.4, y: 0.0, layer: 3),
       ],
     ),
   ];
