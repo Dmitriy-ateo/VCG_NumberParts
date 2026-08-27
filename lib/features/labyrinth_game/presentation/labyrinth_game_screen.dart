@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:number_parts/app/theme/app_text_styles.dart';
 import 'package:number_parts/core/l10n/app_localizations.dart';
@@ -23,9 +24,13 @@ class LabyrinthGameScreen extends StatefulWidget {
   State<LabyrinthGameScreen> createState() => _LabyrinthGameScreenState();
 }
 
-class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
+class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
+    with SingleTickerProviderStateMixin {
   late LabyrinthController _controller;
   final ProgressRepository _progressRepository = ProgressRepository();
+
+  late AnimationController _povAnimController;
+  Alignment _focalAlignment = Alignment.center;
 
   @override
   void initState() {
@@ -34,6 +39,11 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
       level: widget.level,
       progressRepository: _progressRepository,
     )..addListener(_onControllerUpdate);
+
+    _povAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
   }
 
   void _onControllerUpdate() {
@@ -45,6 +55,29 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
     } else if (_controller.isGameOver) {
       _showGameOverDialog();
     }
+  }
+
+  void _onDoorTapped(int doorValue) {
+    if (_controller.isTransitioning ||
+        _controller.isCompleted ||
+        _controller.isGameOver) {
+      return;
+    }
+
+    if (doorValue == _controller.currentChamber.correctAnswer) {
+      // Calculate focal point for POV zoom toward the chosen door
+      final doorIdx =
+          _controller.currentChamber.doorOptions.indexOf(doorValue);
+      final alignX = doorIdx == 0 ? -0.65 : (doorIdx == 2 ? 0.65 : 0.0);
+
+      setState(() {
+        _focalAlignment = Alignment(alignX, 0.20);
+      });
+
+      _povAnimController.forward(from: 0.0);
+    }
+
+    _controller.selectDoor(doorValue);
   }
 
   void _showVictoryDialog() {
@@ -59,7 +92,8 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
             levelNumber: widget.level.levelNumber + 1,
             difficulty: widget.level.difficulty,
             chambersCount: widget.level.chambersCount,
-            title: '${widget.level.title.split(' ').first} ${widget.level.levelNumber + 1}',
+            title:
+                '${widget.level.title.split(' ').first} ${widget.level.levelNumber + 1}',
           );
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
@@ -69,6 +103,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
         },
         onReplay: () {
           Navigator.of(ctx).pop();
+          _povAnimController.reset();
           _controller.restart();
         },
         onHome: () {
@@ -86,6 +121,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
       builder: (ctx) => LabyrinthGameOverDialog(
         onRetry: () {
           Navigator.of(ctx).pop();
+          _povAnimController.reset();
           _controller.restart();
         },
         onHome: () {
@@ -98,6 +134,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
 
   @override
   void dispose() {
+    _povAnimController.dispose();
     _controller.removeListener(_onControllerUpdate);
     _controller.dispose();
     super.dispose();
@@ -137,11 +174,13 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
                   // Level Badge
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 6, horizontal: 12),
                       decoration: BoxDecoration(
                         color: const Color(0xFFFFF8EC),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFFE5CE9F), width: 2),
+                        border: Border.all(
+                            color: const Color(0xFFE5CE9F), width: 2),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -169,11 +208,13 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
 
                   // Lives Display
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFF8EC),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFFE5CE9F), width: 2),
+                      border: Border.all(
+                          color: const Color(0xFFE5CE9F), width: 2),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -192,7 +233,10 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
 
                   // Restart Button
                   BouncyButton(
-                    onPressed: _controller.restart,
+                    onPressed: () {
+                      _povAnimController.reset();
+                      _controller.restart();
+                    },
                     backgroundColor: const Color(0xFFFFF3DB),
                     shadowColor: const Color(0xFFE8C88A),
                     padding: EdgeInsets.zero,
@@ -214,157 +258,201 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
               totalChambers: _controller.totalChambers,
             ),
 
-            // ── DYNAMIC CHAMBER WITH ROOM TRANSITION ───────────────────
+            // ── FIRST-PERSON (POV) CHAMBER & DOORS VIEW ───────────────
             Expanded(
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 550),
-                switchInCurve: Curves.easeOutBack,
-                switchOutCurve: Curves.easeInCubic,
-                transitionBuilder: (child, animation) {
-                  final slideAnimation = Tween<Offset>(
-                    begin: const Offset(0.35, 0.0),
-                    end: Offset.zero,
-                  ).animate(animation);
+              child: AnimatedBuilder(
+                animation: _povAnimController,
+                builder: (context, child) {
+                  final t = _povAnimController.value;
+                  double scale = 1.0;
+                  double bobY = 0.0;
+                  double portalGlowOpacity = 0.0;
+                  Alignment currentAlign = _focalAlignment;
 
-                  final scaleAnimation = Tween<double>(
-                    begin: 0.90,
-                    end: 1.0,
-                  ).animate(animation);
+                  if (t > 0.0 && t <= 0.52) {
+                    // PHASE 1: POV Forward Zoom INTO the Selected Open Door
+                    final progress = t / 0.52;
+                    final curvedProgress =
+                        Curves.easeInOutCubic.transform(progress);
+                    scale = 1.0 + (curvedProgress * 2.6); // 1.0 -> 3.6x zoom
+                    bobY = sin(progress * pi * 3) * 10; // Natural footstep bobbing
 
-                  return SlideTransition(
-                    position: slideAnimation,
-                    child: ScaleTransition(
-                      scale: scaleAnimation,
-                      child: FadeTransition(
-                        opacity: animation,
+                    if (progress > 0.65) {
+                      portalGlowOpacity =
+                          ((progress - 0.65) / 0.35).clamp(0.0, 1.0);
+                    }
+                  } else if (t > 0.52) {
+                    // PHASE 2: POV Emerge into the New Chamber & Settle to New Doors
+                    final progress = (t - 0.52) / 0.48;
+                    final curvedProgress =
+                        Curves.easeOutCubic.transform(progress);
+                    scale = 1.45 - (curvedProgress * 0.45); // 1.45 -> 1.0x settle
+                    currentAlign = Alignment.center;
+                    bobY = sin((1.0 - progress) * pi * 2) * 5;
+
+                    if (progress < 0.45) {
+                      portalGlowOpacity =
+                          (1.0 - (progress / 0.45)).clamp(0.0, 1.0);
+                    }
+                  }
+
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Camera Transform
+                      Transform(
+                        alignment: currentAlign,
+                        transform: Matrix4.identity()
+                          ..translate(0.0, bobY)
+                          ..scale(scale),
                         child: child,
                       ),
-                    ),
+
+                      // Golden Portal Walkthrough Flash / Warm Light Wash
+                      if (portalGlowOpacity > 0.0)
+                        Positioned.fill(
+                          child: IgnorePointer(
+                            child: Container(
+                              color: const Color(0xFFFFE082)
+                                  .withOpacity(portalGlowOpacity * 0.92),
+                              child: Center(
+                                child: Text(
+                                  '✨',
+                                  style: TextStyle(
+                                    fontSize: 48,
+                                    color: Colors.white
+                                        .withOpacity(portalGlowOpacity),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
                   );
                 },
-                child: KeyedSubtree(
-                  key: ValueKey<int>(_controller.currentChamberIndex),
-                  child: Column(
-                    children: [
-                      const Spacer(flex: 1),
+                child: Column(
+                  children: [
+                    const Spacer(flex: 1),
 
-                      // ── HERO EQUATION PLAQUE ───────────────────────
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFFFFEECC), Color(0xFFFFD899)],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                            borderRadius: BorderRadius.circular(22),
-                            border: Border.all(
-                              color: const Color(0xFFD49A55),
-                              width: 3.5,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0xFF8A5A2B).withOpacity(0.2),
-                                offset: const Offset(0, 6),
-                                blurRadius: 10,
-                              ),
-                            ],
+                    // ── HERO EQUATION PLAQUE ─────────────────────────
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 14),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFFFEECC), Color(0xFFFFD899)],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 8),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF382312),
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: const Color(0xFF25160A),
-                                    width: 2,
+                          borderRadius: BorderRadius.circular(22),
+                          border: Border.all(
+                            color: const Color(0xFFD49A55),
+                            width: 3.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF8A5A2B).withOpacity(0.2),
+                              offset: const Offset(0, 6),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 24, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF382312),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: const Color(0xFF25160A),
+                                  width: 2,
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0xFFFFF4DF),
+                                    offset: Offset(0, 1),
+                                    blurRadius: 0,
                                   ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color(0xFFFFF4DF),
-                                      offset: Offset(0, 1),
-                                      blurRadius: 0,
+                                ],
+                              ),
+                              child: Text(
+                                '${chamber.equation} = ?',
+                                style: AppTextStyles.numberTile.copyWith(
+                                  fontSize: 34,
+                                  letterSpacing: 2.0,
+                                  color: const Color(0xFFFFD43B),
+                                  shadows: [
+                                    const Shadow(
+                                      color: Color(0xFF9A5B00),
+                                      offset: Offset(0, 3),
+                                      blurRadius: 2,
                                     ),
                                   ],
                                 ),
-                                child: Text(
-                                  '${chamber.equation} = ?',
-                                  style: AppTextStyles.numberTile.copyWith(
-                                    fontSize: 34,
-                                    letterSpacing: 2.0,
-                                    color: const Color(0xFFFFD43B),
-                                    shadows: [
-                                      const Shadow(
-                                        color: Color(0xFF9A5B00),
-                                        offset: Offset(0, 3),
-                                        blurRadius: 2,
-                                      ),
-                                    ],
-                                  ),
-                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      const Spacer(flex: 2),
-
-                      // ── CHAMBER DOORS & TORCHES ────────────────────
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          clipBehavior: Clip.none,
-                          children: [
-                            // Left Torch
-                            const Positioned(
-                              left: 0,
-                              top: 10,
-                              child: TorchGlowWidget(),
-                            ),
-
-                            // Right Torch
-                            const Positioned(
-                              right: 0,
-                              top: 10,
-                              child: TorchGlowWidget(),
-                            ),
-
-                            // Doors Row
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: chamber.doorOptions.map((doorVal) {
-                                final isCorrect =
-                                    _controller.selectedCorrectDoor == doorVal;
-                                final isWrong =
-                                    _controller.selectedWrongDoor == doorVal;
-
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 6),
-                                  child: WoodenDoorWidget(
-                                    doorValue: doorVal,
-                                    isCorrect: isCorrect,
-                                    isWrong: isWrong,
-                                    onTap: () => _controller.selectDoor(doorVal),
-                                  ),
-                                );
-                              }).toList(),
                             ),
                           ],
                         ),
                       ),
+                    ),
 
-                      const Spacer(flex: 2),
-                    ],
-                  ),
+                    const Spacer(flex: 2),
+
+                    // ── CHAMBER DOORS & TORCHES ──────────────────────
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          // Left Torch
+                          const Positioned(
+                            left: 0,
+                            top: 10,
+                            child: TorchGlowWidget(),
+                          ),
+
+                          // Right Torch
+                          const Positioned(
+                            right: 0,
+                            top: 10,
+                            child: TorchGlowWidget(),
+                          ),
+
+                          // Doors Row
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: chamber.doorOptions.map((doorVal) {
+                              final isCorrect =
+                                  _controller.selectedCorrectDoor == doorVal;
+                              final isWrong =
+                                  _controller.selectedWrongDoor == doorVal;
+
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 6),
+                                child: WoodenDoorWidget(
+                                  doorValue: doorVal,
+                                  isCorrect: isCorrect,
+                                  isWrong: isWrong,
+                                  onTap: () => _onDoorTapped(doorVal),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const Spacer(flex: 2),
+                  ],
                 ),
               ),
             ),
@@ -420,7 +508,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen> {
                       ),
                       child: Text(
                         _controller.isTransitioning
-                            ? '✨ Moving into the next chamber! ✨'
+                            ? '✨ Stepping through the doorway... ✨'
                             : l10n.strings.doorsChooseHint,
                         style: AppTextStyles.bodyLarge.copyWith(
                           fontSize: 15,

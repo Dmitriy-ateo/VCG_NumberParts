@@ -81,7 +81,9 @@ class LabyrinthController extends ChangeNotifier {
       // Trigger audio hook
       SoundManager.instance.playDoorOpenSound();
 
-      await Future.delayed(const Duration(milliseconds: 700));
+      // POV Zoom walkthrough duration:
+      // Door swings open, explorer walks into portal (550ms)
+      await Future.delayed(const Duration(milliseconds: 550));
 
       if (_currentChamberIndex + 1 >= totalChambers) {
         // Level complete!
@@ -101,9 +103,13 @@ class LabyrinthController extends ChangeNotifier {
         );
         notifyListeners();
       } else {
-        // Advance to next chamber
+        // Switch chamber while camera is inside the portal glow
         _currentChamberIndex++;
         _selectedCorrectDoor = null;
+        notifyListeners();
+
+        // Allow camera to emerge/zoom out into the new room (450ms)
+        await Future.delayed(const Duration(milliseconds: 450));
         _isTransitioning = false;
         notifyListeners();
       }
