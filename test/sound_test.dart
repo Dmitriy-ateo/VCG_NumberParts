@@ -22,5 +22,11 @@ void main() {
 
     final switchScreensData = await rootBundle.load('assets/media/switch_screens.wav');
     expect(switchScreensData.lengthInBytes, greaterThan(0));
+
+    final doorOpenData = await rootBundle.load('assets/media/door_open.wav');
+    expect(doorOpenData.lengthInBytes, greaterThan(0));
+
+    final doorWrongData = await rootBundle.load('assets/media/door_wrong.wav');
+    expect(doorWrongData.lengthInBytes, greaterThan(0));
   });
 }

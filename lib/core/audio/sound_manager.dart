@@ -45,6 +45,14 @@ class SoundManager {
     await _playSfx('media/lose_alert.wav');
   }
 
+  Future<void> playDoorOpenSound() async {
+    await _playSfx('media/door_open.wav');
+  }
+
+  Future<void> playDoorWrongSound() async {
+    await _playSfx('media/door_wrong.wav');
+  }
+
   Future<void> _playSfx(String assetName) async {
     if (_isMuted) return;
 

@@ -79,7 +79,7 @@ class LabyrinthController extends ChangeNotifier {
       notifyListeners();
 
       // Trigger audio hook
-      SoundManager.instance.playMatchSound();
+      SoundManager.instance.playDoorOpenSound();
 
       await Future.delayed(const Duration(milliseconds: 700));
 
@@ -112,7 +112,7 @@ class LabyrinthController extends ChangeNotifier {
       _selectedWrongDoor = doorValue;
       _mistakes++;
       _lives--;
-      SoundManager.instance.playWrongPickSound();
+      SoundManager.instance.playDoorWrongSound();
       notifyListeners();
 
       if (_lives <= 0) {
