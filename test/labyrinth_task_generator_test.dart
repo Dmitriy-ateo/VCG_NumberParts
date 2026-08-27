@@ -31,7 +31,7 @@ void main() {
       }
     });
 
-    test('Advanced difficulty generates valid 2-digit arithmetic or multiplication', () {
+    test('Advanced difficulty generates valid 2-digit addition and subtraction without carry', () {
       for (int i = 0; i < 50; i++) {
         final chamber = LabyrinthTaskGenerator.generateChamber(
           difficulty: LabyrinthDifficulty.advanced,
@@ -46,12 +46,13 @@ void main() {
         if (chamber.equation.contains('+')) {
           final parts = chamber.equation.split('+').map((s) => int.parse(s.trim())).toList();
           expect(parts[0] + parts[1], chamber.correctAnswer);
+          expect((parts[0] % 10) + (parts[1] % 10), lessThan(10),
+              reason: 'Advanced addition must not carry over 10');
         } else if (chamber.equation.contains('-')) {
           final parts = chamber.equation.split('-').map((s) => int.parse(s.trim())).toList();
           expect(parts[0] - parts[1], chamber.correctAnswer);
-        } else if (chamber.equation.contains('×')) {
-          final parts = chamber.equation.split('×').map((s) => int.parse(s.trim())).toList();
-          expect(parts[0] * parts[1], chamber.correctAnswer);
+          expect(parts[0] % 10, greaterThanOrEqualTo(parts[1] % 10),
+              reason: 'Advanced subtraction must not borrow');
         }
       }
     });

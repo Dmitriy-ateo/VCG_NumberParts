@@ -74,34 +74,29 @@ class LabyrinthTaskGenerator {
   }
 
   static _MathTask _generateAdvancedTask(Random rng) {
-    final taskType = rng.nextInt(3);
-    if (taskType == 0) {
+    final isAddition = rng.nextBool();
+    if (isAddition) {
       // 2-digit + 2-digit without carry
-      final aTens = 1 + rng.nextInt(3); // 1..3
+      final aTens = 1 + rng.nextInt(4); // 1..4
       final aUnits = 1 + rng.nextInt(5); // 1..5
       final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(3); // 1..3
+      final bTens = 1 + rng.nextInt(4); // 1..4
       final bUnits = 1 + rng.nextInt(9 - aUnits); // sum of units <= 9
       final b = bTens * 10 + bUnits;
 
       return _MathTask('$a + $b', a + b);
-    } else if (taskType == 1) {
+    } else {
       // 2-digit subtraction without borrow
-      final aTens = 2 + rng.nextInt(4); // 2..5
+      final aTens = 2 + rng.nextInt(5); // 2..6
       final aUnits = 2 + rng.nextInt(8); // 2..9
       final a = aTens * 10 + aUnits;
 
       final bTens = 1 + rng.nextInt(aTens); // 1..aTens
-      final bUnits = rng.nextInt(aUnits + 1); // 0..aUnits
+      final bUnits = rng.nextInt(aUnits + 1); // 0..aUnits (bUnits <= aUnits)
       final b = bTens * 10 + bUnits;
 
       return _MathTask('$a - $b', a - b);
-    } else {
-      // Basic multiplication fact
-      final a = 2 + rng.nextInt(4); // 2..5
-      final b = 3 + rng.nextInt(7); // 3..9
-      return _MathTask('$a × $b', a * b);
     }
   }
 

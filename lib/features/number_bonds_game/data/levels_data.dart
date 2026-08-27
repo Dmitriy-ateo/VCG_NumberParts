@@ -255,13 +255,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 5: Target = 3 × 3 (= 9) (12 cards - Castle Fortress)
+    // Level 5: Target = 14 - 5 (= 9) (12 cards - Castle Fortress)
     LevelData(
       levelNumber: 5,
       targetSum: 9,
-      targetEquation: '3 × 3',
+      targetEquation: '14 - 5',
       category: LevelCategory.advanced,
-      title: 'Challenge 5: 3 × 3',
+      title: 'Challenge 5: 14 - 5',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
@@ -354,13 +354,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 9: Target = 2 × 3 (= 6) (12 cards - Ring)
+    // Level 9: Target = 11 - 5 (= 6) (12 cards - Ring)
     LevelData(
       levelNumber: 9,
       targetSum: 6,
-      targetEquation: '2 × 3',
+      targetEquation: '11 - 5',
       category: LevelCategory.advanced,
-      title: 'Challenge 9: 2 × 3',
+      title: 'Challenge 9: 11 - 5',
       showDots: true,
       slots: [
         CardSlot(x: 0.7, y: 0.0, layer: 0),
@@ -482,13 +482,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 14: Target = 2 × 4 (= 8) (14 cards - Aztec Step Pyramid)
+    // Level 14: Target = 13 - 5 (= 8) (14 cards - Aztec Step Pyramid)
     LevelData(
       levelNumber: 14,
       targetSum: 8,
-      targetEquation: '2 × 4',
+      targetEquation: '13 - 5',
       category: LevelCategory.advanced,
-      title: 'Challenge 14: 2 × 4',
+      title: 'Challenge 14: 13 - 5',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 3.0, layer: 0),
