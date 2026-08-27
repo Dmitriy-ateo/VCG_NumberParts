@@ -54,9 +54,18 @@ class BoardView extends StatelessWidget {
         final offsetX = (constraints.maxWidth - renderedW) / 2 - (minX * unitW);
         final offsetY = (constraints.maxHeight - renderedH) / 2 - (minY * unitH);
 
-        // Sort cards by layer so higher layers paint on top
+        // Sort cards strictly by:
+        // 1. layer ascending (lower layers painted first)
+        // 2. y ascending (higher up painted first, lower down painted in front)
+        // 3. x ascending (left painted first, right painted in front)
         final sortedCards = List<CardNode>.from(cards)
-          ..sort((a, b) => a.layer.compareTo(b.layer));
+          ..sort((a, b) {
+            final layerCmp = a.layer.compareTo(b.layer);
+            if (layerCmp != 0) return layerCmp;
+            final yCmp = a.y.compareTo(b.y);
+            if (yCmp != 0) return yCmp;
+            return a.x.compareTo(b.x);
+          });
 
         return Stack(
           clipBehavior: Clip.none,

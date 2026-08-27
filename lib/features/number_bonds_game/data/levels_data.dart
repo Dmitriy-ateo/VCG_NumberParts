@@ -282,7 +282,7 @@ class LevelsData {
       ],
     ),
 
-    // Level 6: Target = 12 - 8 (= 4) (10 cards - Staircase)
+    // Level 6: Target = 12 - 8 (= 4) (10 cards - Staircase Bridge)
     LevelData(
       levelNumber: 6,
       targetSum: 4,
@@ -291,20 +291,19 @@ class LevelsData {
       title: 'Challenge 6: 12 - 8',
       showDots: true,
       slots: [
-        // Left step
+        // Ground tier (layer 0) - 3 pillars
         CardSlot(x: 0.0, y: 0.0, layer: 0),
-        CardSlot(x: 0.0, y: 0.0, layer: 1),
-        // Middle step
         CardSlot(x: 1.4, y: 1.5, layer: 0),
-        CardSlot(x: 1.4, y: 1.5, layer: 1),
-        CardSlot(x: 1.4, y: 1.5, layer: 2),
-        // Right step
         CardSlot(x: 2.8, y: 3.0, layer: 0),
+        // Mid tier (layer 1) - Pillars + Bridges sitting ON TOP of ground pillars
+        CardSlot(x: 0.0, y: 0.0, layer: 1),
+        CardSlot(x: 0.7, y: 0.75, layer: 1),
+        CardSlot(x: 1.4, y: 1.5, layer: 1),
+        CardSlot(x: 2.1, y: 2.25, layer: 1),
         CardSlot(x: 2.8, y: 3.0, layer: 1),
+        // Top tier (layer 2) - Apex caps
+        CardSlot(x: 1.4, y: 1.5, layer: 2),
         CardSlot(x: 2.8, y: 3.0, layer: 2),
-        // Connectors
-        CardSlot(x: 0.7, y: 0.75, layer: 0),
-        CardSlot(x: 2.1, y: 2.25, layer: 0),
       ],
     ),
 
@@ -574,8 +573,8 @@ class LevelsData {
         CardSlot(x: 2.8, y: 1.5, layer: 1),
         CardSlot(x: 1.4, y: 3.0, layer: 0),
         CardSlot(x: 1.4, y: 3.0, layer: 1),
-        CardSlot(x: 0.7, y: 2.25, layer: 0),
-        CardSlot(x: 2.1, y: 2.25, layer: 0),
+        CardSlot(x: 0.7, y: 2.25, layer: 1),
+        CardSlot(x: 2.1, y: 2.25, layer: 1),
         CardSlot(x: 1.4, y: 1.5, layer: 3),
       ],
     ),
