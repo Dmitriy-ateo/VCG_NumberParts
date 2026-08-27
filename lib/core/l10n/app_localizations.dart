@@ -6,13 +6,25 @@ class AppStrings {
   final String welcomeTitle;
   final String welcomeSubtitle;
   
-  // Game 1
+  // Game 1: Number Bonds
   final String gameNumberBondsTitle;
   final String gameNumberBondsSubtitle;
   final String badgeGrades;
   final String badgeLives;
   final String badgeWood;
   final String playButton;
+
+  // Game 2: Labyrinth Explorer
+  final String gameLabyrinthTitle;
+  final String gameLabyrinthSubtitle;
+  final String badgeMaze;
+  final String badgeRandom;
+  final String tabSimple;
+  final String tabHard;
+  final String chamberLabel;
+  final String doorsChooseHint;
+  final String treasureFoundTitle;
+  final String treasureFoundSubtitle;
 
   // Levels Screen
   final String selectLevelTitle;
@@ -62,6 +74,16 @@ class AppStrings {
     required this.badgeLives,
     required this.badgeWood,
     required this.playButton,
+    required this.gameLabyrinthTitle,
+    required this.gameLabyrinthSubtitle,
+    required this.badgeMaze,
+    required this.badgeRandom,
+    required this.tabSimple,
+    required this.tabHard,
+    required this.chamberLabel,
+    required this.doorsChooseHint,
+    required this.treasureFoundTitle,
+    required this.treasureFoundSubtitle,
     required this.selectLevelTitle,
     required this.tabClassic,
     required this.tabAdvanced,
@@ -107,6 +129,16 @@ class AppLocalizations {
       badgeLives: '3 Життя',
       badgeWood: 'Дерев\'яні картки',
       playButton: 'Грати!',
+      gameLabyrinthTitle: 'Лабіринт Знань',
+      gameLabyrinthSubtitle: 'Обирай правильні двері за математичним прикладом і дійди до скрині скарбів!',
+      badgeMaze: '3D Двері',
+      badgeRandom: 'Генератор завдань',
+      tabSimple: '🌿 Простий',
+      tabHard: '🔥 Майстер',
+      chamberLabel: 'Кімната',
+      doorsChooseHint: 'Які двері правильні?',
+      treasureFoundTitle: 'Скарб Знайдено! 🏆',
+      treasureFoundSubtitle: 'Ти майстерно пройшов усі кімнати лабіринту!',
       selectLevelTitle: 'Обери Рівень 🗺️',
       tabClassic: '🌿 Базовий',
       tabAdvanced: '⚡ Складний',
@@ -144,6 +176,16 @@ class AppLocalizations {
       badgeLives: '3 Lives',
       badgeWood: 'Tactile Wood',
       playButton: 'Play Now!',
+      gameLabyrinthTitle: 'Labyrinth Explorer',
+      gameLabyrinthSubtitle: 'Pick the correct door to solve the equation and reach the golden treasure chest!',
+      badgeMaze: '3D Doors',
+      badgeRandom: 'Random Tasks',
+      tabSimple: '🌿 Simple',
+      tabHard: '🔥 Master',
+      chamberLabel: 'Chamber',
+      doorsChooseHint: 'Which door is correct?',
+      treasureFoundTitle: 'Treasure Unlocked! 🏆',
+      treasureFoundSubtitle: 'You navigated all chambers with great math skills!',
       selectLevelTitle: 'Select Level 🗺️',
       tabClassic: '🌿 Basic',
       tabAdvanced: '⚡ Advanced',
@@ -181,6 +223,16 @@ class AppLocalizations {
       badgeLives: '3 Življenja',
       badgeWood: 'Lesene kartice',
       playButton: 'Igraj zdaj!',
+      gameLabyrinthTitle: 'Labirint Raziskovalec',
+      gameLabyrinthSubtitle: 'Izberi prava vrata glede na račun in dosezi zlato skrinjo z zakladom!',
+      badgeMaze: '3D Vrata',
+      badgeRandom: 'Naključne naloge',
+      tabSimple: '🌿 Preprosto',
+      tabHard: '🔥 Mojster',
+      chamberLabel: 'Soba',
+      doorsChooseHint: 'Katera vrata so prava?',
+      treasureFoundTitle: 'Zaklad Odkrit! 🏆',
+      treasureFoundSubtitle: 'Mojstrsko si opravil z vsemi sobami labirinta!',
       selectLevelTitle: 'Izberi Stopnjo 🗺️',
       tabClassic: '🌿 Osnovno',
       tabAdvanced: '⚡ Napredno',

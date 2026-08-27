@@ -65,4 +65,59 @@ class ProgressRepository {
       return 0;
     }
   }
+
+  // ── LABYRINTH EXPLORER PROGRESSION ──────────────────────────────
+  String _labyrinthUnlockedKey(String difficultyKey) => 'labyrinth_unlocked_$difficultyKey';
+  String _labyrinthStarsKey(String difficultyKey, int level) => 'labyrinth_stars_${difficultyKey}_$level';
+
+  Future<int> getLabyrinthUnlockedLevel(String difficultyKey) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getInt(_labyrinthUnlockedKey(difficultyKey)) ?? 1;
+    } catch (_) {
+      return 1;
+    }
+  }
+
+  Future<void> unlockLabyrinthLevel(String difficultyKey, int level) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final current = prefs.getInt(_labyrinthUnlockedKey(difficultyKey)) ?? 1;
+      if (level > current) {
+        await prefs.setInt(_labyrinthUnlockedKey(difficultyKey), level);
+      }
+    } catch (_) {}
+  }
+
+  Future<int> getLabyrinthStarsForLevel(String difficultyKey, int level) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getInt(_labyrinthStarsKey(difficultyKey, level)) ?? 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  Future<void> saveLabyrinthStarsForLevel(String difficultyKey, int level, int stars) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final current = prefs.getInt(_labyrinthStarsKey(difficultyKey, level)) ?? 0;
+      if (stars > current) {
+        await prefs.setInt(_labyrinthStarsKey(difficultyKey, level), stars);
+      }
+    } catch (_) {}
+  }
+
+  Future<int> getLabyrinthTotalStars(String difficultyKey, int maxLevel) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int total = 0;
+      for (int i = 1; i <= maxLevel; i++) {
+        total += prefs.getInt(_labyrinthStarsKey(difficultyKey, i)) ?? 0;
+      }
+      return total;
+    } catch (_) {
+      return 0;
+    }
+  }
 }

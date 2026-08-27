@@ -3,6 +3,7 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/l10n/locale_controller.dart';
 import '../../../../core/widgets/pastel_app_bar.dart';
+import '../../labyrinth_game/presentation/labyrinth_levels_screen.dart';
 import '../../number_bonds_game/presentation/levels_screen.dart';
 import '../domain/game_info.dart';
 import 'widgets/game_tile_card.dart';
@@ -18,7 +19,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final game = GameInfo(
+    final l10n = AppLocalizations.of(context);
+
+    final numberBondsGame = GameInfo(
       id: 'number_bonds',
       getTitle: (ctx) => AppLocalizations.of(ctx).strings.gameNumberBondsTitle,
       getSubtitle: (ctx) =>
@@ -31,6 +34,21 @@ class HomeScreen extends StatelessWidget {
       ],
       accentColor: AppColors.pastelPeach,
       shadowColor: AppColors.pastelPeachDark,
+    );
+
+    final labyrinthGame = GameInfo(
+      id: 'labyrinth_explorer',
+      getTitle: (ctx) => AppLocalizations.of(ctx).strings.gameLabyrinthTitle,
+      getSubtitle: (ctx) =>
+          AppLocalizations.of(ctx).strings.gameLabyrinthSubtitle,
+      imagePath: 'assets/images/tile_labyrinth.jpg',
+      getBadges: [
+        (ctx) => AppLocalizations.of(ctx).strings.badgeMaze,
+        (ctx) => AppLocalizations.of(ctx).strings.badgeRandom,
+        (ctx) => AppLocalizations.of(ctx).strings.badgeLives,
+      ],
+      accentColor: const Color(0xFFFFD8A8),
+      shadowColor: const Color(0xFFE8590C),
     );
 
     return Scaffold(
@@ -46,11 +64,22 @@ class HomeScreen extends StatelessWidget {
               const WelcomeBanner(),
               const SizedBox(height: 6),
               GameTileCard(
-                game: game,
+                game: numberBondsGame,
                 onPlay: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const LevelsScreen(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              GameTileCard(
+                game: labyrinthGame,
+                onPlay: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LabyrinthLevelsScreen(),
                     ),
                   );
                 },
