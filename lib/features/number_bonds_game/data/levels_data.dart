@@ -171,13 +171,13 @@ class LevelsData {
 
   // ── ADVANCED EQUATION CALCULATION (Randomized Target Progression) ───────────
   static const List<LevelData> advancedLevels = [
-    // Level 1: Target = 15 - 8 (= 7) (8 cards)
+    // Level 1: Target = 27 - 20 (= 7) (8 cards)
     LevelData(
       levelNumber: 1,
       targetSum: 7,
-      targetEquation: '15 - 8',
+      targetEquation: '27 - 20',
       category: LevelCategory.advanced,
-      title: 'Challenge 1: 15 - 8',
+      title: 'Challenge 1: 27 - 20',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
@@ -191,13 +191,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 2: Target = 14 - 9 (= 5) (8 cards - Diamond)
+    // Level 2: Target = 18 - 13 (= 5) (8 cards - Diamond)
     LevelData(
       levelNumber: 2,
       targetSum: 5,
-      targetEquation: '14 - 9',
+      targetEquation: '18 - 13',
       category: LevelCategory.advanced,
-      title: 'Challenge 2: 14 - 9',
+      title: 'Challenge 2: 18 - 13',
       showDots: true,
       slots: [
         CardSlot(x: 1.4, y: 0.0, layer: 0),
@@ -211,13 +211,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 3: Target = 16 - 8 (= 8) (10 cards - Cross)
+    // Level 3: Target = 38 - 30 (= 8) (10 cards - Cross)
     LevelData(
       levelNumber: 3,
       targetSum: 8,
-      targetEquation: '16 - 8',
+      targetEquation: '38 - 30',
       category: LevelCategory.advanced,
-      title: 'Challenge 3: 16 - 8',
+      title: 'Challenge 3: 38 - 30',
       showDots: true,
       slots: [
         CardSlot(x: 1.4, y: 1.5, layer: 0),
@@ -255,13 +255,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 5: Target = 14 - 5 (= 9) (12 cards - Castle Fortress)
+    // Level 5: Target = 29 - 20 (= 9) (12 cards - Castle Fortress)
     LevelData(
       levelNumber: 5,
       targetSum: 9,
-      targetEquation: '14 - 5',
+      targetEquation: '29 - 20',
       category: LevelCategory.advanced,
-      title: 'Challenge 5: 14 - 5',
+      title: 'Challenge 5: 29 - 20',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
@@ -279,13 +279,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 6: Target = 12 - 8 (= 4) (10 cards - Stepped Pillars)
+    // Level 6: Target = 18 - 14 (= 4) (10 cards - Stepped Pillars)
     LevelData(
       levelNumber: 6,
       targetSum: 4,
-      targetEquation: '12 - 8',
+      targetEquation: '18 - 14',
       category: LevelCategory.advanced,
-      title: 'Challenge 6: 12 - 8',
+      title: 'Challenge 6: 18 - 14',
       showDots: true,
       slots: [
         // Pillar 1 (Top Left)
@@ -330,13 +330,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 8: Target = 15 - 7 (= 8) (12 cards - Double Cross)
+    // Level 8: Target = 48 - 40 (= 8) (12 cards - Double Cross)
     LevelData(
       levelNumber: 8,
       targetSum: 8,
-      targetEquation: '15 - 7',
+      targetEquation: '48 - 40',
       category: LevelCategory.advanced,
-      title: 'Challenge 8: 15 - 7',
+      title: 'Challenge 8: 48 - 40',
       showDots: true,
       slots: [
         CardSlot(x: 0.7, y: 0.0, layer: 0),
@@ -354,13 +354,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 9: Target = 11 - 5 (= 6) (12 cards - Ring)
+    // Level 9: Target = 39 - 33 (= 6) (12 cards - Ring)
     LevelData(
       levelNumber: 9,
       targetSum: 6,
-      targetEquation: '11 - 5',
+      targetEquation: '39 - 33',
       category: LevelCategory.advanced,
-      title: 'Challenge 9: 11 - 5',
+      title: 'Challenge 9: 39 - 33',
       showDots: true,
       slots: [
         CardSlot(x: 0.7, y: 0.0, layer: 0),
@@ -378,13 +378,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 10: Target = 17 - 8 (= 9) (14 cards - Twin Towers)
+    // Level 10: Target = 59 - 50 (= 9) (14 cards - Twin Towers)
     LevelData(
       levelNumber: 10,
       targetSum: 9,
-      targetEquation: '17 - 8',
+      targetEquation: '59 - 50',
       category: LevelCategory.advanced,
-      title: 'Challenge 10: 17 - 8',
+      title: 'Challenge 10: 59 - 50',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
@@ -404,13 +404,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 11: Target = 13 - 6 (= 7) (14 cards - Grand Cross)
+    // Level 11: Target = 37 - 30 (= 7) (14 cards - Grand Cross)
     LevelData(
       levelNumber: 11,
       targetSum: 7,
-      targetEquation: '13 - 6',
+      targetEquation: '37 - 30',
       category: LevelCategory.advanced,
-      title: 'Challenge 11: 13 - 6',
+      title: 'Challenge 11: 37 - 30',
       showDots: true,
       slots: [
         CardSlot(x: 1.4, y: 1.5, layer: 0),
@@ -430,13 +430,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 12: Target = 11 - 6 (= 5) (12 cards - Checkerboard)
+    // Level 12: Target = 28 - 23 (= 5) (12 cards - Checkerboard)
     LevelData(
       levelNumber: 12,
       targetSum: 5,
-      targetEquation: '11 - 6',
+      targetEquation: '28 - 23',
       category: LevelCategory.advanced,
-      title: 'Challenge 12: 11 - 6',
+      title: 'Challenge 12: 28 - 23',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),
@@ -454,13 +454,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 13: Target = 18 - 8 (= 10) (16 cards - Grand Temple)
+    // Level 13: Target = 28 - 18 (= 10) (16 cards - Grand Temple)
     LevelData(
       levelNumber: 13,
       targetSum: 10,
-      targetEquation: '18 - 8',
+      targetEquation: '28 - 18',
       category: LevelCategory.advanced,
-      title: 'Challenge 13: 18 - 8',
+      title: 'Challenge 13: 28 - 18',
       showDots: false,
       slots: [
         CardSlot(x: 0.0, y: 3.0, layer: 0),
@@ -482,13 +482,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 14: Target = 13 - 5 (= 8) (14 cards - Aztec Step Pyramid)
+    // Level 14: Target = 39 - 31 (= 8) (14 cards - Aztec Step Pyramid)
     LevelData(
       levelNumber: 14,
       targetSum: 8,
-      targetEquation: '13 - 5',
+      targetEquation: '39 - 31',
       category: LevelCategory.advanced,
-      title: 'Challenge 14: 13 - 5',
+      title: 'Challenge 14: 39 - 31',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 3.0, layer: 0),
@@ -508,13 +508,13 @@ class LevelsData {
       ],
     ),
 
-    // Level 15: Target = 10 - 6 (= 4) (12 cards - The Fortress)
+    // Level 15: Target = 26 - 22 (= 4) (12 cards - The Fortress)
     LevelData(
       levelNumber: 15,
       targetSum: 4,
-      targetEquation: '10 - 6',
+      targetEquation: '26 - 22',
       category: LevelCategory.advanced,
-      title: 'Challenge 15: 10 - 6',
+      title: 'Challenge 15: 26 - 22',
       showDots: true,
       slots: [
         CardSlot(x: 0.0, y: 0.0, layer: 0),

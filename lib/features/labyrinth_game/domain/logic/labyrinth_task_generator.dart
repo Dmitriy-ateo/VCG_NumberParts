@@ -54,78 +54,97 @@ class LabyrinthTaskGenerator {
     );
   }
 
+  /// Simple: Numbers strictly up to 10, no transitions through the 10th.
   static _MathTask _generateSimpleTask(Random rng) {
     final isAddition = rng.nextBool();
     if (isAddition) {
-      // Single digits crossing 10 (sum 11..18)
-      final a = 2 + rng.nextInt(8); // 2..9
-      final minB = max(2, 11 - a);
-      final maxB = 9;
-      final b = minB + rng.nextInt(maxB - minB + 1);
-      return _MathTask('$a + $b', a + b);
+      // a + b <= 10
+      final sum = 3 + rng.nextInt(8); // 3..10
+      final a = 1 + rng.nextInt(sum - 1); // 1..(sum-1)
+      final b = sum - a;
+      return _MathTask('$a + $b', sum);
     } else {
-      // Subtraction crossing 10 (11..18 minus single digit resulting in 2..9)
-      final a = 11 + rng.nextInt(8); // 11..18
-      final minB = a - 9;
-      final maxB = min(9, a - 2);
-      final b = minB + rng.nextInt(maxB - minB + 1);
-      return _MathTask('$a - $b', a - b);
+      // a - b >= 1 where a <= 10
+      final a = 3 + rng.nextInt(8); // 3..10
+      final b = 1 + rng.nextInt(a - 1); // 1..(a-1)
+      final diff = a - b;
+      return _MathTask('$a - $b', diff);
     }
   }
 
+  /// Advanced: Basic + 2-digit numbers, NO transitions through the 10th (no carry, no borrow).
   static _MathTask _generateAdvancedTask(Random rng) {
     final isAddition = rng.nextBool();
     if (isAddition) {
-      // 2-digit + 2-digit without carry
-      final aTens = 1 + rng.nextInt(4); // 1..4
-      final aUnits = 1 + rng.nextInt(5); // 1..5
+      // 2-digit + 2-digit (or basic + 2-digit) without carry
+      final aTens = 1 + rng.nextInt(5); // 1..5
+      final aUnits = rng.nextInt(6); // 0..5
       final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(4); // 1..4
-      final bUnits = 1 + rng.nextInt(9 - aUnits); // sum of units <= 9
-      final b = bTens * 10 + bUnits;
+      final maxBTens = 8 - aTens;
+      final bTens = rng.nextInt(maxBTens + 1); // 0..maxBTens
+      final maxBUnits = 9 - aUnits;
+      final bUnits = rng.nextInt(maxBUnits + 1); // 0..maxBUnits
 
+      final b = bTens * 10 + bUnits;
+      if (b == 0) {
+        return _MathTask('$a + 3', a + 3);
+      }
       return _MathTask('$a + $b', a + b);
     } else {
       // 2-digit subtraction without borrow
-      final aTens = 2 + rng.nextInt(5); // 2..6
-      final aUnits = 2 + rng.nextInt(8); // 2..9
+      final aTens = 2 + rng.nextInt(7); // 2..8
+      final aUnits = 1 + rng.nextInt(9); // 1..9
       final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(aTens); // 1..aTens
+      final bTens = rng.nextInt(aTens); // 0..(aTens-1)
       final bUnits = rng.nextInt(aUnits + 1); // 0..aUnits (bUnits <= aUnits)
       final b = bTens * 10 + bUnits;
 
+      if (b == 0) {
+        return _MathTask('$a - 1', a - 1);
+      }
       return _MathTask('$a - $b', a - b);
     }
   }
 
+  /// Hard: 2-digit numbers, WITH OR WITHOUT transitions through the 10th.
   static _MathTask _generateHardTask(Random rng) {
     final isAddition = rng.nextBool();
+    final withTransition = rng.nextBool();
+
     if (isAddition) {
-      // 2-digit + 2-digit WITH carry over the 10
-      final aTens = 1 + rng.nextInt(4); // 1..4
-      final aUnits = 4 + rng.nextInt(6); // 4..9
-      final a = aTens * 10 + aUnits;
+      if (withTransition) {
+        // 2-digit + 2-digit WITH carry over the 10
+        final aTens = 1 + rng.nextInt(4); // 1..4
+        final aUnits = 4 + rng.nextInt(6); // 4..9
+        final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(4); // 1..4
-      final minBUnits = 10 - aUnits;
-      final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // units sum >= 10
-      final b = bTens * 10 + bUnits;
+        final bTens = 1 + rng.nextInt(4); // 1..4
+        final minBUnits = 10 - aUnits;
+        final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // units sum >= 10
+        final b = bTens * 10 + bUnits;
 
-      return _MathTask('$a + $b', a + b);
+        return _MathTask('$a + $b', a + b);
+      } else {
+        return _generateAdvancedTask(rng);
+      }
     } else {
-      // 2-digit subtraction WITH borrowing
-      final aTens = 3 + rng.nextInt(5); // 3..7
-      final aUnits = rng.nextInt(7); // 0..6
-      final a = aTens * 10 + aUnits;
+      if (withTransition) {
+        // 2-digit subtraction WITH borrowing
+        final aTens = 3 + rng.nextInt(5); // 3..7
+        final aUnits = rng.nextInt(7); // 0..6
+        final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(aTens - 1); // 1..(aTens-1)
-      final minBUnits = aUnits + 1;
-      final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // bUnits > aUnits
-      final b = bTens * 10 + bUnits;
+        final bTens = 1 + rng.nextInt(aTens - 1); // 1..(aTens-1)
+        final minBUnits = aUnits + 1;
+        final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // bUnits > aUnits
+        final b = bTens * 10 + bUnits;
 
-      return _MathTask('$a - $b', a - b);
+        return _MathTask('$a - $b', a - b);
+      } else {
+        return _generateAdvancedTask(rng);
+      }
     }
   }
 
@@ -137,45 +156,37 @@ class LabyrinthTaskGenerator {
   }) {
     final Set<int> distractors = {};
 
-    // Smart candidate pool based on pedagogical math slips
-    final List<int> candidates = [];
-
-    // 1. Off-by-one slips
-    candidates.add(correctAnswer + 1);
-    candidates.add(correctAnswer - 1);
-
-    // 2. Off-by-two slips
-    candidates.add(correctAnswer + 2);
-    candidates.add(correctAnswer - 2);
-
-    // 3. Off-by-ten slips (very common in 2-digit arithmetic)
-    if (correctAnswer > 10) candidates.add(correctAnswer - 10);
-    candidates.add(correctAnswer + 10);
-
-    // 4. In Hard mode: carry omission/extra carry
-    if (difficulty == LabyrinthDifficulty.hard) {
-      if (correctAnswer > 10) candidates.add(correctAnswer - 10);
-      candidates.add(correctAnswer + 9);
-      candidates.add(correctAnswer - 9);
+    if (difficulty == LabyrinthDifficulty.simple) {
+      // Simple distractors must also be strictly in [1..10]
+      final pool = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]..shuffle(rng);
+      for (final val in pool) {
+        if (val != correctAnswer) {
+          distractors.add(val);
+          if (distractors.length == count) break;
+        }
+      }
+      return distractors.toList();
     }
 
-    candidates.shuffle(rng);
+    // Smart candidate pool based on pedagogical math slips
+    final deltas = [1, -1, 2, -2, 10, -10, 3, -3, 5, -5]..shuffle(rng);
 
-    for (final candidate in candidates) {
-      if (candidate > 0 && candidate != correctAnswer) {
+    for (final d in deltas) {
+      final candidate = correctAnswer + d;
+      if (candidate >= 10 && candidate <= 99 && candidate != correctAnswer) {
         distractors.add(candidate);
         if (distractors.length == count) break;
       }
     }
 
     // Fallback if needed
-    int delta = 3;
+    int offset = 4;
     while (distractors.length < count) {
-      final cand = correctAnswer + (rng.nextBool() ? delta : -delta);
-      if (cand > 0 && cand != correctAnswer) {
-        distractors.add(cand);
+      final candidate = (correctAnswer + offset).clamp(10, 99);
+      if (candidate != correctAnswer && !distractors.contains(candidate)) {
+        distractors.add(candidate);
       }
-      delta++;
+      offset++;
     }
 
     return distractors.toList();
@@ -185,5 +196,6 @@ class LabyrinthTaskGenerator {
 class _MathTask {
   final String equation;
   final int answer;
+
   const _MathTask(this.equation, this.answer);
 }

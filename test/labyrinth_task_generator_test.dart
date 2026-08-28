@@ -7,7 +7,7 @@ void main() {
   group('LabyrinthTaskGenerator', () {
     final rng = Random(42);
 
-    test('Simple difficulty generates crossing 10 addition and teens subtraction', () {
+    test('Simple difficulty generates arithmetic up to 10 with no transitions through 10', () {
       for (int i = 0; i < 50; i++) {
         final chamber = LabyrinthTaskGenerator.generateChamber(
           difficulty: LabyrinthDifficulty.simple,
@@ -18,20 +18,26 @@ void main() {
         expect(chamber.doorOptions.length, 3);
         expect(chamber.doorOptions.toSet().length, 3, reason: 'Options must be unique');
         expect(chamber.doorOptions.contains(chamber.correctAnswer), isTrue);
+        expect(chamber.correctAnswer <= 10, isTrue);
+
+        for (final opt in chamber.doorOptions) {
+          expect(opt <= 10, isTrue);
+          expect(opt >= 1, isTrue);
+        }
 
         if (chamber.equation.contains('+')) {
           final parts = chamber.equation.split('+').map((s) => int.parse(s.trim())).toList();
           expect(parts[0] + parts[1], chamber.correctAnswer);
-          expect(chamber.correctAnswer, greaterThanOrEqualTo(11));
+          expect(chamber.correctAnswer, lessThanOrEqualTo(10));
         } else {
           final parts = chamber.equation.split('-').map((s) => int.parse(s.trim())).toList();
           expect(parts[0] - parts[1], chamber.correctAnswer);
-          expect(parts[0], greaterThanOrEqualTo(11));
+          expect(parts[0], lessThanOrEqualTo(10));
         }
       }
     });
 
-    test('Advanced difficulty generates valid 2-digit addition and subtraction without carry', () {
+    test('Advanced difficulty generates valid 2-digit addition and subtraction without carry/borrow', () {
       for (int i = 0; i < 50; i++) {
         final chamber = LabyrinthTaskGenerator.generateChamber(
           difficulty: LabyrinthDifficulty.advanced,
@@ -57,7 +63,7 @@ void main() {
       }
     });
 
-    test('Hard difficulty generates valid 2-digit arithmetic with regrouping/carry', () {
+    test('Hard difficulty generates valid 2-digit arithmetic with or without regrouping/carry', () {
       for (int i = 0; i < 50; i++) {
         final chamber = LabyrinthTaskGenerator.generateChamber(
           difficulty: LabyrinthDifficulty.hard,
@@ -72,13 +78,11 @@ void main() {
         if (chamber.equation.contains('+')) {
           final parts = chamber.equation.split('+').map((s) => int.parse(s.trim())).toList();
           expect(parts[0] + parts[1], chamber.correctAnswer);
-          expect((parts[0] % 10) + (parts[1] % 10), greaterThanOrEqualTo(10),
-              reason: 'Hard addition must carry over the ten');
+          expect(chamber.correctAnswer >= 10, isTrue);
         } else if (chamber.equation.contains('-')) {
           final parts = chamber.equation.split('-').map((s) => int.parse(s.trim())).toList();
           expect(parts[0] - parts[1], chamber.correctAnswer);
-          expect(parts[0] % 10, lessThan(parts[1] % 10),
-              reason: 'Hard subtraction must borrow over the ten');
+          expect(parts[0] >= 10, isTrue);
         }
       }
     });

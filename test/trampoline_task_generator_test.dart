@@ -9,7 +9,7 @@ void main() {
 
     test('Generates 3 distinct trampolines with exactly 1 matching the target', () {
       for (final diff in TrampolineDifficulty.values) {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 50; i++) {
           final round = TrampolineTaskGenerator.generateRound(difficulty: diff, rng: rng);
 
           expect(round.trampolines.length, 3);
@@ -18,7 +18,7 @@ void main() {
           final correct = round.correctTrampoline;
           expect(correct.value, round.targetNumber);
 
-          // Verify expression evaluates to the specified value
+          // Verify expression evaluates to the specified value and conforms to difficulty rules
           for (final tramp in round.trampolines) {
             expect(tramp.expression.contains('×'), isFalse, reason: 'No multiplication allowed');
             if (tramp.expression.contains('+')) {
@@ -27,6 +27,11 @@ void main() {
             } else if (tramp.expression.contains('-')) {
               final parts = tramp.expression.split('-').map((s) => int.parse(s.trim())).toList();
               expect(parts[0] - parts[1], tramp.value);
+            }
+
+            if (diff == TrampolineDifficulty.simple) {
+              expect(round.targetNumber <= 10, isTrue);
+              expect(tramp.value <= 10, isTrue);
             }
           }
         }

@@ -16,7 +16,7 @@ class TrampolineTaskGenerator {
     // 2. Generate 2 plausible distractor values and expressions
     final distractorValues = _generateDistractorValues(targetNumber, difficulty, random);
 
-    // 3. Generate expressions for distractors
+    // 3. Generate expressions for distractors matching the difficulty level
     final distractorTasks = distractorValues.map((val) {
       return _generateExpressionForValue(val, difficulty, random);
     }).toList();
@@ -57,78 +57,99 @@ class TrampolineTaskGenerator {
     }
   }
 
+  /// Simple: Numbers strictly up to 10, no transitions through the 10th.
   static _MathExpression _generateSimpleExpression(Random rng) {
     final isAddition = rng.nextBool();
     if (isAddition) {
-      // Sum between 11 and 18 (crossing 10)
-      final a = 3 + rng.nextInt(7); // 3..9
-      final minB = max(2, 11 - a);
-      final maxB = 9;
-      final b = minB + rng.nextInt(maxB - minB + 1);
-      return _MathExpression('$a + $b', a + b);
+      // a + b <= 10 (target between 3 and 10)
+      final sum = 3 + rng.nextInt(8); // 3..10
+      final a = 1 + rng.nextInt(sum - 1); // 1..(sum-1)
+      final b = sum - a;
+      return _MathExpression('$a + $b', sum);
     } else {
-      // Subtraction from 11..18 down to 2..9
-      final a = 11 + rng.nextInt(8); // 11..18
-      final minB = a - 9;
-      final maxB = min(9, a - 2);
-      final b = minB + rng.nextInt(maxB - minB + 1);
-      return _MathExpression('$a - $b', a - b);
+      // a - b >= 1 where a <= 10
+      final a = 3 + rng.nextInt(8); // 3..10
+      final b = 1 + rng.nextInt(a - 1); // 1..(a-1)
+      final diff = a - b;
+      return _MathExpression('$a - $b', diff);
     }
   }
 
+  /// Advanced: Basic + 2-digit numbers, NO transitions through the 10th (no carry, no borrow).
   static _MathExpression _generateAdvancedExpression(Random rng) {
     final isAddition = rng.nextBool();
     if (isAddition) {
-      // 2-digit without carry
-      final aTens = 1 + rng.nextInt(4); // 1..4
-      final aUnits = 1 + rng.nextInt(5); // 1..5
+      // 2-digit addition without carrying: units sum <= 9, tens sum <= 9
+      final aTens = 1 + rng.nextInt(5); // 1..5
+      final aUnits = rng.nextInt(6); // 0..5
       final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(4); // 1..4
-      final bUnits = 1 + rng.nextInt(9 - aUnits);
-      final b = bTens * 10 + bUnits;
+      final maxBTens = 8 - aTens;
+      final bTens = rng.nextInt(maxBTens + 1); // 0..maxBTens
+      final maxBUnits = 9 - aUnits;
+      final bUnits = rng.nextInt(maxBUnits + 1); // 0..maxBUnits
 
+      final b = bTens * 10 + bUnits;
+      if (b == 0) {
+        return _MathExpression('$a + 3', a + 3);
+      }
       return _MathExpression('$a + $b', a + b);
     } else {
-      // 2-digit subtraction without borrow
-      final aTens = 2 + rng.nextInt(5); // 2..6
-      final aUnits = 2 + rng.nextInt(8); // 2..9
+      // 2-digit subtraction without borrowing: aTens >= bTens, aUnits >= bUnits
+      final aTens = 2 + rng.nextInt(7); // 2..8
+      final aUnits = 1 + rng.nextInt(9); // 1..9
       final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + (aTens > 1 ? rng.nextInt(aTens) : 0);
-      final bUnits = rng.nextInt(aUnits + 1);
+      final bTens = rng.nextInt(aTens); // 0..(aTens-1)
+      final bUnits = rng.nextInt(aUnits + 1); // 0..aUnits
       final b = bTens * 10 + bUnits;
 
+      if (b == 0) {
+        return _MathExpression('$a - 1', a - 1);
+      }
       return _MathExpression('$a - $b', a - b);
     }
   }
 
+  /// Hard: 2-digit numbers, WITH OR WITHOUT transitions through the 10th.
   static _MathExpression _generateHardExpression(Random rng) {
     final isAddition = rng.nextBool();
+    final withTransition = rng.nextBool();
+
     if (isAddition) {
-      // 2-digit WITH carry over 10
-      final aTens = 1 + rng.nextInt(4); // 1..4
-      final aUnits = 4 + rng.nextInt(6); // 4..9
-      final a = aTens * 10 + aUnits;
+      if (withTransition) {
+        // Addition WITH carry over 10: units sum >= 10
+        final aTens = 1 + rng.nextInt(4); // 1..4
+        final aUnits = 4 + rng.nextInt(6); // 4..9
+        final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(4); // 1..4
-      final minBUnits = 10 - aUnits; // in 1..6
-      final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // minBUnits..9
-      final b = bTens * 10 + bUnits;
+        final bTens = 1 + rng.nextInt(4); // 1..4
+        final minBUnits = 10 - aUnits; // in 1..6
+        final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // minBUnits..9
+        final b = bTens * 10 + bUnits;
 
-      return _MathExpression('$a + $b', a + b);
+        return _MathExpression('$a + $b', a + b);
+      } else {
+        // Standard 2-digit addition
+        return _generateAdvancedExpression(rng);
+      }
     } else {
-      // 2-digit subtraction WITH borrow
-      final aTens = 3 + rng.nextInt(4); // 3..6
-      final aUnits = rng.nextInt(8); // 0..7
-      final a = aTens * 10 + aUnits;
+      if (withTransition) {
+        // Subtraction WITH borrow: aUnits < bUnits
+        final aTens = 3 + rng.nextInt(5); // 3..7
+        final aUnits = rng.nextInt(7); // 0..6
+        final a = aTens * 10 + aUnits;
 
-      final bTens = 1 + rng.nextInt(aTens - 1); // strictly < aTens
-      final minBUnits = aUnits + 1; // 1..8
-      final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // minBUnits..9
-      final b = bTens * 10 + bUnits;
+        final bTens = 1 + rng.nextInt(aTens - 1); // strictly < aTens
+        final minBUnits = aUnits + 1; // 1..7
+        final bUnits = minBUnits + rng.nextInt(10 - minBUnits); // minBUnits..9
+        final b = bTens * 10 + bUnits;
 
-      return _MathExpression('$a - $b', a - b);
+        return _MathExpression('$a - $b', a - b);
+      } else {
+        // Standard 2-digit subtraction
+        return _generateAdvancedExpression(rng);
+      }
     }
   }
 
@@ -138,11 +159,24 @@ class TrampolineTaskGenerator {
     Random rng,
   ) {
     final distractors = <int>{};
-    final deltas = [1, -1, 2, -2, 10, -10, 3, -3, 5, -5]..shuffle(rng);
 
+    if (difficulty == TrampolineDifficulty.simple) {
+      // Simple distractors must also be strictly in [2..10]
+      final pool = [2, 3, 4, 5, 6, 7, 8, 9, 10]..shuffle(rng);
+      for (final val in pool) {
+        if (val != target) {
+          distractors.add(val);
+          if (distractors.length == 2) break;
+        }
+      }
+      return distractors;
+    }
+
+    // Advanced & Hard: smart plausible offsets
+    final deltas = [1, -1, 2, -2, 10, -10, 3, -3, 5, -5]..shuffle(rng);
     for (final d in deltas) {
       final val = target + d;
-      if (val >= 2 && val != target) {
+      if (val >= 10 && val <= 99 && val != target) {
         distractors.add(val);
         if (distractors.length == 2) break;
       }
@@ -150,8 +184,8 @@ class TrampolineTaskGenerator {
 
     int fallbackOffset = 4;
     while (distractors.length < 2) {
-      final val = target + fallbackOffset;
-      if (val >= 2 && val != target && !distractors.contains(val)) {
+      final val = (target + fallbackOffset).clamp(10, 99);
+      if (val != target && !distractors.contains(val)) {
         distractors.add(val);
       }
       fallbackOffset++;
@@ -165,19 +199,47 @@ class TrampolineTaskGenerator {
     TrampolineDifficulty difficulty,
     Random rng,
   ) {
-    final isAddition = rng.nextBool();
-    if (isAddition && value >= 4) {
-      final minA = max(1, (value * 0.25).round());
-      final maxA = max(minA, (value * 0.75).round());
-      final a = minA + rng.nextInt(maxA - minA + 1);
-      final b = value - a;
-      return _MathExpression('$a + $b', value);
-    } else {
-      final extra = 2 + rng.nextInt(8);
-      final a = value + extra;
-      final b = extra;
-      return _MathExpression('$a - $b', value);
+    if (difficulty == TrampolineDifficulty.simple) {
+      // Value is in [2..10]. Generate equation in [1..10]
+      final isAddition = rng.nextBool();
+      if (isAddition && value >= 2) {
+        final a = 1 + rng.nextInt(value - 1);
+        final b = value - a;
+        return _MathExpression('$a + $b', value);
+      } else {
+        final maxExtra = 10 - value;
+        final extra = maxExtra > 0 ? 1 + rng.nextInt(maxExtra) : 0;
+        final a = value + extra;
+        final b = extra;
+        if (b == 0) return _MathExpression('$value + 0', value);
+        return _MathExpression('$a - $b', value);
+      }
     }
+
+    // Advanced / Hard: Generate matching 2-digit expression
+    final isAddition = rng.nextBool();
+    if (isAddition && value >= 15) {
+      final valTens = value ~/ 10;
+      final valUnits = value % 10;
+
+      final aTens = valTens > 1 ? 1 + rng.nextInt(valTens) : 1;
+      final bTens = valTens - aTens;
+
+      final aUnits = rng.nextInt(valUnits + 1);
+      final bUnits = valUnits - aUnits;
+
+      final a = aTens * 10 + aUnits;
+      final b = bTens * 10 + bUnits;
+      if (a > 0 && b > 0) {
+        return _MathExpression('$a + $b', value);
+      }
+    }
+
+    // Subtraction fallback
+    final extraTens = 1 + rng.nextInt(3);
+    final a = value + (extraTens * 10);
+    final b = extraTens * 10;
+    return _MathExpression('$a - $b', value);
   }
 }
 

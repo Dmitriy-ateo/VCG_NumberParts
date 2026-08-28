@@ -62,8 +62,22 @@ class TrampolineGameController extends ChangeNotifier {
   void _startFallLoop() {
     _fallTimer?.cancel();
 
-    // Fall speed: base 16ms step, scales with score
-    final speed = 0.0035 + (_score * 0.00025).clamp(0.0, 0.006);
+    // Fall speed: generous time for reading and calculation
+    // Simple: ~19s, Advanced: ~17s, Hard: ~15s
+    double baseSpeed;
+    switch (difficulty) {
+      case TrampolineDifficulty.simple:
+        baseSpeed = 0.00085;
+        break;
+      case TrampolineDifficulty.advanced:
+        baseSpeed = 0.00095;
+        break;
+      case TrampolineDifficulty.hard:
+        baseSpeed = 0.00110;
+        break;
+    }
+
+    final speed = baseSpeed + (_score * 0.00003).clamp(0.0, 0.0006);
 
     _fallTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) {
       if (_isGameOver) {
