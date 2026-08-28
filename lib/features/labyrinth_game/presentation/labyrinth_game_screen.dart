@@ -11,6 +11,7 @@ import 'package:number_parts/features/labyrinth_game/domain/models/labyrinth_lev
 import 'package:number_parts/features/labyrinth_game/presentation/controllers/labyrinth_controller.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/widgets/chamber_content_view.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/widgets/chamber_stepper_bar.dart';
+import 'package:number_parts/features/labyrinth_game/presentation/widgets/door_video_overlay.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/widgets/labyrinth_game_over_dialog.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/widgets/treasure_reward_dialog.dart';
 
@@ -35,6 +36,9 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
   Alignment _focalAlignment = Alignment.center;
   LabyrinthChamber? _transitionOldChamber;
   LabyrinthChamber? _transitionNextChamber;
+
+  String? _playingVideoAsset;
+  VoidCallback? _videoOnComplete;
 
   @override
   void initState() {
@@ -71,26 +75,34 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
   void _onDoorTapped(int doorValue) {
     if (_controller.isTransitioning ||
         _controller.isCompleted ||
-        _controller.isGameOver) {
+        _controller.isGameOver ||
+        _playingVideoAsset != null) {
       return;
     }
 
     if (doorValue == _controller.currentChamber.correctAnswer) {
-      // 1. Calculate focal point for POV zoom toward the chosen door
-      final current = _controller.currentChamber;
-      final doorIdx = current.doorOptions.indexOf(doorValue);
-      final alignX = doorIdx == 0 ? -0.65 : (doorIdx == 2 ? 0.65 : 0.0);
-
       setState(() {
-        _focalAlignment = Alignment(alignX, 0.18);
-        _transitionOldChamber = current;
-        _transitionNextChamber = _controller.nextChamber;
+        _playingVideoAsset = 'assets/media/video/labyrinth_door_open.mp4';
+        _videoOnComplete = () {
+          setState(() {
+            _playingVideoAsset = null;
+            _videoOnComplete = null;
+          });
+          _controller.onCorrectDoorPicked(doorValue);
+          _controller.completeTransition();
+        };
       });
-
-      _controller.onCorrectDoorPicked(doorValue);
-      _walkAnimController.forward(from: 0.0);
     } else {
-      _controller.onWrongDoorPicked(doorValue);
+      setState(() {
+        _playingVideoAsset = 'assets/media/video/labyrinth_door_closed.mp4';
+        _videoOnComplete = () {
+          setState(() {
+            _playingVideoAsset = null;
+            _videoOnComplete = null;
+          });
+          _controller.onWrongDoorPicked(doorValue);
+        };
+      });
     }
   }
 
@@ -162,8 +174,10 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
 
     return Scaffold(
       backgroundColor: const Color(0xFFFDF8F0),
-      body: SafeArea(
-        child: Column(
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
           children: [
             // ── TOP NAVIGATION BAR ─────────────────────────────────────
             Padding(
@@ -460,6 +474,15 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
           ],
         ),
       ),
-    );
+      if (_playingVideoAsset != null)
+        DoorVideoOverlay(
+          videoAsset: _playingVideoAsset!,
+          onFinished: () {
+            _videoOnComplete?.call();
+          },
+        ),
+    ],
+  ),
+);
   }
 }
