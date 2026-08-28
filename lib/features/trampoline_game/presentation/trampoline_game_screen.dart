@@ -200,8 +200,8 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                     final foxPixelX =
                         (areaWidth / 2) + (_controller.foxX * (areaWidth * 0.46));
                     const topSkyY = 15.0;
-                    // Trampoline mat surface is ~50px from the bottom
-                    final trampolineBedY = areaHeight - 155.0;
+                    // Trampoline mat surface is ~68px from the bottom
+                    final trampolineBedY = areaHeight - 175.0;
                     final foxPixelY =
                         topSkyY + (_controller.foxY * (trampolineBedY - topSkyY));
 
