@@ -31,5 +31,8 @@ void main() {
 
     final trampolineJumpData = await rootBundle.load('assets/media/trampoline_jump.wav');
     expect(trampolineJumpData.lengthInBytes, greaterThan(0));
+
+    final trampolineCrashData = await rootBundle.load('assets/media/trampoline_crash.wav');
+    expect(trampolineCrashData.lengthInBytes, greaterThan(0));
   });
 }

@@ -203,8 +203,9 @@ class TrampolineGameController extends ChangeNotifier {
             notifyListeners();
           });
         } else {
-          // ── WRONG TRAMPOLINE! ─────────────────────────────────────
-          _triggerGameOver();
+          // ── WRONG TRAMPOLINE TOUCH! ──────────────────────────────
+          SoundManager.instance.playTrampolineCrashSound();
+          _triggerGameOver(isCrash: true);
         }
       } else {
         notifyListeners();
@@ -212,14 +213,16 @@ class TrampolineGameController extends ChangeNotifier {
     });
   }
 
-  void _triggerGameOver() {
+  void _triggerGameOver({bool isCrash = false}) {
     _activeTimer?.cancel();
     _isGameOver = true;
     _foxState = FoxAnimationState.fallen;
     _foxY = 1.0;
     _touchingTrampolineIndex = null;
     _releasingTrampolineIndex = null;
-    SoundManager.instance.playWrongPickSound();
+    if (!isCrash) {
+      SoundManager.instance.playWrongPickSound();
+    }
     SoundManager.instance.playLoseSound();
     notifyListeners();
   }
