@@ -52,7 +52,7 @@ class TrampolineGameOverDialog extends StatelessWidget {
             Text(
               isNewBest
                   ? l10n.strings.newHighScoreTitle
-                  : l10n.strings.gameOverTitle,
+                  : l10n.strings.trampolineGameOverTitle,
               style: AppTextStyles.titleMedium.copyWith(fontSize: 22),
               textAlign: TextAlign.center,
             ),
@@ -60,7 +60,7 @@ class TrampolineGameOverDialog extends StatelessWidget {
 
             // Subtitle
             Text(
-              l10n.strings.gameOverSubtitle,
+              l10n.strings.trampolineGameOverSubtitle,
               style: AppTextStyles.bodyMedium.copyWith(
                 color: const Color(0xFFA67B48),
               ),

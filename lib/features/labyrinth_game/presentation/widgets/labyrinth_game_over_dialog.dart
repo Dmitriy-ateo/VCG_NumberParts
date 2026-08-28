@@ -52,13 +52,13 @@ class LabyrinthGameOverDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              l10n.strings.gameOverTitle,
+              l10n.strings.labyrinthGameOverTitle,
               style: AppTextStyles.titleMedium.copyWith(fontSize: 22),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
-              l10n.strings.gameOverSubtitle,
+              l10n.strings.labyrinthGameOverSubtitle,
               style: AppTextStyles.bodyMedium,
               textAlign: TextAlign.center,
             ),

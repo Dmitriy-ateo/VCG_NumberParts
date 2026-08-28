@@ -60,9 +60,15 @@ class AppStrings {
   final String replayButton;
   final String homeButton;
 
-  // Game Over Dialog
+  // Game Over Dialogs
   final String gameOverTitle;
   final String gameOverSubtitle;
+  final String numberBondsGameOverTitle;
+  final String numberBondsGameOverSubtitle;
+  final String labyrinthGameOverTitle;
+  final String labyrinthGameOverSubtitle;
+  final String trampolineGameOverTitle;
+  final String trampolineGameOverSubtitle;
   final String tryAgainButton;
 
   // Language Picker
@@ -122,6 +128,12 @@ class AppStrings {
     required this.homeButton,
     required this.gameOverTitle,
     required this.gameOverSubtitle,
+    required this.numberBondsGameOverTitle,
+    required this.numberBondsGameOverSubtitle,
+    required this.labyrinthGameOverTitle,
+    required this.labyrinthGameOverSubtitle,
+    required this.trampolineGameOverTitle,
+    required this.trampolineGameOverSubtitle,
     required this.tryAgainButton,
     required this.chooseLanguage,
     required this.languageUk,
@@ -185,6 +197,12 @@ class AppLocalizations {
       homeButton: 'Головна',
       gameOverTitle: 'Ой, лисичка приземлилась! 🦊',
       gameOverSubtitle: 'Чудова спроба! Спробуймо ще раз пострибати вище!',
+      numberBondsGameOverTitle: 'Спробуймо ще раз! 🦊',
+      numberBondsGameOverSubtitle: 'Сердечка закінчились. Давай спробуємо знайти всі пари чисел знову!',
+      labyrinthGameOverTitle: 'Ой, двері зачинилися! 🦊',
+      labyrinthGameOverSubtitle: 'Життя закінчилися. Спробуймо знайти правильний шлях до скарбу знову!',
+      trampolineGameOverTitle: 'Ой, лисичка приземлилася! 🦊',
+      trampolineGameOverSubtitle: 'Чудова спроба! Спробуймо ще раз пострибати вище!',
       tryAgainButton: 'Спробувати знову',
       chooseLanguage: 'Обери мову 🌍',
       languageUk: 'Українська',
@@ -240,6 +258,12 @@ class AppLocalizations {
       homeButton: 'Menu',
       gameOverTitle: 'Fox has landed! 🦊',
       gameOverSubtitle: 'Great bouncing! Let\'s jump even higher next time!',
+      numberBondsGameOverTitle: 'Let\'s Try Again! 🦊',
+      numberBondsGameOverSubtitle: 'Out of hearts. Let\'s clear the wooden numbers again!',
+      labyrinthGameOverTitle: 'Doors Locked! 🦊',
+      labyrinthGameOverSubtitle: 'Out of lives. Let\'s find the right path through the maze again!',
+      trampolineGameOverTitle: 'Fox has landed! 🦊',
+      trampolineGameOverSubtitle: 'Great bouncing! Let\'s jump even higher next time!',
       tryAgainButton: 'Try Again',
       chooseLanguage: 'Choose Language 🌍',
       languageUk: 'Українська',
@@ -295,6 +319,12 @@ class AppLocalizations {
       homeButton: 'Meni',
       gameOverTitle: 'Lisička je pristala! 🦊',
       gameOverSubtitle: 'Super poskus! Poskusiva skočiti še višje!',
+      numberBondsGameOverTitle: 'Poskusimo znova! 🦊',
+      numberBondsGameOverSubtitle: 'Zmanjkalo je srčkov. Poskusiva znova sestaviti števila!',
+      labyrinthGameOverTitle: 'Vrata so se zaklenila! 🦊',
+      labyrinthGameOverSubtitle: 'Zmanjkalo je življenj. Poskusiva znova najti pravo pot do zaklada!',
+      trampolineGameOverTitle: 'Lisička je pristala! 🦊',
+      trampolineGameOverSubtitle: 'Super poskus! Poskusiva skočiti še višje!',
       tryAgainButton: 'Poskusi znova',
       chooseLanguage: 'Izberi jezik 🌍',
       languageUk: 'Українська',

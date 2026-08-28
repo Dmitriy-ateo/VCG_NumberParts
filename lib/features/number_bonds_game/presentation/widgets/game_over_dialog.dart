@@ -78,13 +78,13 @@ class GameOverDialog extends StatelessWidget {
 
             // Title & Subtitle
             Text(
-              l10n.gameOverTitle,
+              l10n.numberBondsGameOverTitle,
               style: AppTextStyles.titleMedium.copyWith(fontSize: 22),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 6),
             Text(
-              l10n.gameOverSubtitle,
+              l10n.numberBondsGameOverSubtitle,
               style: AppTextStyles.bodyMedium,
               textAlign: TextAlign.center,
             ),

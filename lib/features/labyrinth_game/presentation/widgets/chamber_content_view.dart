@@ -114,27 +114,30 @@ class ChamberContentView extends StatelessWidget {
               ),
 
               // Doors Row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: chamber.doorOptions.map((doorVal) {
-                  final isCorrect = selectedCorrectDoor == doorVal;
-                  final isWrong = selectedWrongDoor == doorVal;
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: chamber.doorOptions.map((doorVal) {
+                    final isCorrect = selectedCorrectDoor == doorVal;
+                    final isWrong = selectedWrongDoor == doorVal;
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6),
-                    child: WoodenDoorWidget(
-                      doorValue: doorVal,
-                      isCorrect: isCorrect,
-                      isWrong: isWrong,
-                      hallwayContent: isCorrect ? hallwayPreview : null,
-                      onTap: () {
-                        if (onDoorTapped != null) {
-                          onDoorTapped!(doorVal);
-                        }
-                      },
-                    ),
-                  );
-                }).toList(),
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      child: WoodenDoorWidget(
+                        doorValue: doorVal,
+                        isCorrect: isCorrect,
+                        isWrong: isWrong,
+                        hallwayContent: isCorrect ? hallwayPreview : null,
+                        onTap: () {
+                          if (onDoorTapped != null) {
+                            onDoorTapped!(doorVal);
+                          }
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
             ],
           ),
