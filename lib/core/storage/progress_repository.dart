@@ -120,4 +120,33 @@ class ProgressRepository {
       return 0;
     }
   }
+
+  // ── TRAMPOLINE JUMPER HIGH SCORES ────────────────────────────────
+  static const String _keyTrampolineHighScorePrefix = 'trampoline_highscore_';
+
+  String _trampolineHighScoreKey(String difficultyKey) =>
+      '$_keyTrampolineHighScorePrefix$difficultyKey';
+
+  Future<int> getTrampolineHighScore(String difficultyKey) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getInt(_trampolineHighScoreKey(difficultyKey)) ?? 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  Future<bool> saveTrampolineHighScore(String difficultyKey, int score) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final currentBest = prefs.getInt(_trampolineHighScoreKey(difficultyKey)) ?? 0;
+      if (score > currentBest) {
+        await prefs.setInt(_trampolineHighScoreKey(difficultyKey), score);
+        return true; // New High Score!
+      }
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
 }

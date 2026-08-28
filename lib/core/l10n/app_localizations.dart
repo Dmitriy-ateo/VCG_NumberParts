@@ -26,6 +26,16 @@ class AppStrings {
   final String treasureFoundTitle;
   final String treasureFoundSubtitle;
 
+  // Game 3: Trampoline Jumper
+  final String gameTrampolineTitle;
+  final String gameTrampolineSubtitle;
+  final String badgeArcade;
+  final String badgePhysics;
+  final String scoreLabel;
+  final String bestScoreLabel;
+  final String tapTrampolineHint;
+  final String newHighScoreTitle;
+
   // Levels Screen
   final String selectLevelTitle;
   final String tabClassic;
@@ -84,6 +94,14 @@ class AppStrings {
     required this.doorsChooseHint,
     required this.treasureFoundTitle,
     required this.treasureFoundSubtitle,
+    required this.gameTrampolineTitle,
+    required this.gameTrampolineSubtitle,
+    required this.badgeArcade,
+    required this.badgePhysics,
+    required this.scoreLabel,
+    required this.bestScoreLabel,
+    required this.tapTrampolineHint,
+    required this.newHighScoreTitle,
     required this.selectLevelTitle,
     required this.tabClassic,
     required this.tabAdvanced,
@@ -139,6 +157,14 @@ class AppLocalizations {
       doorsChooseHint: 'Які двері правильні?',
       treasureFoundTitle: 'Скарб Знайдено! 🏆',
       treasureFoundSubtitle: 'Ти майстерно пройшов усі кімнати лабіринту!',
+      gameTrampolineTitle: 'Стрибки на Батутах',
+      gameTrampolineSubtitle: 'Тримай лисичку в повітрі, обираючи правильний математичний батут!',
+      badgeArcade: 'Аркада',
+      badgePhysics: 'Пружинний батут',
+      scoreLabel: 'Бали',
+      bestScoreLabel: 'Рекорд',
+      tapTrampolineHint: 'Обери батут, поки лисичка падає!',
+      newHighScoreTitle: 'Новий Рекорд! 🌟',
       selectLevelTitle: 'Обери Рівень 🗺️',
       tabClassic: '🌿 Базовий',
       tabAdvanced: '⚡ Складний',
@@ -157,8 +183,8 @@ class AppLocalizations {
       nextLevelButton: 'Наступний рівень ➔',
       replayButton: 'Ще раз',
       homeButton: 'Головна',
-      gameOverTitle: 'Ой, закінчились життя! ❤️',
-      gameOverSubtitle: 'Не засмучуйся, спробуймо ще раз разом!',
+      gameOverTitle: 'Ой, лисичка приземлилась! 🦊',
+      gameOverSubtitle: 'Чудова спроба! Спробуймо ще раз пострибати вище!',
       tryAgainButton: 'Спробувати знову',
       chooseLanguage: 'Обери мову 🌍',
       languageUk: 'Українська',
@@ -186,6 +212,14 @@ class AppLocalizations {
       doorsChooseHint: 'Which door is correct?',
       treasureFoundTitle: 'Treasure Unlocked! 🏆',
       treasureFoundSubtitle: 'You navigated all chambers with great math skills!',
+      gameTrampolineTitle: 'Trampoline Jumper',
+      gameTrampolineSubtitle: 'Keep Fox in the air by tapping the matching math trampoline!',
+      badgeArcade: 'Arcade',
+      badgePhysics: 'Spring Bounce',
+      scoreLabel: 'Score',
+      bestScoreLabel: 'Best',
+      tapTrampolineHint: 'Tap a trampoline before Fox lands!',
+      newHighScoreTitle: 'New High Score! 🌟',
       selectLevelTitle: 'Select Level 🗺️',
       tabClassic: '🌿 Basic',
       tabAdvanced: '⚡ Advanced',
@@ -204,8 +238,8 @@ class AppLocalizations {
       nextLevelButton: 'Next Level ➔',
       replayButton: 'Replay',
       homeButton: 'Menu',
-      gameOverTitle: 'Out of lives! ❤️',
-      gameOverSubtitle: 'Don\'t worry! Let\'s try again together!',
+      gameOverTitle: 'Fox has landed! 🦊',
+      gameOverSubtitle: 'Great bouncing! Let\'s jump even higher next time!',
       tryAgainButton: 'Try Again',
       chooseLanguage: 'Choose Language 🌍',
       languageUk: 'Українська',
@@ -233,6 +267,14 @@ class AppLocalizations {
       doorsChooseHint: 'Katera vrata so prava?',
       treasureFoundTitle: 'Zaklad Odkrit! 🏆',
       treasureFoundSubtitle: 'Mojstrsko si opravil z vsemi sobami labirinta!',
+      gameTrampolineTitle: 'Skoki na Ponjavi',
+      gameTrampolineSubtitle: 'Obdrži lisičko v zraku z izbiro prave matematične ponjave!',
+      badgeArcade: 'Arkada',
+      badgePhysics: 'Vzmetna ponjava',
+      scoreLabel: 'Točke',
+      bestScoreLabel: 'Rekord',
+      tapTrampolineHint: 'Izberi ponjavo, preden lisička pade!',
+      newHighScoreTitle: 'Nov Rekord! 🌟',
       selectLevelTitle: 'Izberi Stopnjo 🗺️',
       tabClassic: '🌿 Osnovno',
       tabAdvanced: '⚡ Napredno',
@@ -251,8 +293,8 @@ class AppLocalizations {
       nextLevelButton: 'Naslednja stopnja ➔',
       replayButton: 'Ponovi',
       homeButton: 'Meni',
-      gameOverTitle: 'Zmanjkalo je življenj! ❤️',
-      gameOverSubtitle: 'Brez skrbi, poskusiva znova skupaj!',
+      gameOverTitle: 'Lisička je pristala! 🦊',
+      gameOverSubtitle: 'Super poskus! Poskusiva skočiti še višje!',
       tryAgainButton: 'Poskusi znova',
       chooseLanguage: 'Izberi jezik 🌍',
       languageUk: 'Українська',
