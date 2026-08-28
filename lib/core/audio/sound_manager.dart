@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SoundManager {
   SoundManager._internal();
@@ -10,15 +11,98 @@ class SoundManager {
   int _nextSfxIndex = 0;
   static const int _sfxPoolSize = 4;
 
-  bool _isMuted = false;
-  bool get isMuted => _isMuted;
+  final AudioPlayer _musicPlayer = AudioPlayer();
+  bool _isInGameSession = false;
+
+  final ValueNotifier<bool> isMusicEnabled = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> isSfxEnabled = ValueNotifier<bool>(true);
+
+  static const String _prefMusicKey = 'heroma_music_enabled';
+  static const String _prefSfxKey = 'heroma_sfx_enabled';
+
+  bool get isMuted => !isSfxEnabled.value;
 
   void toggleMute() {
-    _isMuted = !_isMuted;
+    toggleSfx();
   }
 
   Future<void> init() async {
-    // Initialized lazily on first user interaction to ensure web plugins and AudioContext are active
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      isMusicEnabled.value = prefs.getBool(_prefMusicKey) ?? true;
+      isSfxEnabled.value = prefs.getBool(_prefSfxKey) ?? true;
+    } catch (e) {
+      if (kDebugMode) {
+        print('SoundManager init error: $e');
+      }
+    }
+  }
+
+  Future<void> toggleMusic() async {
+    final nextState = !isMusicEnabled.value;
+    isMusicEnabled.value = nextState;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_prefMusicKey, nextState);
+    } catch (e) {
+      if (kDebugMode) {
+        print('SoundManager save music pref error: $e');
+      }
+    }
+
+    if (nextState) {
+      if (_isInGameSession) {
+        await startBackgroundMusic();
+      }
+    } else {
+      await stopBackgroundMusic();
+    }
+  }
+
+  Future<void> toggleSfx() async {
+    final nextState = !isSfxEnabled.value;
+    isSfxEnabled.value = nextState;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool(_prefSfxKey, nextState);
+    } catch (e) {
+      if (kDebugMode) {
+        print('SoundManager save sfx pref error: $e');
+      }
+    }
+  }
+
+  Future<void> startBackgroundMusic() async {
+    _isInGameSession = true;
+    if (!isMusicEnabled.value) return;
+
+    try {
+      await _musicPlayer.setReleaseMode(ReleaseMode.loop);
+      await _musicPlayer.setVolume(0.40); // Soft, pleasant ambient background volume
+      await _musicPlayer.stop();
+      await _musicPlayer.play(AssetSource('media/background_game.wav'));
+    } catch (e) {
+      if (kDebugMode) {
+        print('SoundManager startBackgroundMusic error: $e');
+      }
+    }
+  }
+
+  Future<void> stopBackgroundMusic() async {
+    try {
+      await _musicPlayer.stop();
+    } catch (e) {
+      if (kDebugMode) {
+        print('SoundManager stopBackgroundMusic error: $e');
+      }
+    }
+  }
+
+  void leaveGameSession() {
+    _isInGameSession = false;
+    stopBackgroundMusic();
   }
 
   Future<void> playMenuClickSound() async {
@@ -62,7 +146,7 @@ class SoundManager {
   }
 
   Future<void> _playSfx(String assetName) async {
-    if (_isMuted) return;
+    if (!isSfxEnabled.value) return;
 
     try {
       if (_sfxPool.isEmpty) {
@@ -84,6 +168,7 @@ class SoundManager {
   }
 
   void dispose() {
+    _musicPlayer.dispose();
     for (final player in _sfxPool) {
       player.dispose();
     }

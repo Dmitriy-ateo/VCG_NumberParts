@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:number_parts/app/theme/app_text_styles.dart';
+import 'package:number_parts/core/audio/sound_manager.dart';
 import 'package:number_parts/core/l10n/app_localizations.dart';
 import 'package:number_parts/core/storage/progress_repository.dart';
 import 'package:number_parts/core/widgets/bouncy_button.dart';
+import 'package:number_parts/core/widgets/music_toggle_button.dart';
 import 'package:number_parts/features/trampoline_game/domain/models/fox_animation_state.dart';
 import 'package:number_parts/features/trampoline_game/domain/models/trampoline_difficulty.dart';
 import 'package:number_parts/features/trampoline_game/presentation/controllers/trampoline_game_controller.dart';
@@ -34,6 +36,7 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
       difficulty: widget.difficulty,
       progressRepository: _progressRepository,
     )..addListener(_onControllerUpdate);
+    SoundManager.instance.startBackgroundMusic();
   }
 
   void _onControllerUpdate() {
@@ -67,6 +70,7 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
 
   @override
   void dispose() {
+    SoundManager.instance.leaveGameSession();
     _controller.removeListener(_onControllerUpdate);
     _controller.dispose();
     super.dispose();
@@ -88,6 +92,7 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Row(
                   children: [
+                    // Back Button
                     BouncyButton(
                       onPressed: () => Navigator.of(context).pop(),
                       backgroundColor: const Color(0xFFFFF3DB),
@@ -97,8 +102,8 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                       child: const SizedBox(
                         width: 48,
                         height: 48,
-                        child: Icon(Icons.arrow_back_ios_new_rounded,
-                            size: 20, color: Color(0xFF8A5A2B)),
+                        child: Icon(Icons.arrow_back_rounded,
+                            size: 24, color: Color(0xFF8A5A2B)),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -107,7 +112,7 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
+                            vertical: 6, horizontal: 14),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFFF8EC),
                           borderRadius: BorderRadius.circular(16),
@@ -168,6 +173,14 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(width: 8),
+
+                    // Music Toggle Button
+                    const MusicToggleButton(
+                      size: 48,
+                      backgroundColor: Color(0xFFFFF3DB),
+                      shadowColor: Color(0xFFE8C88A),
                     ),
                     const SizedBox(width: 8),
 

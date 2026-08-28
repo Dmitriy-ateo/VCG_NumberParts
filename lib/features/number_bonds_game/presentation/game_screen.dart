@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
 import '../../../app/theme/app_text_styles.dart';
+import '../../../core/audio/sound_manager.dart';
 import '../../../core/l10n/app_localizations.dart';
 import '../../../core/widgets/bouncy_button.dart';
+import '../../../core/widgets/music_toggle_button.dart';
 import '../domain/models/level_data.dart';
 import 'controllers/game_controller.dart';
 import 'widgets/board_view.dart';
@@ -32,10 +34,12 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
     super.initState();
     _controller = GameController(widget.level);
     _controller.addListener(_onGameStateChanged);
+    SoundManager.instance.startBackgroundMusic();
   }
 
   @override
   void dispose() {
+    SoundManager.instance.leaveGameSession();
     _controller.removeListener(_onGameStateChanged);
     _controller.dispose();
     super.dispose();
@@ -167,6 +171,10 @@ class _NumberBondsGameScreenState extends State<NumberBondsGameScreen> {
 
                       // Lives Display (3 Hearts)
                       LivesDisplay(lives: state.lives, maxLives: state.maxLives),
+                      const SizedBox(width: 8),
+
+                      // Music Toggle Button
+                      const MusicToggleButton(size: 44),
                       const SizedBox(width: 8),
 
                       // Restart Button

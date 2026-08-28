@@ -4,6 +4,7 @@ import '../../app/theme/app_text_styles.dart';
 import '../l10n/locale_controller.dart';
 import 'bouncy_button.dart';
 import 'language_selector_dialog.dart';
+import 'music_toggle_button.dart';
 
 class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
   final LocaleController localeController;
@@ -91,7 +92,9 @@ class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 12),
+            // Music Toggle Button
+            const MusicToggleButton(size: 48),
+            const SizedBox(width: 10),
 
             // Language Switcher Button
             ListenableBuilder(

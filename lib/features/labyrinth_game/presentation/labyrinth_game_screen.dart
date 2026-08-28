@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:number_parts/app/theme/app_text_styles.dart';
+import 'package:number_parts/core/audio/sound_manager.dart';
 import 'package:number_parts/core/l10n/app_localizations.dart';
 import 'package:number_parts/core/storage/progress_repository.dart';
 import 'package:number_parts/core/widgets/bouncy_button.dart';
+import 'package:number_parts/core/widgets/music_toggle_button.dart';
 import 'package:number_parts/features/labyrinth_game/domain/models/labyrinth_chamber.dart';
 import 'package:number_parts/features/labyrinth_game/domain/models/labyrinth_level.dart';
 import 'package:number_parts/features/labyrinth_game/presentation/controllers/labyrinth_controller.dart';
@@ -51,6 +53,8 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
           _walkAnimController.reset();
         }
       });
+
+    SoundManager.instance.startBackgroundMusic();
   }
 
   void _onControllerUpdate() {
@@ -144,6 +148,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
 
   @override
   void dispose() {
+    SoundManager.instance.leaveGameSession();
     _walkAnimController.dispose();
     _controller.removeListener(_onControllerUpdate);
     _controller.dispose();
@@ -160,7 +165,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
       body: SafeArea(
         child: Column(
           children: [
-            // ── TOP HEADER ─────────────────────────────────────────────
+            // ── TOP NAVIGATION BAR ─────────────────────────────────────
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
@@ -175,8 +180,8 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
                     child: const SizedBox(
                       width: 48,
                       height: 48,
-                      child: Icon(Icons.arrow_back_ios_new_rounded,
-                          size: 20, color: Color(0xFF8A5A2B)),
+                      child: Icon(Icons.arrow_back_rounded,
+                          size: 24, color: Color(0xFF8A5A2B)),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -196,7 +201,7 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '${l10n.strings.levelNumberLabel} ${widget.level.levelNumber}',
+                            widget.level.title,
                             style: AppTextStyles.numberTile.copyWith(
                               fontSize: 15,
                               color: const Color(0xFF8A5A2B),
@@ -216,28 +221,11 @@ class _LabyrinthGameScreenState extends State<LabyrinthGameScreen>
                   ),
                   const SizedBox(width: 8),
 
-                  // Lives Display
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFF8EC),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                          color: const Color(0xFFE5CE9F), width: 2),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(3, (i) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: Text(
-                            i < _controller.lives ? '❤️' : '🤍',
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        );
-                      }),
-                    ),
+                  // Music Toggle Button
+                  const MusicToggleButton(
+                    size: 48,
+                    backgroundColor: Color(0xFFFFF3DB),
+                    shadowColor: Color(0xFFE8C88A),
                   ),
                   const SizedBox(width: 8),
 

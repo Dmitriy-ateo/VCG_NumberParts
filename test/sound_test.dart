@@ -34,5 +34,8 @@ void main() {
 
     final trampolineCrashData = await rootBundle.load('assets/media/trampoline_crash.wav');
     expect(trampolineCrashData.lengthInBytes, greaterThan(0));
+
+    final backgroundMusicData = await rootBundle.load('assets/media/background_game.wav');
+    expect(backgroundMusicData.lengthInBytes, greaterThan(0));
   });
 }
