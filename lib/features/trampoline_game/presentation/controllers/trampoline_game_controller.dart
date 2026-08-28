@@ -151,7 +151,7 @@ class TrampolineGameController extends ChangeNotifier {
           _releasingTrampolineIndex = null;
           notifyListeners();
 
-          SoundManager.instance.playMatchSound();
+          SoundManager.instance.playTrampolineJumpSound();
           await Future.delayed(const Duration(milliseconds: 180));
 
           if (_isGameOver) return;

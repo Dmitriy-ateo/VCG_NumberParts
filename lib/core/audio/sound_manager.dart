@@ -53,6 +53,10 @@ class SoundManager {
     await _playSfx('media/door_wrong.wav');
   }
 
+  Future<void> playTrampolineJumpSound() async {
+    await _playSfx('media/trampoline_jump.wav');
+  }
+
   Future<void> _playSfx(String assetName) async {
     if (_isMuted) return;
 

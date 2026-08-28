@@ -28,5 +28,8 @@ void main() {
 
     final doorWrongData = await rootBundle.load('assets/media/door_wrong.wav');
     expect(doorWrongData.lengthInBytes, greaterThan(0));
+
+    final trampolineJumpData = await rootBundle.load('assets/media/trampoline_jump.wav');
+    expect(trampolineJumpData.lengthInBytes, greaterThan(0));
   });
 }
