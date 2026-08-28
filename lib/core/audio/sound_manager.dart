@@ -107,7 +107,7 @@ class SoundManager {
 
     try {
       await _musicPlayer.setReleaseMode(ReleaseMode.loop);
-      await _musicPlayer.setVolume(0.40); // Soft, pleasant ambient background volume
+      await _musicPlayer.setVolume(0.22); // Soft, gentle ambient background volume
       await _musicPlayer.stop();
       await _musicPlayer.play(AssetSource(assetPath));
       _currentlyPlayingAsset = assetPath;
@@ -187,6 +187,7 @@ class SoundManager {
       _nextSfxIndex = (_nextSfxIndex + 1) % _sfxPoolSize;
 
       await player.stop();
+      await player.setVolume(1.0);
       await player.play(AssetSource(assetName));
     } catch (e) {
       if (kDebugMode) {
