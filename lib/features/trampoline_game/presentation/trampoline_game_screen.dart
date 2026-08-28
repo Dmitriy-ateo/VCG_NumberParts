@@ -189,7 +189,7 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                 ),
               ),
 
-              // ── SKY FLIGHT AREA (Falling / Flying Fox) ───────────
+              // ── SKY & TRAMPOLINE INTERACTIVE PLAY AREA ─────────
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
@@ -200,7 +200,8 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                     final foxPixelX =
                         (areaWidth / 2) + (_controller.foxX * (areaWidth * 0.46));
                     const topSkyY = 15.0;
-                    final trampolineBedY = areaHeight - 15.0;
+                    // Trampoline mat is ~120px from the bottom; paws land right on mat
+                    final trampolineBedY = areaHeight - 198.0;
                     final foxPixelY =
                         topSkyY + (_controller.foxY * (trampolineBedY - topSkyY));
 
@@ -218,7 +219,33 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                     return Stack(
                       clipBehavior: Clip.none,
                       children: [
-                        // Animated Fox Character
+                        // ── 1. TRAMPOLINES ROW (Base Z-Index layer) ───────
+                        Positioned(
+                          left: 12,
+                          right: 12,
+                          bottom: 8,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: round.trampolines.map((trampoline) {
+                              final isSelected =
+                                  _controller.selectedTrampolineIndex ==
+                                      trampoline.index;
+                              final visualState =
+                                  _controller.getTrampolineVisualState(
+                                      trampoline.index);
+
+                              return SpringTrampolineWidget(
+                                trampoline: trampoline,
+                                visualState: visualState,
+                                isSelected: isSelected,
+                                onTap: () => _controller
+                                    .selectTrampoline(trampoline.index),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+
+                        // ── 2. ANIMATED FOX (Top Z-Index: renders in front of trampolines) ──
                         Positioned(
                           left: foxPixelX - 60,
                           top: foxPixelY,
@@ -231,29 +258,6 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                       ],
                     );
                   },
-                ),
-              ),
-
-              // ── 3 TRAMPOLINES ROW ────────────────────────────────
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: round.trampolines.map((trampoline) {
-                    final isSelected =
-                        _controller.selectedTrampolineIndex == trampoline.index;
-                    final visualState =
-                        _controller.getTrampolineVisualState(trampoline.index);
-
-                    return SpringTrampolineWidget(
-                      trampoline: trampoline,
-                      visualState: visualState,
-                      isSelected: isSelected,
-                      onTap: () =>
-                          _controller.selectTrampoline(trampoline.index),
-                    );
-                  }).toList(),
                 ),
               ),
 
