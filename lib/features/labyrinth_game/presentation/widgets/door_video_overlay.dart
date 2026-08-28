@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_text_styles.dart';
@@ -20,9 +24,10 @@ class DoorVideoOverlay extends StatefulWidget {
 }
 
 class _DoorVideoOverlayState extends State<DoorVideoOverlay> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   bool _isInitialized = false;
   bool _hasFinished = false;
+  bool _hasStartedPlaying = false;
 
   @override
   void initState() {
@@ -32,11 +37,23 @@ class _DoorVideoOverlayState extends State<DoorVideoOverlay> {
 
   Future<void> _initVideo() async {
     try {
-      _controller = VideoPlayerController.asset(widget.videoAsset);
-      await _controller.initialize();
-      _controller.setLooping(false);
-      _controller.addListener(_videoListener);
-      await _controller.play();
+      VideoPlayerController controller;
+
+      if (kIsWeb) {
+        controller = VideoPlayerController.asset(widget.videoAsset);
+      } else {
+        // For macOS, iOS, Android: write asset bytes to a temp file to ensure AVPlayer / ExoPlayer compatibility
+        final file = await _getCacheFile(widget.videoAsset);
+        controller = VideoPlayerController.file(file);
+      }
+
+      _controller = controller;
+      await controller.initialize();
+      await controller.setLooping(false);
+      await controller.setVolume(1.0);
+
+      controller.addListener(_videoListener);
+      await controller.play();
 
       if (mounted) {
         setState(() {
@@ -44,17 +61,45 @@ class _DoorVideoOverlayState extends State<DoorVideoOverlay> {
         });
       }
     } catch (e) {
-      debugPrint('DoorVideoOverlay error initializing video: $e');
-      // If error (e.g. codec issue), automatically complete without blocking gameplay
-      _complete();
+      debugPrint('DoorVideoOverlay video init fallback error: $e');
+      // If native player fails, wait a brief moment for transition then proceed smoothly
+      Future.delayed(const Duration(milliseconds: 1200), () {
+        if (mounted) _complete();
+      });
     }
   }
 
+  Future<File> _getCacheFile(String assetPath) async {
+    final filename = assetPath.split('/').last;
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/$filename');
+
+    if (!await file.exists() || await file.length() == 0) {
+      final byteData = await rootBundle.load(assetPath);
+      final bytes = byteData.buffer.asUint8List(
+        byteData.offsetInBytes,
+        byteData.lengthInBytes,
+      );
+      await file.writeAsBytes(bytes, flush: true);
+    }
+    return file;
+  }
+
   void _videoListener() {
-    if (!_controller.value.isInitialized) return;
-    if (_controller.value.position >= _controller.value.duration &&
-        _controller.value.duration > Duration.zero) {
-      _complete();
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
+
+    if (controller.value.isPlaying && controller.value.position > const Duration(milliseconds: 100)) {
+      _hasStartedPlaying = true;
+    }
+
+    if (_hasStartedPlaying) {
+      final isAtEnd = controller.value.position >= controller.value.duration - const Duration(milliseconds: 150);
+      final isCompleted = controller.value.isCompleted;
+
+      if (isAtEnd || isCompleted) {
+        _complete();
+      }
     }
   }
 
@@ -68,18 +113,20 @@ class _DoorVideoOverlayState extends State<DoorVideoOverlay> {
 
   @override
   void dispose() {
-    _controller.removeListener(_videoListener);
-    _controller.dispose();
+    _controller?.removeListener(_videoListener);
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = _controller;
+
     return GestureDetector(
       onTap: _complete,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        color: Colors.black.withAlpha(200),
+        color: Colors.black.withAlpha(210),
         child: Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -102,16 +149,16 @@ class _DoorVideoOverlayState extends State<DoorVideoOverlay> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                if (_isInitialized)
+                if (controller != null && _isInitialized)
                   AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio > 0
-                        ? _controller.value.aspectRatio
+                    aspectRatio: controller.value.aspectRatio > 0
+                        ? controller.value.aspectRatio
                         : 16 / 9,
-                    child: VideoPlayer(_controller),
+                    child: VideoPlayer(controller),
                   )
                 else
                   const Padding(
-                    padding: EdgeInsets.all(40),
+                    padding: EdgeInsets.all(48),
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(AppColors.pastelPeach),
                     ),
