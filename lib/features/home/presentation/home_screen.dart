@@ -28,10 +28,25 @@ class HomeScreen extends StatelessWidget {
       getSubtitle: (ctx) =>
           AppLocalizations.of(ctx).strings.gameNumberBondsSubtitle,
       imagePath: 'assets/images/tile_number_bonds.jpg',
-      getBadges: [
-        (ctx) => AppLocalizations.of(ctx).strings.badgeGrades,
-        (ctx) => AppLocalizations.of(ctx).strings.badgeLives,
-        (ctx) => AppLocalizations.of(ctx).strings.badgeWood,
+      badges: [
+        GameBadge(
+          icon: '🎓',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeGrades,
+          bgColor: AppColors.pastelYellow.withAlpha(140),
+          borderColor: AppColors.pastelYellowDark.withAlpha(160),
+        ),
+        GameBadge(
+          icon: '❤️',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeLives,
+          bgColor: AppColors.pastelRose.withAlpha(140),
+          borderColor: AppColors.pastelRoseDark.withAlpha(160),
+        ),
+        GameBadge(
+          icon: '🪵',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeWood,
+          bgColor: AppColors.pastelSage.withAlpha(140),
+          borderColor: AppColors.pastelSageDark.withAlpha(160),
+        ),
       ],
       accentColor: AppColors.pastelPeach,
       shadowColor: AppColors.pastelPeachDark,
@@ -43,10 +58,25 @@ class HomeScreen extends StatelessWidget {
       getSubtitle: (ctx) =>
           AppLocalizations.of(ctx).strings.gameLabyrinthSubtitle,
       imagePath: 'assets/images/tile_labyrinth.jpg',
-      getBadges: [
-        (ctx) => AppLocalizations.of(ctx).strings.badgeMaze,
-        (ctx) => AppLocalizations.of(ctx).strings.badgeRandom,
-        (ctx) => AppLocalizations.of(ctx).strings.badgeLives,
+      badges: [
+        GameBadge(
+          icon: '🎓',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeGrades,
+          bgColor: AppColors.pastelYellow.withAlpha(140),
+          borderColor: AppColors.pastelYellowDark.withAlpha(160),
+        ),
+        GameBadge(
+          icon: '🚪',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeMaze,
+          bgColor: const Color(0xFFFFD8A8).withAlpha(140),
+          borderColor: const Color(0xFFE8590C).withAlpha(160),
+        ),
+        GameBadge(
+          icon: '🎲',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeRandom,
+          bgColor: const Color(0xFFD0EBFF).withAlpha(140),
+          borderColor: const Color(0xFF1971C2).withAlpha(160),
+        ),
       ],
       accentColor: const Color(0xFFFFD8A8),
       shadowColor: const Color(0xFFE8590C),
@@ -58,10 +88,25 @@ class HomeScreen extends StatelessWidget {
       getSubtitle: (ctx) =>
           AppLocalizations.of(ctx).strings.gameTrampolineSubtitle,
       imagePath: 'assets/images/tile_trampoline.jpg',
-      getBadges: [
-        (ctx) => AppLocalizations.of(ctx).strings.badgeArcade,
-        (ctx) => AppLocalizations.of(ctx).strings.badgePhysics,
-        (ctx) => AppLocalizations.of(ctx).strings.badgeRandom,
+      badges: [
+        GameBadge(
+          icon: '🎓',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeGrades,
+          bgColor: AppColors.pastelYellow.withAlpha(140),
+          borderColor: AppColors.pastelYellowDark.withAlpha(160),
+        ),
+        GameBadge(
+          icon: '🕹️',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeArcade,
+          bgColor: const Color(0xFFFFD8A8).withAlpha(140),
+          borderColor: const Color(0xFFE8590C).withAlpha(160),
+        ),
+        GameBadge(
+          icon: '🤸',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgePhysics,
+          bgColor: const Color(0xFFC3FAE8).withAlpha(140),
+          borderColor: const Color(0xFF0CA678).withAlpha(160),
+        ),
       ],
       accentColor: const Color(0xFFC3FAE8),
       shadowColor: const Color(0xFF0CA678),

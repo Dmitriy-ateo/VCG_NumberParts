@@ -130,30 +130,18 @@ class GameTileCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
 
-                  // Badges (Grades 1-2, 3 Lives, Tactile Wood)
+                  // Badges (Game Specific)
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
-                    children: [
-                      _buildBadge(
-                        icon: '🎓',
-                        label: l10n.badgeGrades,
-                        bgColor: AppColors.pastelYellow.withAlpha(140),
-                        borderColor: AppColors.pastelYellowDark.withAlpha(160),
-                      ),
-                      _buildBadge(
-                        icon: '❤️',
-                        label: l10n.badgeLives,
-                        bgColor: AppColors.pastelRose.withAlpha(140),
-                        borderColor: AppColors.pastelRoseDark.withAlpha(160),
-                      ),
-                      _buildBadge(
-                        icon: '🪵',
-                        label: l10n.badgeWood,
-                        bgColor: AppColors.pastelSage.withAlpha(140),
-                        borderColor: AppColors.pastelSageDark.withAlpha(160),
-                      ),
-                    ],
+                    children: game.badges.map((badge) {
+                      return _buildBadge(
+                        icon: badge.icon,
+                        label: badge.getLabel(context),
+                        bgColor: badge.bgColor,
+                        borderColor: badge.borderColor,
+                      );
+                    }).toList(),
                   ),
                   const SizedBox(height: 24),
 
