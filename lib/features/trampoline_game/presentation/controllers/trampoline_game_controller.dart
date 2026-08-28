@@ -98,7 +98,7 @@ class TrampolineGameController extends ChangeNotifier {
   }
 
   /// On trampoline select: Fox changes direction toward that trampoline
-  /// and starts flying 2 times faster (no teleporting).
+  /// and starts flying 3 times faster (no teleporting).
   void selectTrampoline(int index) {
     if (_isGameOver || _foxState != FoxAnimationState.falling || _selectedTrampolineIndex != null) {
       return;
@@ -113,8 +113,8 @@ class TrampolineGameController extends ChangeNotifier {
     final startY = _foxY;
     final totalDistY = (targetY - startY).clamp(0.01, 1.0);
 
-    // 2x faster than normal fall speed toward the chosen trampoline
-    final diveSpeed = _currentFallSpeed * 2.0;
+    // 3x faster than normal fall speed toward the chosen trampoline
+    final diveSpeed = _currentFallSpeed * 3.0;
 
     _activeTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) async {
       if (_isGameOver) {
@@ -139,7 +139,7 @@ class TrampolineGameController extends ChangeNotifier {
           notifyListeners();
 
           SoundManager.instance.playMatchSound();
-          await Future.delayed(const Duration(milliseconds: 220));
+          await Future.delayed(const Duration(milliseconds: 200));
 
           if (_isGameOver) return;
 
@@ -150,13 +150,13 @@ class TrampolineGameController extends ChangeNotifier {
             await progressRepository.saveTrampolineHighScore(difficulty.name, _score);
           }
 
-          // ── FLY UP 2X FASTER THAN FALLING DOWN ──────────────────────
+          // ── FLY UP 3X FASTER THAN FALLING DOWN ──────────────────────
           _foxState = FoxAnimationState.flyingUp;
           _squashingTrampolineIndex = null;
           notifyListeners();
 
           final launchStartX = _foxX;
-          final flyUpSpeed = _currentFallSpeed * 2.0;
+          final flyUpSpeed = _currentFallSpeed * 3.0;
 
           _activeTimer = Timer.periodic(const Duration(milliseconds: 16), (flyTimer) {
             if (_isGameOver) {
