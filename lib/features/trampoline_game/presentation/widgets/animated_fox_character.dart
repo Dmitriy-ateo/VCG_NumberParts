@@ -125,15 +125,11 @@ class _AnimatedFoxCharacterState extends State<AnimatedFoxCharacter>
                   gaplessPlayback: true,
                 ),
 
-                // ── TARGET NUMBER WOODEN PLAQUE ────────────────────────
+                // ── TARGET NUMBER PLAQUE (Floating above head) ────────
                 if (widget.targetNumber != null &&
                     widget.state != FoxAnimationState.fallen)
                   Positioned(
-                    bottom: widget.state == FoxAnimationState.flyingUp
-                        ? 22
-                        : (widget.state == FoxAnimationState.touchingTrampoline
-                            ? 12
-                            : 16),
+                    top: -18,
                     child: _buildTargetPlaque(widget.targetNumber!),
                   ),
               ],
@@ -156,11 +152,11 @@ class _AnimatedFoxCharacterState extends State<AnimatedFoxCharacter>
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFFD49A55),
-          width: 2.5,
+          width: 2.2,
         ),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF8A5A2B).withOpacity(0.35),
+            color: const Color(0xFF8A5A2B).withOpacity(0.30),
             offset: const Offset(0, 4),
             blurRadius: 8,
           ),
@@ -176,7 +172,7 @@ class _AnimatedFoxCharacterState extends State<AnimatedFoxCharacter>
           Text(
             '$number',
             style: AppTextStyles.numberTile.copyWith(
-              fontSize: 22,
+              fontSize: 20,
               fontWeight: FontWeight.w900,
               color: const Color(0xFF8A5A2B),
               shadows: [

@@ -39,20 +39,20 @@ class _SkyParallaxBackgroundState extends State<SkyParallaxBackground>
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color(0xFFE3FAFC),
-                  Color(0xFFD3F9D8),
-                  Color(0xFFFFF9DB),
-                  Color(0xFFFDF8F0),
+                  Color(0xFF7DD3FC), // Crisp sky blue
+                  Color(0xFFBAE6FD), // Soft pastel sky
+                  Color(0xFFE0F2FE), // Airy horizon
+                  Color(0xFFFEF3C7), // Sunny golden horizon
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                stops: [0.0, 0.45, 0.85, 1.0],
+                stops: [0.0, 0.35, 0.70, 1.0],
               ),
             ),
           ),
         ),
 
-        // ── FLOATING CLOUDS ──────────────────────────────────────────
+        // ── FLOATING CLOUDS & SUN ─────────────────────────────────────
         AnimatedBuilder(
           animation: _driftAnim,
           builder: (context, _) {
@@ -82,51 +82,127 @@ class _SkyParallaxBackgroundState extends State<SkyParallaxBackground>
                   ),
                 ),
 
-                // Cloud 1
+                // Cloud 1 (High sky)
                 Positioned(
-                  top: 80,
-                  left: ((t * (width + 120)) % (width + 160)) - 100,
-                  child: _buildCloud(80, 36),
+                  top: 60,
+                  left: ((width + 120) * t - 100) % (width + 200) - 80,
+                  child: _buildCloud(scale: 1.1, opacity: 0.85),
                 ),
 
-                // Cloud 2
+                // Cloud 2 (Mid sky, drifting slower)
                 Positioned(
-                  top: 160,
-                  left: (((t + 0.5) * (width + 140)) % (width + 180)) - 120,
-                  child: _buildCloud(110, 44),
+                  top: 150,
+                  left: ((width + 150) * ((t + 0.5) % 1.0) - 100) % (width + 220) - 90,
+                  child: _buildCloud(scale: 0.85, opacity: 0.65),
                 ),
 
-                // Cloud 3
+                // Cloud 3 (Lower sky)
                 Positioned(
-                  top: 260,
-                  left: (((t + 0.25) * (width + 100)) % (width + 150)) - 80,
-                  child: _buildCloud(70, 32),
+                  top: 240,
+                  left: ((width + 130) * ((t + 0.8) % 1.0) - 80) % (width + 200) - 70,
+                  child: _buildCloud(scale: 0.70, opacity: 0.50),
                 ),
               ],
             );
           },
         ),
 
-        // ── FOREGROUND CONTENT ───────────────────────────────────────
-        widget.child,
+        // ── LUSH GREEN MEADOW GROUND ─────────────────────────────────
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 120,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF86EFAC), // Fresh meadow light green
+                  Color(0xFF4ADE80), // Vibrant grass green
+                  Color(0xFF22C55E), // Deep lush grass
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(32)),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF15803D).withOpacity(0.20),
+                  offset: const Offset(0, -4),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Content
+        Positioned.fill(child: widget.child),
       ],
     );
   }
 
-  Widget _buildCloud(double w, double h) {
-    return Container(
-      width: w,
-      height: h,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.65),
-        borderRadius: BorderRadius.circular(h / 2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            offset: const Offset(0, 4),
-            blurRadius: 8,
+  Widget _buildCloud({required double scale, required double opacity}) {
+    return Opacity(
+      opacity: opacity,
+      child: Transform.scale(
+        scale: scale,
+        child: SizedBox(
+          width: 90,
+          height: 38,
+          child: Stack(
+            children: [
+              Positioned(
+                left: 10,
+                top: 8,
+                child: Container(
+                  width: 32,
+                  height: 30,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 28,
+                top: 0,
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 52,
+                top: 10,
+                child: Container(
+                  width: 28,
+                  height: 28,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: 14,
+                bottom: 0,
+                child: Container(
+                  width: 62,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
