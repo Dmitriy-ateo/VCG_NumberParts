@@ -202,6 +202,17 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                     final foxPixelY =
                         20.0 + (_controller.foxY * (areaHeight - 160.0));
 
+                    // Compute banking tilt during directional flight
+                    double foxTilt = 0.0;
+                    if (_controller.selectedTrampolineIndex != null) {
+                      final targetX = _controller.selectedTrampolineIndex == 0
+                          ? -0.65
+                          : (_controller.selectedTrampolineIndex == 2 ? 0.65 : 0.0);
+                      foxTilt = (targetX - _controller.foxX) * 0.28;
+                    } else if (_controller.foxState == FoxAnimationState.flyingUp) {
+                      foxTilt = -_controller.foxX * 0.15;
+                    }
+
                     return Stack(
                       clipBehavior: Clip.none,
                       children: [
@@ -212,6 +223,7 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                           child: AnimatedFoxCharacter(
                             state: _controller.foxState,
                             targetNumber: round.targetNumber,
+                            tilt: foxTilt,
                           ),
                         ),
                       ],

@@ -6,6 +6,7 @@ import 'package:number_parts/features/trampoline_game/domain/models/fox_animatio
 class AnimatedFoxCharacter extends StatefulWidget {
   final FoxAnimationState state;
   final int? targetNumber;
+  final double tilt;
   final double width;
   final double height;
 
@@ -13,6 +14,7 @@ class AnimatedFoxCharacter extends StatefulWidget {
     super.key,
     required this.state,
     this.targetNumber,
+    this.tilt = 0.0,
     this.width = 110,
     this.height = 140,
   });
@@ -48,20 +50,20 @@ class _AnimatedFoxCharacterState extends State<AnimatedFoxCharacter>
         final t = _idleAnim.value;
         double scaleX = 1.0;
         double scaleY = 1.0;
-        double rotation = 0.0;
+        double rotation = widget.tilt;
         double offsetY = 0.0;
 
         switch (widget.state) {
           case FoxAnimationState.flyingUp:
             scaleX = 0.90;
             scaleY = 1.18;
-            rotation = (t - 0.5) * 0.08;
+            rotation += (t - 0.5) * 0.08;
             offsetY = -6;
             break;
           case FoxAnimationState.falling:
             scaleX = 1.02;
             scaleY = 0.98;
-            rotation = sin(t * pi * 2) * 0.06;
+            rotation += sin(t * pi * 2) * 0.06;
             offsetY = sin(t * pi * 2) * 3;
             break;
           case FoxAnimationState.touchingTrampoline:
@@ -75,7 +77,7 @@ class _AnimatedFoxCharacterState extends State<AnimatedFoxCharacter>
             offsetY = 8;
             break;
           case FoxAnimationState.idle:
-            rotation = sin(t * pi * 2) * 0.04;
+            rotation += sin(t * pi * 2) * 0.04;
             offsetY = (t - 0.5) * 4;
             break;
         }
