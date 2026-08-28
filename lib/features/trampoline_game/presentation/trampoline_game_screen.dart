@@ -196,11 +196,13 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                     final areaWidth = constraints.maxWidth;
                     final areaHeight = constraints.maxHeight;
 
-                    // Compute Fox pixel coordinates
+                    // Compute Fox pixel coordinates right to the trampoline surface
                     final foxPixelX =
-                        (areaWidth / 2) + (_controller.foxX * (areaWidth * 0.35));
+                        (areaWidth / 2) + (_controller.foxX * (areaWidth * 0.46));
+                    const topSkyY = 15.0;
+                    final trampolineBedY = areaHeight - 88.0;
                     final foxPixelY =
-                        20.0 + (_controller.foxY * (areaHeight - 160.0));
+                        topSkyY + (_controller.foxY * (trampolineBedY - topSkyY));
 
                     // Compute banking tilt during directional flight
                     double foxTilt = 0.0;
