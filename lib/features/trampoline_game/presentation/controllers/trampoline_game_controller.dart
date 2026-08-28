@@ -72,7 +72,6 @@ class TrampolineGameController extends ChangeNotifier {
 
   Future<void> _initGame() async {
     _activeTimer?.cancel();
-    _bestScore = await progressRepository.getTrampolineHighScore(difficulty.name);
     _score = 0;
     _isNewBest = false;
     _isGameOver = false;
@@ -83,8 +82,12 @@ class TrampolineGameController extends ChangeNotifier {
     _touchingTrampolineIndex = null;
     _releasingTrampolineIndex = null;
 
+    // Initialize round and loop synchronously immediately
     _currentRound = TrampolineTaskGenerator.generateRound(difficulty: difficulty);
     _startFallLoop();
+
+    // Fetch high score asynchronously
+    _bestScore = await progressRepository.getTrampolineHighScore(difficulty.name);
     notifyListeners();
   }
 
