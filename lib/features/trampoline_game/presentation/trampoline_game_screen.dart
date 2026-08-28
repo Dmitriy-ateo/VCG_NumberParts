@@ -218,7 +218,7 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                       children: [
                         // Animated Fox Character
                         Positioned(
-                          left: foxPixelX - 55,
+                          left: foxPixelX - 60,
                           top: foxPixelY,
                           child: AnimatedFoxCharacter(
                             state: _controller.foxState,
