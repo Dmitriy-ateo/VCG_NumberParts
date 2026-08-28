@@ -20,11 +20,11 @@ class SpringTrampolineWidget extends StatelessWidget {
   String get _frameAssetPath {
     switch (visualState) {
       case TrampolineVisualState.idle:
-        return 'assets/images/trampoline_idle.jpg';
+        return 'assets/images/trampoline_idle.png';
       case TrampolineVisualState.touching:
-        return 'assets/images/trampoline_touching.jpg';
+        return 'assets/images/trampoline_touching.png';
       case TrampolineVisualState.releasing:
-        return 'assets/images/trampoline_releasing.jpg';
+        return 'assets/images/trampoline_releasing.png';
     }
   }
 
@@ -34,41 +34,41 @@ class SpringTrampolineWidget extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: 110,
+        width: 120,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ── REAL-LOOKING 3D TRAMPOLINE IMAGE FRAME ───────────────
-            Container(
-              height: 72,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  if (isSelected)
-                    BoxShadow(
-                      color: const Color(0xFFFFD43B).withOpacity(0.85),
-                      blurRadius: 12,
-                      spreadRadius: 3,
-                    )
-                  else
-                    BoxShadow(
-                      color: const Color(0xFF8A5A2B).withOpacity(0.18),
-                      offset: const Offset(0, 4),
-                      blurRadius: 8,
+            // ── WIDE TRANSPARENT 3D TRAMPOLINE IMAGE ─────────────────
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                if (isSelected)
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFFFD43B).withOpacity(0.75),
+                            blurRadius: 18,
+                            spreadRadius: 4,
+                          ),
+                        ],
+                      ),
                     ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  _frameAssetPath,
-                  fit: BoxFit.cover,
-                  gaplessPlayback: true,
+                  ),
+                SizedBox(
+                  height: 76,
+                  child: Image.asset(
+                    _frameAssetPath,
+                    fit: BoxFit.contain,
+                    gaplessPlayback: true,
+                  ),
                 ),
-              ),
+              ],
             ),
 
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
 
             // ── WOODEN EQUATION PLAQUE ───────────────────────────────
             Container(
