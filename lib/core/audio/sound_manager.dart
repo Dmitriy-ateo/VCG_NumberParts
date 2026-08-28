@@ -2,6 +2,12 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum BackgroundMusicType {
+  none,
+  menu,
+  game,
+}
+
 class SoundManager {
   SoundManager._internal();
 
@@ -12,7 +18,8 @@ class SoundManager {
   static const int _sfxPoolSize = 4;
 
   final AudioPlayer _musicPlayer = AudioPlayer();
-  bool _isInGameSession = false;
+  BackgroundMusicType _currentMusicType = BackgroundMusicType.none;
+  String? _currentlyPlayingAsset;
 
   final ValueNotifier<bool> isMusicEnabled = ValueNotifier<bool>(true);
   final ValueNotifier<bool> isSfxEnabled = ValueNotifier<bool>(true);
@@ -52,8 +59,10 @@ class SoundManager {
     }
 
     if (nextState) {
-      if (_isInGameSession) {
-        await startBackgroundMusic();
+      if (_currentMusicType == BackgroundMusicType.game) {
+        await startGameMusic();
+      } else {
+        await startMenuMusic();
       }
     } else {
       await stopBackgroundMusic();
@@ -74,23 +83,43 @@ class SoundManager {
     }
   }
 
+  Future<void> startMenuMusic() async {
+    _currentMusicType = BackgroundMusicType.menu;
+    await _playMusic('media/background_menu.wav');
+  }
+
+  Future<void> startGameMusic() async {
+    _currentMusicType = BackgroundMusicType.game;
+    await _playMusic('media/background_game.wav');
+  }
+
+  // Alias for backward compatibility
   Future<void> startBackgroundMusic() async {
-    _isInGameSession = true;
+    await startGameMusic();
+  }
+
+  Future<void> _playMusic(String assetPath) async {
     if (!isMusicEnabled.value) return;
+    if (_currentlyPlayingAsset == assetPath &&
+        _musicPlayer.state == PlayerState.playing) {
+      return;
+    }
 
     try {
       await _musicPlayer.setReleaseMode(ReleaseMode.loop);
       await _musicPlayer.setVolume(0.40); // Soft, pleasant ambient background volume
       await _musicPlayer.stop();
-      await _musicPlayer.play(AssetSource('media/background_game.wav'));
+      await _musicPlayer.play(AssetSource(assetPath));
+      _currentlyPlayingAsset = assetPath;
     } catch (e) {
       if (kDebugMode) {
-        print('SoundManager startBackgroundMusic error: $e');
+        print('SoundManager _playMusic error ($assetPath): $e');
       }
     }
   }
 
   Future<void> stopBackgroundMusic() async {
+    _currentlyPlayingAsset = null;
     try {
       await _musicPlayer.stop();
     } catch (e) {
@@ -101,8 +130,7 @@ class SoundManager {
   }
 
   void leaveGameSession() {
-    _isInGameSession = false;
-    stopBackgroundMusic();
+    startMenuMusic();
   }
 
   Future<void> playMenuClickSound() async {

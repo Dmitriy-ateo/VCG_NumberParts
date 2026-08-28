@@ -37,5 +37,8 @@ void main() {
 
     final backgroundMusicData = await rootBundle.load('assets/media/background_game.wav');
     expect(backgroundMusicData.lengthInBytes, greaterThan(0));
+
+    final backgroundMenuData = await rootBundle.load('assets/media/background_menu.wav');
+    expect(backgroundMenuData.lengthInBytes, greaterThan(0));
   });
 }

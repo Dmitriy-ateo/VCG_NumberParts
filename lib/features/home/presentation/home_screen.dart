@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
+import '../../../../core/audio/sound_manager.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/l10n/locale_controller.dart';
 import '../../../../core/widgets/pastel_app_bar.dart';
@@ -10,13 +11,24 @@ import '../domain/game_info.dart';
 import 'widgets/game_tile_card.dart';
 import 'widgets/welcome_banner.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final LocaleController localeController;
 
   const HomeScreen({
     super.key,
     required this.localeController,
   });
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    SoundManager.instance.startMenuMusic();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +126,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: PastelAppBar(localeController: localeController),
+      appBar: PastelAppBar(localeController: widget.localeController),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
