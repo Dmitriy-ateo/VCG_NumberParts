@@ -6,6 +6,7 @@ import 'package:number_parts/features/trampoline_game/domain/logic/trampoline_ta
 import 'package:number_parts/features/trampoline_game/domain/models/fox_animation_state.dart';
 import 'package:number_parts/features/trampoline_game/domain/models/trampoline_data.dart';
 import 'package:number_parts/features/trampoline_game/domain/models/trampoline_difficulty.dart';
+import 'package:number_parts/features/trampoline_game/domain/models/trampoline_visual_state.dart';
 
 class TrampolineGameController extends ChangeNotifier {
   final TrampolineDifficulty difficulty;
@@ -22,7 +23,8 @@ class TrampolineGameController extends ChangeNotifier {
   double _foxX = 0.0; // -0.65 (left), 0.0 (center), 0.65 (right)
 
   int? _selectedTrampolineIndex;
-  int? _squashingTrampolineIndex;
+  int? _touchingTrampolineIndex;
+  int? _releasingTrampolineIndex;
   Timer? _activeTimer;
 
   TrampolineGameController({
@@ -41,7 +43,16 @@ class TrampolineGameController extends ChangeNotifier {
   double get foxY => _foxY;
   double get foxX => _foxX;
   int? get selectedTrampolineIndex => _selectedTrampolineIndex;
-  int? get squashingTrampolineIndex => _squashingTrampolineIndex;
+
+  TrampolineVisualState getTrampolineVisualState(int index) {
+    if (_touchingTrampolineIndex == index) {
+      return TrampolineVisualState.touching;
+    }
+    if (_releasingTrampolineIndex == index) {
+      return TrampolineVisualState.releasing;
+    }
+    return TrampolineVisualState.idle;
+  }
 
   double get _currentFallSpeed {
     double baseSpeed;
@@ -69,7 +80,8 @@ class TrampolineGameController extends ChangeNotifier {
     _foxY = 0.0;
     _foxX = 0.0;
     _selectedTrampolineIndex = null;
-    _squashingTrampolineIndex = null;
+    _touchingTrampolineIndex = null;
+    _releasingTrampolineIndex = null;
 
     _currentRound = TrampolineTaskGenerator.generateRound(difficulty: difficulty);
     _startFallLoop();
@@ -98,7 +110,7 @@ class TrampolineGameController extends ChangeNotifier {
   }
 
   /// On trampoline select: Fox changes direction toward that trampoline
-  /// and starts flying 3 times faster (no teleporting).
+  /// and dives faster (no teleporting).
   void selectTrampoline(int index) {
     if (_isGameOver || _foxState != FoxAnimationState.falling || _selectedTrampolineIndex != null) {
       return;
@@ -113,7 +125,7 @@ class TrampolineGameController extends ChangeNotifier {
     final startY = _foxY;
     final totalDistY = (targetY - startY).clamp(0.01, 1.0);
 
-    // 7x faster than normal fall speed toward the chosen trampoline
+    // Fast dive toward the chosen trampoline
     final diveSpeed = _currentFallSpeed * 7.0;
 
     _activeTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) async {
@@ -133,13 +145,14 @@ class TrampolineGameController extends ChangeNotifier {
 
         final chosenTrampoline = _currentRound.trampolines[index];
         if (chosenTrampoline.isCorrect) {
-          // ── CORRECT TRAMPOLINE LANDING! ────────────────────────────
+          // ── CORRECT TRAMPOLINE LANDING (TOUCHING FRAME) ─────────────
           _foxState = FoxAnimationState.touchingTrampoline;
-          _squashingTrampolineIndex = index;
+          _touchingTrampolineIndex = index;
+          _releasingTrampolineIndex = null;
           notifyListeners();
 
           SoundManager.instance.playMatchSound();
-          await Future.delayed(const Duration(milliseconds: 200));
+          await Future.delayed(const Duration(milliseconds: 180));
 
           if (_isGameOver) return;
 
@@ -150,10 +163,19 @@ class TrampolineGameController extends ChangeNotifier {
             await progressRepository.saveTrampolineHighScore(difficulty.name, _score);
           }
 
-          // ── FLY UP 8X FASTER THAN FALLING DOWN ──────────────────────
+          // ── RELEASING / REBOUNDING FRAME + ASCENT ───────────────────
           _foxState = FoxAnimationState.flyingUp;
-          _squashingTrampolineIndex = null;
+          _touchingTrampolineIndex = null;
+          _releasingTrampolineIndex = index;
           notifyListeners();
+
+          // Reset releasing frame after rebound launch
+          Future.delayed(const Duration(milliseconds: 160), () {
+            if (_releasingTrampolineIndex == index) {
+              _releasingTrampolineIndex = null;
+              notifyListeners();
+            }
+          });
 
           final launchStartX = _foxX;
           final flyUpSpeed = _currentFallSpeed * 8.0;
@@ -195,7 +217,8 @@ class TrampolineGameController extends ChangeNotifier {
     _isGameOver = true;
     _foxState = FoxAnimationState.fallen;
     _foxY = 1.0;
-    _squashingTrampolineIndex = null;
+    _touchingTrampolineIndex = null;
+    _releasingTrampolineIndex = null;
     SoundManager.instance.playWrongPickSound();
     SoundManager.instance.playLoseSound();
     notifyListeners();

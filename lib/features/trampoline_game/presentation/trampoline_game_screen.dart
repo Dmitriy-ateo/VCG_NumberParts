@@ -241,14 +241,13 @@ class _TrampolineGameScreenState extends State<TrampolineGameScreen> {
                   children: round.trampolines.map((trampoline) {
                     final isSelected =
                         _controller.selectedTrampolineIndex == trampoline.index;
-                    final isSquashing =
-                        _controller.squashingTrampolineIndex ==
-                            trampoline.index;
+                    final visualState =
+                        _controller.getTrampolineVisualState(trampoline.index);
 
                     return SpringTrampolineWidget(
                       trampoline: trampoline,
+                      visualState: visualState,
                       isSelected: isSelected,
-                      isSquashing: isSquashing,
                       onTap: () =>
                           _controller.selectTrampoline(trampoline.index),
                     );
