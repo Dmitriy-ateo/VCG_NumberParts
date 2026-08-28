@@ -113,8 +113,8 @@ class TrampolineGameController extends ChangeNotifier {
     final startY = _foxY;
     final totalDistY = (targetY - startY).clamp(0.01, 1.0);
 
-    // 3x faster than normal fall speed toward the chosen trampoline
-    final diveSpeed = _currentFallSpeed * 3.0;
+    // 7x faster than normal fall speed toward the chosen trampoline
+    final diveSpeed = _currentFallSpeed * 7.0;
 
     _activeTimer = Timer.periodic(const Duration(milliseconds: 16), (timer) async {
       if (_isGameOver) {
@@ -150,13 +150,13 @@ class TrampolineGameController extends ChangeNotifier {
             await progressRepository.saveTrampolineHighScore(difficulty.name, _score);
           }
 
-          // ── FLY UP 3X FASTER THAN FALLING DOWN ──────────────────────
+          // ── FLY UP 8X FASTER THAN FALLING DOWN ──────────────────────
           _foxState = FoxAnimationState.flyingUp;
           _squashingTrampolineIndex = null;
           notifyListeners();
 
           final launchStartX = _foxX;
-          final flyUpSpeed = _currentFallSpeed * 3.0;
+          final flyUpSpeed = _currentFallSpeed * 8.0;
 
           _activeTimer = Timer.periodic(const Duration(milliseconds: 16), (flyTimer) {
             if (_isGameOver) {
