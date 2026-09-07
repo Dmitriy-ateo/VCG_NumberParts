@@ -149,4 +149,61 @@ class ProgressRepository {
       return false;
     }
   }
+
+  // ── FOX MINER PROGRESSION ────────────────────────────────────────
+  static const String _keyFoxMinerUnlocked = 'fox_miner_unlocked_level';
+  static const String _keyFoxMinerStarsPrefix = 'fox_miner_stars_lvl_';
+
+  String _foxMinerStarsKey(int level) => '$_keyFoxMinerStarsPrefix$level';
+
+  Future<int> getFoxMinerUnlockedLevel() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getInt(_keyFoxMinerUnlocked) ?? 1;
+    } catch (_) {
+      return 1;
+    }
+  }
+
+  Future<void> unlockFoxMinerLevel(int level) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final current = prefs.getInt(_keyFoxMinerUnlocked) ?? 1;
+      if (level > current) {
+        await prefs.setInt(_keyFoxMinerUnlocked, level);
+      }
+    } catch (_) {}
+  }
+
+  Future<int> getFoxMinerStarsForLevel(int level) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getInt(_foxMinerStarsKey(level)) ?? 0;
+    } catch (_) {
+      return 0;
+    }
+  }
+
+  Future<void> saveFoxMinerStarsForLevel(int level, int stars) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final current = prefs.getInt(_foxMinerStarsKey(level)) ?? 0;
+      if (stars > current) {
+        await prefs.setInt(_foxMinerStarsKey(level), stars);
+      }
+    } catch (_) {}
+  }
+
+  Future<int> getFoxMinerTotalStars(int maxLevel) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      int total = 0;
+      for (int i = 1; i <= maxLevel; i++) {
+        total += prefs.getInt(_foxMinerStarsKey(i)) ?? 0;
+      }
+      return total;
+    } catch (_) {
+      return 0;
+    }
+  }
 }

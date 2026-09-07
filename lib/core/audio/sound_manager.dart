@@ -173,6 +173,18 @@ class SoundManager {
     await _playSfx('media/trampoline_crash.wav');
   }
 
+  Future<void> playMiningKirkAdultSound() async {
+    await _playSfx('media/mining_kirk_adult.wav');
+  }
+
+  Future<void> playMiningKirkChildSound() async {
+    await _playSfx('media/mining_kirk_child.wav');
+  }
+
+  Future<void> playMiningKirkFailsSound() async {
+    await _playSfx('media/mining_kirk_fails.wav');
+  }
+
   Future<void> _playSfx(String assetName) async {
     if (!isSfxEnabled.value) return;
 

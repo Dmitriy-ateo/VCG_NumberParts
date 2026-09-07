@@ -92,6 +92,8 @@ class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
             ),
+            const SizedBox(width: 10),
+
             // Music Toggle Button
             const MusicToggleButton(size: 48),
             const SizedBox(width: 10),

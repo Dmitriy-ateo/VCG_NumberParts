@@ -52,6 +52,8 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/crystals/
+    - assets/images/carts/
     - assets/media/
     - assets/media/video/
 

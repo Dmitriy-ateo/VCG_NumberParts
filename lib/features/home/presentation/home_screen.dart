@@ -4,6 +4,7 @@ import '../../../../core/audio/sound_manager.dart';
 import '../../../../core/l10n/app_localizations.dart';
 import '../../../../core/l10n/locale_controller.dart';
 import '../../../../core/widgets/pastel_app_bar.dart';
+import '../../fox_miner_game/presentation/fox_miner_levels_screen.dart';
 import '../../labyrinth_game/presentation/labyrinth_levels_screen.dart';
 import '../../number_bonds_game/presentation/levels_screen.dart';
 import '../../trampoline_game/presentation/trampoline_menu_screen.dart';
@@ -32,8 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
     final numberBondsGame = GameInfo(
       id: 'number_bonds',
       getTitle: (ctx) => AppLocalizations.of(ctx).strings.gameNumberBondsTitle,
@@ -124,6 +123,36 @@ class _HomeScreenState extends State<HomeScreen> {
       shadowColor: const Color(0xFF0CA678),
     );
 
+    final foxMinerGame = GameInfo(
+      id: 'fox_miners',
+      getTitle: (ctx) => AppLocalizations.of(ctx).strings.gameFoxMinerTitle,
+      getSubtitle: (ctx) =>
+          AppLocalizations.of(ctx).strings.gameFoxMinerSubtitle,
+      imagePath: 'assets/images/tile_fox_miners.jpg',
+      badges: [
+        GameBadge(
+          icon: '🎓',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeGradesMiners,
+          bgColor: AppColors.pastelYellow.withAlpha(140),
+          borderColor: AppColors.pastelYellowDark.withAlpha(160),
+        ),
+        GameBadge(
+          icon: '⛏️',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeMiner,
+          bgColor: AppColors.pastelPeach.withAlpha(140),
+          borderColor: AppColors.pastelPeachDark.withAlpha(160),
+        ),
+        GameBadge(
+          icon: '💎',
+          getLabel: (ctx) => AppLocalizations.of(ctx).strings.badgeTensSingles,
+          bgColor: const Color(0xFFD0BFFF).withAlpha(140),
+          borderColor: const Color(0xFF7048E8).withAlpha(160),
+        ),
+      ],
+      accentColor: const Color(0xFFD0BFFF),
+      shadowColor: const Color(0xFF7048E8),
+    );
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: PastelAppBar(localeController: widget.localeController),
@@ -164,6 +193,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => const TrampolineMenuScreen(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              GameTileCard(
+                game: foxMinerGame,
+                onPlay: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const FoxMinerLevelsScreen(),
                     ),
                   );
                 },

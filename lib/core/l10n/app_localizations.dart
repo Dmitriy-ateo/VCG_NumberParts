@@ -36,6 +36,23 @@ class AppStrings {
   final String tapTrampolineHint;
   final String newHighScoreTitle;
 
+  // Game 4: Fox Miners
+  final String gameFoxMinerTitle;
+  final String gameFoxMinerSubtitle;
+  final String badgeGradesMiners;
+  final String badgeMiner;
+  final String badgeTensSingles;
+  final String badgePrecision;
+  final String momFoxButtonLabel;
+  final String kidFoxButtonLabel;
+  final String swingsLabel;
+  final String missesLabel;
+  final String perfectMining;
+  final String greatMining;
+  final String goodEffortMining;
+  final String handoverTenButtonLabel;
+  final String cartFullBadgeLabel;
+
   // Levels Screen
   final String selectLevelTitle;
   final String tabClassic;
@@ -108,6 +125,21 @@ class AppStrings {
     required this.bestScoreLabel,
     required this.tapTrampolineHint,
     required this.newHighScoreTitle,
+    required this.gameFoxMinerTitle,
+    required this.gameFoxMinerSubtitle,
+    required this.badgeGradesMiners,
+    required this.badgeMiner,
+    required this.badgeTensSingles,
+    required this.badgePrecision,
+    required this.momFoxButtonLabel,
+    required this.kidFoxButtonLabel,
+    required this.swingsLabel,
+    required this.missesLabel,
+    required this.perfectMining,
+    required this.greatMining,
+    required this.goodEffortMining,
+    required this.handoverTenButtonLabel,
+    required this.cartFullBadgeLabel,
     required this.selectLevelTitle,
     required this.tabClassic,
     required this.tabAdvanced,
@@ -177,6 +209,21 @@ class AppLocalizations {
       bestScoreLabel: 'Рекорд',
       tapTrampolineHint: 'Обери батут, поки лисичка падає!',
       newHighScoreTitle: 'Новий Рекорд! 🌟',
+      gameFoxMinerTitle: 'Лисиці-Шахтарі',
+      gameFoxMinerSubtitle: 'Розділяй кристали на десятки та одиниці разом із Мамою та Лисеням!',
+      badgeGradesMiners: '0–1 Класи',
+      badgeMiner: 'Шахтарі',
+      badgeTensSingles: 'Десятки й Одиниці',
+      badgePrecision: 'Без Промахів',
+      momFoxButtonLabel: 'Мама Лисиця',
+      kidFoxButtonLabel: 'Мале Лисеня',
+      swingsLabel: 'Удари',
+      missesLabel: 'Промахи',
+      perfectMining: 'Бездоганне руйнування! 💎',
+      greatMining: 'Чудова робота! 🌟',
+      goodEffortMining: 'Кристал розбито! ✨',
+      handoverTenButtonLabel: 'Передай 10 Мамі! ➔',
+      cartFullBadgeLabel: 'Повно (10)!',
       selectLevelTitle: 'Обери Рівень 🗺️',
       tabClassic: '🌿 Базовий',
       tabAdvanced: '⚡ Складний',
@@ -238,6 +285,21 @@ class AppLocalizations {
       bestScoreLabel: 'Best',
       tapTrampolineHint: 'Tap a trampoline before Fox lands!',
       newHighScoreTitle: 'New High Score! 🌟',
+      gameFoxMinerTitle: 'Fox Miners',
+      gameFoxMinerSubtitle: 'Split crystals into tens and ones with Mom and Kid Fox!',
+      badgeGradesMiners: 'Grades 0–1',
+      badgeMiner: 'Mining',
+      badgeTensSingles: 'Tens & Ones',
+      badgePrecision: 'No Misses',
+      momFoxButtonLabel: 'Mom Fox',
+      kidFoxButtonLabel: 'Kid Fox',
+      swingsLabel: 'Swings',
+      missesLabel: 'Missed',
+      perfectMining: 'Perfect Mining! 💎',
+      greatMining: 'Great Mining! 🌟',
+      goodEffortMining: 'Crystal Cleared! ✨',
+      handoverTenButtonLabel: 'Give 10 to Mom! ➔',
+      cartFullBadgeLabel: 'Full (10)!',
       selectLevelTitle: 'Select Level 🗺️',
       tabClassic: '🌿 Basic',
       tabAdvanced: '⚡ Advanced',
@@ -299,6 +361,21 @@ class AppLocalizations {
       bestScoreLabel: 'Rekord',
       tapTrampolineHint: 'Izberi ponjavo, preden lisička pade!',
       newHighScoreTitle: 'Nov Rekord! 🌟',
+      gameFoxMinerTitle: 'Lisice Rudarji',
+      gameFoxMinerSubtitle: 'Razdeli kristale na desetice in enice z Mamo in Lisičko!',
+      badgeGradesMiners: '0.–1. Razred',
+      badgeMiner: 'Rudarjenje',
+      badgeTensSingles: 'Desetice in Enice',
+      badgePrecision: 'Brez Zgreškov',
+      momFoxButtonLabel: 'Mama Lisica',
+      kidFoxButtonLabel: 'Mala Lisička',
+      swingsLabel: 'Zamahov',
+      missesLabel: 'Zgrešeno',
+      perfectMining: 'Popolno rudarjenje! 💎',
+      greatMining: 'Odlično delo! 🌟',
+      goodEffortMining: 'Kristal razbit! ✨',
+      handoverTenButtonLabel: 'Daj 10 Mami! ➔',
+      cartFullBadgeLabel: 'Polno (10)!',
       selectLevelTitle: 'Izberi Stopnjo 🗺️',
       tabClassic: '🌿 Osnovno',
       tabAdvanced: '⚡ Napredno',
