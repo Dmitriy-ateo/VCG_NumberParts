@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_text_styles.dart';
 import '../l10n/locale_controller.dart';
+import '../storage/progress_repository.dart';
 import 'bouncy_button.dart';
-import 'language_selector_dialog.dart';
-import 'music_toggle_button.dart';
+import 'settings_dialog.dart';
 
-class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
+class PastelAppBar extends StatefulWidget implements PreferredSizeWidget {
   final LocaleController localeController;
 
   const PastelAppBar({
@@ -17,15 +17,27 @@ class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(80);
 
-  String _getFlag(String code) {
-    switch (code) {
-      case 'uk':
-        return '🇺🇦';
-      case 'sl':
-        return '🇸🇮';
-      case 'en':
-      default:
-        return '🇬🇧';
+  @override
+  State<PastelAppBar> createState() => _PastelAppBarState();
+}
+
+class _PastelAppBarState extends State<PastelAppBar> {
+  final ProgressRepository _progressRepository = ProgressRepository();
+  int _totalStars = 12;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStars();
+  }
+
+  Future<void> _loadStars() async {
+    final stars = await _progressRepository.getAllTotalStars();
+    if (mounted) {
+      setState(() {
+        // If the user has earned stars use them, otherwise show a welcoming starter score
+        _totalStars = stars > 0 ? stars : 12;
+      });
     }
   }
 
@@ -36,39 +48,26 @@ class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Row(
           children: [
-            // App Title Pill / Badge
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: AppColors.backgroundCard,
-                borderRadius: BorderRadius.circular(22),
-                border: Border.all(color: AppColors.woodBorder.withAlpha(140), width: 2.5),
-                boxShadow: const [
-                  BoxShadow(
-                    color: AppColors.shadowWarm,
-                    offset: Offset(0, 4),
-                    blurRadius: 8,
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('📐', style: TextStyle(fontSize: 22)),
-                  const SizedBox(width: 8),
-                  Text('Heroma', style: AppTextStyles.titleSmall),
-                ],
-              ),
+            // Left: App Logo
+            Image.asset(
+              'assets/images/heroma_header_icon.png',
+              width: 48,
+              height: 48,
+              fit: BoxFit.contain,
             ),
+
             const Spacer(),
 
-            // Stars Counter
+            // Middle: Stars Counter / Score
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: AppColors.pastelYellow.withAlpha(140),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.pastelYellowDark.withAlpha(150), width: 2),
+                border: Border.all(
+                  color: AppColors.pastelYellowDark.withAlpha(150),
+                  width: 2,
+                ),
                 boxShadow: const [
                   BoxShadow(
                     color: AppColors.shadowWarm,
@@ -83,48 +82,37 @@ class PastelAppBar extends StatelessWidget implements PreferredSizeWidget {
                   const Text('⭐', style: TextStyle(fontSize: 18)),
                   const SizedBox(width: 6),
                   Text(
-                    '12',
+                    '$_totalStars',
                     style: AppTextStyles.badge.copyWith(
                       color: AppColors.textPrimary,
                       fontSize: 16,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: 10),
 
-            // Music Toggle Button
-            const MusicToggleButton(size: 48),
-            const SizedBox(width: 10),
+            const Spacer(),
 
-            // Language Switcher Button
-            ListenableBuilder(
-              listenable: localeController,
-              builder: (context, _) {
-                final flag = _getFlag(localeController.locale.languageCode);
-                return BouncyButton(
-                  height: 48,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                  backgroundColor: AppColors.surfaceWarm,
-                  shadowColor: AppColors.woodBorder,
-                  borderRadius: BorderRadius.circular(20),
-                  bevelHeight: 3.5,
-                  onPressed: () => LanguageSelectorDialog.show(context, localeController),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(flag, style: const TextStyle(fontSize: 20)),
-                      const SizedBox(width: 6),
-                      const Icon(
-                        Icons.keyboard_arrow_down_rounded,
-                        color: AppColors.textPrimary,
-                        size: 20,
-                      ),
-                    ],
-                  ),
-                );
+            // Right: Settings Icon Button
+            BouncyButton(
+              height: 48,
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+              backgroundColor: AppColors.surfaceWarm,
+              shadowColor: AppColors.woodBorder,
+              borderRadius: BorderRadius.circular(20),
+              bevelHeight: 3.5,
+              onPressed: () {
+                SettingsDialog.show(context, widget.localeController).then((_) {
+                  _loadStars();
+                });
               },
+              child: const Icon(
+                Icons.settings_rounded,
+                color: AppColors.textPrimary,
+                size: 24,
+              ),
             ),
           ],
         ),

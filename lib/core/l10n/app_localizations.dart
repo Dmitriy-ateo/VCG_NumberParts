@@ -88,6 +88,12 @@ class AppStrings {
   final String trampolineGameOverSubtitle;
   final String tryAgainButton;
 
+  // Settings Dialog
+  final String settingsTitle;
+  final String musicLabel;
+  final String soundEffectsLabel;
+  final String languageLabel;
+
   // Language Picker
   final String chooseLanguage;
   final String languageUk;
@@ -167,6 +173,10 @@ class AppStrings {
     required this.trampolineGameOverTitle,
     required this.trampolineGameOverSubtitle,
     required this.tryAgainButton,
+    required this.settingsTitle,
+    required this.musicLabel,
+    required this.soundEffectsLabel,
+    required this.languageLabel,
     required this.chooseLanguage,
     required this.languageUk,
     required this.languageEn,
@@ -251,6 +261,10 @@ class AppLocalizations {
       trampolineGameOverTitle: 'Ой, лисичка приземлилася! 🦊',
       trampolineGameOverSubtitle: 'Чудова спроба! Спробуймо ще раз пострибати вище!',
       tryAgainButton: 'Спробувати знову',
+      settingsTitle: 'Налаштування ⚙️',
+      musicLabel: 'Фонова музика 🎵',
+      soundEffectsLabel: 'Звукові ефекти 🔔',
+      languageLabel: 'Мова гри 🌍',
       chooseLanguage: 'Обери мову 🌍',
       languageUk: 'Українська',
       languageEn: 'English',
@@ -327,6 +341,10 @@ class AppLocalizations {
       trampolineGameOverTitle: 'Fox has landed! 🦊',
       trampolineGameOverSubtitle: 'Great bouncing! Let\'s jump even higher next time!',
       tryAgainButton: 'Try Again',
+      settingsTitle: 'Settings ⚙️',
+      musicLabel: 'Background Music 🎵',
+      soundEffectsLabel: 'Sound Effects 🔔',
+      languageLabel: 'Game Language 🌍',
       chooseLanguage: 'Choose Language 🌍',
       languageUk: 'Українська',
       languageEn: 'English',
@@ -403,6 +421,10 @@ class AppLocalizations {
       trampolineGameOverTitle: 'Lisička je pristala! 🦊',
       trampolineGameOverSubtitle: 'Super poskus! Poskusiva skočiti še višje!',
       tryAgainButton: 'Poskusi znova',
+      settingsTitle: 'Nastavitve ⚙️',
+      musicLabel: 'Glasba v ozadju 🎵',
+      soundEffectsLabel: 'Zvočni učinki 🔔',
+      languageLabel: 'Jezik igre 🌍',
       chooseLanguage: 'Izberi jezik 🌍',
       languageUk: 'Українська',
       languageEn: 'English',

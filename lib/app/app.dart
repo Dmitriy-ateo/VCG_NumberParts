@@ -4,7 +4,7 @@ import '../core/audio/app_navigator_observer.dart';
 import '../core/l10n/app_localizations.dart';
 import '../core/l10n/locale_controller.dart';
 import '../core/widgets/responsive_web_wrapper.dart';
-import '../features/home/presentation/home_screen.dart';
+import '../features/splash/presentation/splash_screen.dart';
 import 'theme/app_theme.dart';
 
 class HeromaApp extends StatelessWidget {
@@ -44,7 +44,7 @@ class HeromaApp extends StatelessWidget {
               child: child ?? const SizedBox.shrink(),
             );
           },
-          home: HomeScreen(localeController: localeController),
+          home: SplashScreen(localeController: localeController),
         );
       },
     );

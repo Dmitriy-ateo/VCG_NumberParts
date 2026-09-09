@@ -206,4 +206,23 @@ class ProgressRepository {
       return 0;
     }
   }
+
+  /// Calculates total accumulated stars across all games
+  Future<int> getAllTotalStars() async {
+    try {
+      final numberBondsClassic = await getTotalStars(10, LevelCategory.classic);
+      final numberBondsAdvanced = await getTotalStars(10, LevelCategory.advanced);
+      final labyrinthSimple = await getLabyrinthTotalStars('simple', 10);
+      final labyrinthHard = await getLabyrinthTotalStars('hard', 10);
+      final foxMiner = await getFoxMinerTotalStars(10);
+      final total = numberBondsClassic +
+          numberBondsAdvanced +
+          labyrinthSimple +
+          labyrinthHard +
+          foxMiner;
+      return total;
+    } catch (_) {
+      return 0;
+    }
+  }
 }
