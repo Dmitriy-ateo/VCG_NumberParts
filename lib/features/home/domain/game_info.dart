@@ -28,6 +28,9 @@ class GameInfo {
   final Color accentColor;
   final Color shadowColor;
   final GameStatus status;
+  final int minGrade;
+  final int maxGrade;
+  final VoidCallback onPlay;
 
   const GameInfo({
     required this.id,
@@ -38,5 +41,8 @@ class GameInfo {
     required this.accentColor,
     required this.shadowColor,
     this.status = GameStatus.active,
+    this.minGrade = 1,
+    this.maxGrade = 2,
+    required this.onPlay,
   });
 }

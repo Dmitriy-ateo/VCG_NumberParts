@@ -88,11 +88,16 @@ class AppStrings {
   final String trampolineGameOverSubtitle;
   final String tryAgainButton;
 
-  // Settings Dialog
+  // Settings Dialog & Filter
   final String settingsTitle;
   final String musicLabel;
   final String soundEffectsLabel;
   final String languageLabel;
+  final String filterByGrade;
+  final String filterAll;
+  final String filterGrades0to1;
+  final String filterGrades1to2;
+  final String noGamesFound;
 
   // Language Picker
   final String chooseLanguage;
@@ -177,6 +182,11 @@ class AppStrings {
     required this.musicLabel,
     required this.soundEffectsLabel,
     required this.languageLabel,
+    required this.filterByGrade,
+    required this.filterAll,
+    required this.filterGrades0to1,
+    required this.filterGrades1to2,
+    required this.noGamesFound,
     required this.chooseLanguage,
     required this.languageUk,
     required this.languageEn,
@@ -265,6 +275,11 @@ class AppLocalizations {
       musicLabel: 'Фонова музика 🎵',
       soundEffectsLabel: 'Звукові ефекти 🔔',
       languageLabel: 'Мова гри 🌍',
+      filterByGrade: 'Фільтр за класами 🎓',
+      filterAll: 'Всі',
+      filterGrades0to1: '0–1 Класи',
+      filterGrades1to2: '1–2 Класи',
+      noGamesFound: 'Ігор для цієї категорії ще немає 🦊',
       chooseLanguage: 'Обери мову 🌍',
       languageUk: 'Українська',
       languageEn: 'English',
@@ -345,6 +360,11 @@ class AppLocalizations {
       musicLabel: 'Background Music 🎵',
       soundEffectsLabel: 'Sound Effects 🔔',
       languageLabel: 'Game Language 🌍',
+      filterByGrade: 'Filter by Grade 🎓',
+      filterAll: 'All',
+      filterGrades0to1: 'Grades 0–1',
+      filterGrades1to2: 'Grades 1–2',
+      noGamesFound: 'No games for this grade yet 🦊',
       chooseLanguage: 'Choose Language 🌍',
       languageUk: 'Українська',
       languageEn: 'English',
@@ -425,6 +445,11 @@ class AppLocalizations {
       musicLabel: 'Glasba v ozadju 🎵',
       soundEffectsLabel: 'Zvočni učinki 🔔',
       languageLabel: 'Jezik igre 🌍',
+      filterByGrade: 'Filtriraj po razredih 🎓',
+      filterAll: 'Vse',
+      filterGrades0to1: '0.–1. Razred',
+      filterGrades1to2: '1.–2. Razred',
+      noGamesFound: 'Za ta razred še ni iger 🦊',
       chooseLanguage: 'Izberi jezik 🌍',
       languageUk: 'Українська',
       languageEn: 'English',

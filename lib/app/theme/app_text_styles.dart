@@ -49,6 +49,13 @@ abstract class AppTextStyles {
         letterSpacing: 0.5,
       );
 
+  static TextStyle get buttonMedium => GoogleFonts.nunito(
+        fontSize: 15,
+        fontWeight: FontWeight.w800,
+        color: AppColors.textPrimary,
+        letterSpacing: 0.3,
+      );
+
   static TextStyle get numberTile => GoogleFonts.fredoka(
         fontSize: 36,
         fontWeight: FontWeight.w700,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../app/theme/app_colors.dart';
 import '../../app/theme/app_text_styles.dart';
+import '../../features/home/domain/grade_filter_controller.dart';
 import '../audio/sound_manager.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/locale_controller.dart';
@@ -8,13 +9,19 @@ import 'bouncy_button.dart';
 
 class SettingsDialog extends StatelessWidget {
   final LocaleController localeController;
+  final GradeFilterController? gradeFilterController;
 
   const SettingsDialog({
     super.key,
     required this.localeController,
+    this.gradeFilterController,
   });
 
-  static Future<void> show(BuildContext context, LocaleController controller) {
+  static Future<void> show(
+    BuildContext context,
+    LocaleController controller, {
+    GradeFilterController? gradeFilterController,
+  }) {
     return showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -22,7 +29,10 @@ class SettingsDialog extends StatelessWidget {
       barrierColor: Colors.black.withAlpha(90),
       transitionDuration: const Duration(milliseconds: 250),
       pageBuilder: (context, anim1, anim2) {
-        return SettingsDialog(localeController: controller);
+        return SettingsDialog(
+          localeController: controller,
+          gradeFilterController: gradeFilterController,
+        );
       },
       transitionBuilder: (context, anim1, anim2, child) {
         return Transform.scale(
@@ -139,6 +149,65 @@ class SettingsDialog extends StatelessWidget {
                 );
               },
             ),
+            // Grade Filter Section (if controller provided)
+            if (gradeFilterController != null) ...[
+              const SizedBox(height: 22),
+              Text(
+                l10n.filterByGrade,
+                style: AppTextStyles.titleSmall.copyWith(fontSize: 16),
+              ),
+              const SizedBox(height: 12),
+              ListenableBuilder(
+                listenable: gradeFilterController!,
+                builder: (context, _) {
+                  final activeFilter = gradeFilterController!.selectedFilter;
+                  final filterOptions = [
+                    {'opt': GradeFilterOption.all, 'label': l10n.filterAll},
+                    {'opt': GradeFilterOption.grades0to1, 'label': l10n.filterGrades0to1},
+                    {'opt': GradeFilterOption.grades1to2, 'label': l10n.filterGrades1to2},
+                  ];
+
+                  return Row(
+                    children: filterOptions.map((item) {
+                      final opt = item['opt'] as GradeFilterOption;
+                      final isSelected = activeFilter == opt;
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: BouncyButton(
+                            height: 46,
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            backgroundColor: isSelected
+                                ? AppColors.pastelYellow
+                                : AppColors.surfaceWarm,
+                            shadowColor: isSelected
+                                ? AppColors.pastelYellowDark
+                                : AppColors.woodBorder,
+                            borderRadius: BorderRadius.circular(16),
+                            bevelHeight: 3.0,
+                            onPressed: () {
+                              gradeFilterController!.setFilter(opt);
+                            },
+                            child: Center(
+                              child: Text(
+                                item['label'] as String,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.badge.copyWith(
+                                  color: AppColors.textPrimary,
+                                  fontSize: 12,
+                                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            ],
+
             const SizedBox(height: 22),
 
             // Language Selector Section

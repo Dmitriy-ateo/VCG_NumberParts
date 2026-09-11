@@ -7,12 +7,12 @@ import '../../domain/game_info.dart';
 
 class GameTileCard extends StatelessWidget {
   final GameInfo game;
-  final VoidCallback onPlay;
+  final VoidCallback? onPlay;
 
   const GameTileCard({
     super.key,
     required this.game,
-    required this.onPlay,
+    this.onPlay,
   });
 
   @override
@@ -154,7 +154,7 @@ class GameTileCard extends StatelessWidget {
                       shadowColor: AppColors.pastelPeachDark,
                       borderRadius: BorderRadius.circular(22),
                       bevelHeight: 6,
-                      onPressed: onPlay,
+                      onPressed: onPlay ?? game.onPlay,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
